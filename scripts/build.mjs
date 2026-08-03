@@ -13,10 +13,20 @@ const SOURCE_URL = process.env.DATA_SOURCE_URL
 const ORIGIN = "https://airanking.github.io";
 const SITE_NAME = "AI 中转站推荐";
 const MAX_SITES = 500;
-const SHUFFLE_GROUP_SIZE = 5;
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 40;
 const SHOULD_SYNC = process.argv.includes("--sync");
 const number = new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 1 });
+const SCORE_WEIGHTS = Object.freeze({
+  source: 10,
+  uptime: 25,
+  latency: 20,
+  rating: 15,
+  models: 10,
+  tenure: 5,
+  payments: 5,
+  refund: 5,
+  invoice: 5,
+});
 
 const FAQ = [
   {
@@ -172,6 +182,8 @@ const TOPICS = [
   },
 ];
 
+const TOPIC_TERMS = new Map(TOPICS.map((topic) => [topic.slug, topic.terms.map((term) => term.toLowerCase())]));
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -277,13 +289,8 @@ async function syncData() {
   await atomicWrite(DATA_PATH, `${JSON.stringify(limited, null, 2)}\n`);
 }
 
-function isoWeek(value) {
-  const date = new Date(`${value}T00:00:00Z`);
-  const day = date.getUTCDay() || 7;
-  date.setUTCDate(date.getUTCDate() + 4 - day);
-  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
-  const week = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
-  return `${date.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+function clamp(value, minimum = 0, maximum = 1) {
+  return Math.min(maximum, Math.max(minimum, value));
 }
 
 function hashText(value) {
@@ -295,16 +302,62 @@ function hashText(value) {
   return hash >>> 0;
 }
 
-function lightlyShuffle(sites, updatedDate) {
-  const period = isoWeek(updatedDate);
-  const result = [];
-  for (let start = 0; start < sites.length; start += SHUFFLE_GROUP_SIZE) {
-    const group = sites.slice(start, start + SHUFFLE_GROUP_SIZE)
-      .map((site, offset) => ({ ...site, sourceRank: start + offset + 1 }))
-      .sort((a, b) => hashText(`${period}|${a.name}|${a.url}`) - hashText(`${period}|${b.name}|${b.url}`));
-    result.push(...group);
+function snapshotAgeScore(establishedDate, updatedDate) {
+  if (!establishedDate) return null;
+  const established = new Date(`${establishedDate}T00:00:00Z`);
+  const snapshot = new Date(`${updatedDate}T00:00:00Z`);
+  const ageDays = (snapshot - established) / 86_400_000;
+  return ageDays < 0 ? null : clamp(ageDays / 730) * 100;
+}
+
+export function scoreSite(site, sourcePosition, totalSites, updatedDate) {
+  const components = {
+    source: totalSites <= 1 ? 50 : 60 - 20 * sourcePosition / (totalSites - 1),
+    uptime: site.uptime !== null && site.uptime >= 0 && site.uptime <= 100
+      ? clamp((site.uptime - 80) / 20) * 100 : null,
+    latency: site.latencyMs !== null && site.latencyMs > 0
+      ? (1 - clamp((Math.log(site.latencyMs) - Math.log(1000)) / (Math.log(15000) - Math.log(1000)))) * 100 : null,
+    rating: site.userRating !== null && site.userRating >= 1 && site.userRating <= 5 && site.ratingCount > 0
+      ? clamp((((site.ratingCount * site.userRating + 35) / (site.ratingCount + 10)) - 1) / 4) * 100 : null,
+    models: site.modelCount > 0 ? Math.log1p(Math.min(site.modelCount, 40)) / Math.log(41) * 100 : null,
+    tenure: snapshotAgeScore(site.establishedDate, updatedDate),
+    payments: site.paymentMethods.length ? Math.min(site.paymentMethods.length / 3, 1) * 100 : null,
+    refund: site.supportsRefund === null ? null : Number(site.supportsRefund) * 100,
+    invoice: site.supportsInvoice === null ? null : Number(site.supportsInvoice) * 100,
+  };
+  let weightedTotal = 0;
+  let availableWeight = 0;
+  for (const [key, weight] of Object.entries(SCORE_WEIGHTS)) {
+    if (components[key] === null) continue;
+    weightedTotal += components[key] * weight;
+    availableWeight += weight;
   }
-  return result.map((site, index) => ({ ...site, rank: index + 1 }));
+  const rawScore = availableWeight ? weightedTotal / availableWeight : 50;
+  const coverage = availableWeight / 100;
+  const confidence = 0.35 + 0.65 * coverage;
+  return {
+    score: 50 + (rawScore - 50) * confidence,
+    scoreCoverage: coverage,
+    scoreComponents: components,
+  };
+}
+
+export function rankSites(sites, updatedDate) {
+  const scored = sites.map((site, sourcePosition) => ({
+    ...site,
+    sourceRank: sourcePosition + 1,
+    ...scoreSite(site, sourcePosition, sites.length, updatedDate),
+  }));
+  scored.sort((a, b) => b.score - a.score
+    || b.scoreCoverage - a.scoreCoverage
+    || a.sourceRank - b.sourceRank
+    || a.name.localeCompare(b.name, "zh-CN")
+    || a.url.localeCompare(b.url));
+  return scored.map((site, index) => {
+    const { scoreComponents, ...rankedSite } = site;
+    const ranked = { ...rankedSite, rank: index + 1 };
+    return { ...ranked, copy: buildSiteCopy(ranked) };
+  });
 }
 
 function formatDate(value) {
@@ -385,79 +438,89 @@ function renderPageAnalysis(stats, first, last) {
   return `<section class="page-analysis" aria-labelledby="page-analysis-title"><div class="page-analysis__head"><div><p>PAGE DATA / ${first}–${last}</p><h3 id="page-analysis-title">本页数据概览</h3></div><p>${escapeHtml(summary)}</p></div><dl class="analysis-grid"><div><dt>在线率中位数</dt><dd>${formatStat(stats.uptime.value, formatUptime)}</dd><small>样本 ${stats.uptime.sample}/${stats.total}</small></div><div><dt>延迟中位数</dt><dd>${formatStat(stats.latency.value, formatLatency)}</dd><small>样本 ${stats.latency.sample}/${stats.total}</small></div><div><dt>模型数量中位数</dt><dd>${formatStat(stats.modelCount.value, (value) => `${number.format(value)} 个`)}</dd><small>样本 ${stats.modelCount.sample}/${stats.total}</small></div><div><dt>用户评分中位数</dt><dd>${formatStat(stats.rating.value, (value) => `${number.format(value)} / 5`)}</dd><small>样本 ${stats.rating.sample}/${stats.total}</small></div></dl></section>`;
 }
 
+function policyFact(label, value) {
+  if (value === true) return `数据明确标记支持${label}`;
+  if (value === false) return `数据明确标记不支持${label}`;
+  return `${label}政策未记录，付款前需确认`;
+}
+
+function siteFacts(site) {
+  const performance = [];
+  if (site.uptime !== null) performance.push(`在线率 ${formatUptime(site.uptime)}`);
+  if (site.latencyMs !== null) performance.push(`延迟 ${formatLatency(site.latencyMs)}`);
+  const rating = site.userRating !== null && site.ratingCount > 0
+    ? `用户评分 ${number.format(site.userRating)}/5（${site.ratingCount} 条）`
+    : "用户评价样本未记录";
+  const model = site.modelCount > 0 ? `收录模型数量 ${site.modelCount} 个` : "模型数量未记录";
+  const date = site.establishedDate ? `成立日期记录为 ${formatDate(site.establishedDate)}` : "成立日期未记录";
+  return {
+    scoreValue: `${number.format(site.score)}，评分字段覆盖 ${Math.round(site.scoreCoverage * 100)}%`,
+    score: `当前公开数据综合分 ${number.format(site.score)}，评分字段覆盖 ${Math.round(site.scoreCoverage * 100)}%`,
+    performance: performance.length ? performance.join("、") : "在线率与延迟均未记录",
+    rating,
+    model,
+    date,
+    policies: `${policyFact("退款", site.supportsRefund)}；${policyFact("发票", site.supportsInvoice)}`,
+  };
+}
+
+const DESCRIPTION_TEMPLATES = [
+  (site, facts) => `${site.name} 的${facts.score}。当前快照显示${facts.performance}，${facts.model}。`,
+  (site, facts) => `按已收录字段计算，${site.name} 获得 ${facts.scoreValue}。性能资料为${facts.performance}；${facts.rating}。`,
+  (site, facts) => `${site.name} 当前以数据完整度和公开指标参与排序：${facts.score}。${facts.date}，${facts.performance}。`,
+  (site, facts) => `本页不复述 ${site.name} 的宣传简介，而以结构化快照说明：${facts.score}；${facts.model}；${facts.rating}。`,
+  (site, facts) => `${site.name} 的名次来自可复算指标。${facts.score}，已记录表现为${facts.performance}，${facts.date}。`,
+  (site, facts) => `当前快照对 ${site.name} 的记录为：${facts.model}，${facts.performance}。综合计算结果是数据分 ${facts.scoreValue}。`,
+  (site, facts) => `${site.name} 以公开字段而非站点宣传参与比较。${facts.score}；${facts.rating}；${facts.date}。`,
+  (site, facts) => `从数据覆盖看，${site.name} 的${facts.score}。现有证据包括${facts.performance}和${facts.model}。`,
+];
+
+function buildSiteCopy(site) {
+  const facts = siteFacts(site);
+  const template = DESCRIPTION_TEMPLATES[hashText(`${site.name}|${site.url}`) % DESCRIPTION_TEMPLATES.length];
+  const sparse = site.scoreCoverage < 0.3 ? " 当前快照可用于评分的字段有限，分数已向中性值收缩。" : "";
+  const models = site.models.length ? `已列模型或厂商：${site.models.join("、")}` : "模型明细未记录";
+  const payments = site.paymentMethods.length ? `已列支付方式：${site.paymentMethods.join("、")}` : "支付方式未记录";
+  return {
+    description: `${template(site, facts)}${sparse}`,
+    detail: `${facts.date}；${models}；${payments}；${facts.policies}。这些内容描述当前数据快照，不构成实时可用或服务表现承诺。`,
+  };
+}
+
 function objectiveSiteSummary(site) {
-  const parts = [`综合排名第 ${site.rank}`];
-  if (site.establishedDate) parts.push(`成立日期 ${site.establishedDate}`);
-  if (site.uptime !== null) parts.push(`在线率 ${formatUptime(site.uptime)}`);
-  if (site.latencyMs !== null) parts.push(`平均延迟 ${formatLatency(site.latencyMs)}`);
-  parts.push(`收录模型 ${site.modelCount} 个`);
-  if (site.userRating !== null && site.ratingCount > 0) {
-    parts.push(`用户评分 ${number.format(site.userRating)}/5（${site.ratingCount} 条评价）`);
-  }
-  if (site.supportsRefund !== null) parts.push(`退款政策：${status(site.supportsRefund)}`);
-  if (site.supportsInvoice !== null) parts.push(`发票政策：${status(site.supportsInvoice)}`);
-  return `${parts.join("；")}。`;
+  return `综合排名第 ${site.rank}；${site.copy.description} ${site.copy.detail}`;
 }
 
-function descriptionSummary(text, limit = 86) {
-  const compact = text.replace(/\s+/g, " ").trim();
-  return compact.length > limit ? `${compact.slice(0, limit).trim()}…` : compact;
+function formatRating(site) {
+  return site.userRating === null || site.ratingCount === 0
+    ? "暂无"
+    : `${number.format(site.userRating)} / 5 (${site.ratingCount})`;
 }
 
-function paragraphs(text) {
-  return text
-    .split(/\n\s*\n|\n+/)
-    .map((part) => part.trim())
-    .filter(Boolean)
-    .map((part) => `                    <p>${escapeHtml(part)}</p>`)
-    .join("\n");
+function dataState(value) {
+  return value === null ? "data-unknown" : value ? "data-known" : "data-negative";
 }
 
-function renderTags(items, empty = "暂未注明") {
-  if (!items.length) return `<span class="chip chip--quiet">${empty}</span>`;
-  return items.map((item) => `<span class="chip">${escapeHtml(item)}</span>`).join("");
-}
-
-function renderSite(site) {
+function renderSiteRows(site) {
   const url = escapeHtml(site.url);
-  const rating = site.userRating === null || site.ratingCount === 0
-    ? "暂无评分"
-    : `${number.format(site.userRating)} / 5 · ${site.ratingCount} 条评价`;
-  const fullDescription = site.description
-    ? `
-                <p class="site-summary">${escapeHtml(descriptionSummary(site.description))}</p>
-                <details class="site-intro">
-                  <summary>展开完整站点简介</summary>
-                  <div class="site-intro__body">
-${paragraphs(site.description)}
-                  </div>
-                </details>`
-    : "";
+  const rowId = `station-${site.rank}`;
+  const detailId = `station-detail-${site.rank}`;
+  return `              <tr class="ranking-row" id="rank-${site.rank}" aria-describedby="${detailId}" data-rank="${site.rank}" data-score="${site.score.toFixed(6)}">
+                <td class="rank-cell numeric"><strong>${site.rank}</strong></td>
+                <th class="site-cell" scope="row" id="${rowId}"><a href="${url}" target="_blank" rel="nofollow noopener" referrerpolicy="origin">${escapeHtml(site.name)}</a><p>${escapeHtml(site.copy.description)}</p></th>
+                <td class="score-cell numeric"><strong>${number.format(site.score)}</strong><small>覆盖 ${Math.round(site.scoreCoverage * 100)}%</small></td>
+                <td class="numeric">${formatUptime(site.uptime)}</td>
+                <td class="numeric">${formatLatency(site.latencyMs)}</td>
+                <td class="numeric">${site.modelCount > 0 ? `${site.modelCount} 个` : "暂无"}</td>
+                <td class="numeric">${escapeHtml(formatRating(site))}</td>
+                <td class="policy-cell"><span class="${dataState(site.supportsRefund)}">退：${status(site.supportsRefund)}</span><span class="${dataState(site.supportsInvoice)}">票：${status(site.supportsInvoice)}</span></td>
+                <td><a class="table-link" href="${url}" target="_blank" rel="nofollow noopener" referrerpolicy="origin" aria-label="访问 ${escapeHtml(site.name)}">访问 ↗</a></td>
+              </tr>
+              <tr class="ranking-detail-row" id="${detailId}"><td></td><td colspan="8"><p>${escapeHtml(site.copy.detail)}</p></td></tr>`;
+}
 
-  return `            <article class="station-card" id="rank-${site.rank}" aria-labelledby="station-${site.rank}">
-              <div class="station-card__head">
-                <span class="rank-badge"><small>排名</small>${site.rank}</span>
-                <div class="station-title">
-                  <h2 id="station-${site.rank}"><a href="${url}" target="_blank" rel="nofollow noopener" referrerpolicy="origin">${escapeHtml(site.name)}</a></h2>
-                  <p>成立日期：${escapeHtml(formatDate(site.establishedDate))}</p>
-                </div>
-              </div>
-${fullDescription}
-              <dl class="metric-grid">
-                <div><dt>在线率</dt><dd>${formatUptime(site.uptime)}</dd></div>
-                <div><dt>平均延迟</dt><dd>${formatLatency(site.latencyMs)}</dd></div>
-                <div><dt>模型数量</dt><dd>${site.modelCount} 个</dd></div>
-                <div><dt>用户评价</dt><dd>${escapeHtml(rating)}</dd></div>
-              </dl>
-              <div class="station-meta">
-                <div><h3>模型厂商</h3><div class="chip-list">${renderTags(site.models)}</div></div>
-                <div><h3>支付方式</h3><div class="chip-list">${renderTags(site.paymentMethods)}</div></div>
-              </div>
-              <div class="station-card__foot">
-                <p><span>退款：${status(site.supportsRefund)}</span><span>发票：${status(site.supportsInvoice)}</span></p>
-                <a class="detail-link" href="${url}" target="_blank" rel="nofollow noopener" referrerpolicy="origin" aria-label="查看 ${escapeHtml(site.name)} 的更多信息">查看站点信息 <span aria-hidden="true">↗</span></a>
-              </div>
-            </article>`;
+function renderRankingTable(sites, caption) {
+  return `<p class="table-scroll-hint">表格可左右滑动查看全部指标</p><div class="ranking-table-wrap" role="region" aria-label="中转站数据排名表" tabindex="0"><table class="ranking-table"><caption>${escapeHtml(caption)}</caption><colgroup><col class="col-rank" /><col class="col-site" /><col class="col-score" /><col class="col-metric" span="4" /><col class="col-policy" /><col class="col-action" /></colgroup><thead><tr><th scope="col">排名</th><th scope="col">站点与数据说明</th><th scope="col">数据评分</th><th scope="col">在线率</th><th scope="col">延迟</th><th scope="col">模型</th><th scope="col">评价</th><th scope="col">服务信息</th><th scope="col">访问</th></tr></thead><tbody>\n${sites.map(renderSiteRows).join("\n")}\n            </tbody></table></div>`;
 }
 
 function pagePath(page) {
@@ -468,10 +531,10 @@ function relativeRoot(page) {
   return page === 1 ? "." : "../..";
 }
 
-function pageRelations(page, totalPages) {
+function pageRelations(page, totalPages, pathForPage = pagePath) {
   return {
-    previous: page > 1 ? `${ORIGIN}${pagePath(page - 1)}` : "",
-    next: page < totalPages ? `${ORIGIN}${pagePath(page + 1)}` : "",
+    previous: page > 1 ? `${ORIGIN}${pathForPage(page - 1)}` : "",
+    next: page < totalPages ? `${ORIGIN}${pathForPage(page + 1)}` : "",
   };
 }
 
@@ -482,7 +545,8 @@ function renderBreadcrumbs(page, root) {
   return `<nav class="breadcrumbs" aria-label="面包屑"><a href="${root}/">AI 中转站推荐</a><span aria-hidden="true">/</span><span aria-current="page">第 ${page} 页</span></nav>`;
 }
 
-function renderPagination(current, total) {
+function renderPagination(current, total, pathForPage = pagePath, label = "榜单分页") {
+  if (total <= 1) return "";
   const pages = new Set([1, total]);
   for (let page = Math.max(1, current - 2); page <= Math.min(total, current + 2); page += 1) pages.add(page);
   const sorted = [...pages].sort((a, b) => a - b);
@@ -492,19 +556,19 @@ function renderPagination(current, total) {
     if (page - previous > 1) links.push('<span class="page-gap" aria-hidden="true">…</span>');
     links.push(page === current
       ? `<span class="page-number is-current" aria-current="page">${page}</span>`
-      : `<a class="page-number" href="${pagePath(page)}" aria-label="前往第 ${page} 页">${page}</a>`);
+      : `<a class="page-number" href="${pathForPage(page)}" aria-label="前往第 ${page} 页">${page}</a>`);
     previous = page;
   }
-  return `<nav class="pagination" aria-label="榜单分页">
-            ${current > 1 ? `<a class="page-step" href="${pagePath(current - 1)}">← 上一页</a>` : '<span class="page-step is-disabled">← 上一页</span>'}
+  return `<nav class="pagination" aria-label="${escapeHtml(label)}">
+            ${current > 1 ? `<a class="page-step" href="${pathForPage(current - 1)}">← 上一页</a>` : '<span class="page-step is-disabled">← 上一页</span>'}
             <div class="page-numbers">${links.join("")}</div>
-            ${current < total ? `<a class="page-step" href="${pagePath(current + 1)}">下一页 →</a>` : '<span class="page-step is-disabled">下一页 →</span>'}
+            ${current < total ? `<a class="page-step" href="${pathForPage(current + 1)}">下一页 →</a>` : '<span class="page-step is-disabled">下一页 →</span>'}
           </nav>`;
 }
 
 function topicMatches(site, topic) {
-  const searchable = [site.name, site.description, ...site.models].join(" ").toLowerCase();
-  return topic.terms.some((term) => searchable.includes(term.toLowerCase()));
+  const searchable = site.searchableText || [site.name, site.description, ...site.models].join(" ").toLowerCase();
+  return TOPIC_TERMS.get(topic.slug).some((term) => searchable.includes(term));
 }
 
 function topicFaq(topic) {
@@ -522,9 +586,8 @@ function topicStats(sites) {
   return { ...stats, modelCount: { value: median(modelCounts), sample: modelCounts.length } };
 }
 
-function renderTopicDirectory(allSites, currentSlug = "") {
-  const cards = TOPICS.map((topic) => {
-    const matches = allSites.filter((site) => topicMatches(site, topic));
+function renderTopicDirectory(topicPages, currentSlug = "") {
+  const cards = topicPages.map(({ topic, matches }) => {
     const link = currentSlug === topic.slug
       ? `<span class="topic-directory__current" aria-current="page">当前专题</span>`
       : `<a href="/${topic.slug}/">查看 ${escapeHtml(topic.label)} →</a>`;
@@ -566,13 +629,26 @@ function renderTopicStructuredData({ topic, canonical, title, description, sites
   return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replaceAll("<", "\\u003c");
 }
 
-function renderTopicPage({ topic, sites, allMatches, allSites, updatedDate }) {
-  const canonical = `${ORIGIN}/${topic.slug}/`;
-  const title = `${topic.label}推荐｜${allMatches.length} 家 AI API 中转站对比`;
-  const description = `${topic.label}专题收录 ${allMatches.length} 家公开资料相关的 AI API 中转站，对比在线率、延迟、模型数量和服务信息，并提供接入验证、计费与安全选择指南。`;
-  const stats = topicStats(allMatches);
+function topicPagePath(topic, page) {
+  return page === 1 ? `/${topic.slug}/` : `/${topic.slug}/page/${page}/`;
+}
+
+function renderTopicPage({ topic, page, totalPages, sites, allMatches, topicPages, updatedDate, stats }) {
+  const canonical = `${ORIGIN}${topicPagePath(topic, page)}`;
+  const first = (page - 1) * PAGE_SIZE + 1;
+  const last = first + sites.length - 1;
+  const title = page === 1
+    ? `${topic.label}数据索引｜${allMatches.length} 家公开资料候选站`
+    : `${topic.label}数据索引第 ${page} 页｜候选 ${first}–${last}`;
+  const description = page === 1
+    ? `${topic.label}数据索引按统一评分展示 ${allMatches.length} 家公开资料候选站，列出评分覆盖度、在线率、延迟、模型与服务政策，便于复核数据而非照搬宣传简介。`
+    : `${topic.label}数据索引第 ${page} 页，展示候选范围 ${first} 至 ${last} 的综合分、字段覆盖度与公开指标。`;
   const faq = topicFaq(topic);
   const jsonLd = renderTopicStructuredData({ topic, canonical, title, description, sites, totalMatches: allMatches.length, updatedDate });
+  const root = page === 1 ? ".." : "../../..";
+  const topicPath = (target) => topicPagePath(topic, target);
+  const relations = pageRelations(page, totalPages, topicPath);
+  const firstPageOnly = page === 1;
   return `<!doctype html>
 <html lang="zh-CN">
   <head>
@@ -595,115 +671,68 @@ function renderTopicPage({ topic, sites, allMatches, allSites, updatedDate }) {
     <meta name="twitter:image" content="${ORIGIN}/assets/og-image.svg" />
     <link rel="canonical" href="${canonical}" />
     <link rel="alternate" hreflang="zh-CN" href="${canonical}" />
-    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="../assets/styles.min.css" />
+    ${relations.previous ? `<link rel="prev" href="${relations.previous}" />` : ""}
+    ${relations.next ? `<link rel="next" href="${relations.next}" />` : ""}
+    <link rel="icon" href="${root}/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="${root}/assets/styles.min.css" />
     <script type="application/ld+json">${jsonLd}</script>
   </head>
   <body>
     <a class="skip-link" href="#main">跳到主要内容</a>
     <header class="topbar">
-      <a class="wordmark" href="../" aria-label="AI 中转站推荐首页"><span>中转站</span><strong>推荐榜</strong></a>
-      <nav aria-label="主要导航"><a href="../#ranking">推荐榜</a><a href="../#topics">模型专题</a><a href="../#guide">怎么选</a><a href="../#faq">常见问题</a></nav>
+      <a class="wordmark" href="${root}/" aria-label="AI 中转站推荐首页"><span>中转站</span><strong>数据榜</strong></a>
+      <nav aria-label="主要导航"><a href="${root}/#ranking">数据榜</a><a href="${root}/#topics">模型索引</a><a href="${root}/methodology/">评分方法</a></nav>
     </header>
     <main id="main">
-      <nav class="breadcrumbs" aria-label="面包屑"><a href="../">AI 中转站推荐</a><span aria-hidden="true">/</span><span aria-current="page">${escapeHtml(topic.label)}</span></nav>
+      <nav class="breadcrumbs" aria-label="面包屑"><a href="${root}/">AI 中转站推荐</a><span aria-hidden="true">/</span><a href="${root}/${topic.slug}/">${escapeHtml(topic.label)}</a>${page > 1 ? `<span aria-hidden="true">/</span><span aria-current="page">第 ${page} 页</span>` : ""}</nav>
       <section class="hero topic-hero">
         <div class="hero__copy"><p class="eyebrow">MODEL DIRECTORY · ${updatedDate.replaceAll("-", ".")}</p><h1>${escapeHtml(topic.label)}<br /><em>推荐与对比</em></h1><p class="hero-copy">${escapeHtml(topic.intro)}</p><div class="hero-actions"><a href="#topic-ranking">查看候选站</a><a href="#topic-guide">阅读专项指南</a></div></div>
-        <aside class="hero__panel" aria-label="专题概览"><p>公开资料匹配</p><strong>${allMatches.length}</strong><span>家 ${escapeHtml(topic.label)}</span><dl><div><dt>本页展示</dt><dd>${sites.length} 家</dd></div><div><dt>在线率样本</dt><dd>${stats.uptime.sample}/${stats.total}</dd></div><div><dt>更新时间</dt><dd>${updatedDate}</dd></div></dl></aside>
+        <aside class="hero__panel" aria-label="专题概览"><p>公开资料匹配</p><strong>${allMatches.length}</strong><span>家 ${escapeHtml(topic.label)}</span><dl><div><dt>专题页</dt><dd>${page} / ${totalPages}</dd></div><div><dt>本页范围</dt><dd>${first}–${last}</dd></div><div><dt>更新时间</dt><dd>${updatedDate}</dd></div></dl></aside>
       </section>
 
-      <section class="topic-overview" aria-labelledby="topic-overview-title">
-        <div><p class="section-kicker">专题数据</p><h2 id="topic-overview-title">当前候选样本概览</h2><p>统计来自站点公开资料与当前榜单快照，仅用于了解样本覆盖。模型是否真实可用、价格是否准确，仍需在充值前独立验证。</p></div>
-        <dl class="topic-stat-grid"><div><dt>公开匹配</dt><dd>${stats.total} 家</dd><small>展示前 ${sites.length} 家</small></div><div><dt>在线率中位数</dt><dd>${formatStat(stats.uptime.value, formatUptime)}</dd><small>样本 ${stats.uptime.sample}/${stats.total}</small></div><div><dt>延迟中位数</dt><dd>${formatStat(stats.latency.value, formatLatency)}</dd><small>样本 ${stats.latency.sample}/${stats.total}</small></div><div><dt>模型数量中位数</dt><dd>${formatStat(stats.modelCount.value, (value) => `${number.format(value)} 个`)}</dd><small>样本 ${stats.modelCount.sample}/${stats.total}</small></div></dl>
+      ${firstPageOnly ? `<section class="topic-overview" aria-labelledby="topic-overview-title">
+        <div><p class="section-kicker">证据概览</p><h2 id="topic-overview-title">先看数据覆盖，再看名次</h2><p>专题匹配只说明名称、模型字段或来源文字提及相关关键词。统计与评分用于检查公开证据的数量和一致性，不等同于确认模型当前可调用。</p></div>
+        <dl class="topic-stat-grid"><div><dt>公开匹配</dt><dd>${stats.total} 家</dd><small>完整静态分页</small></div><div><dt>在线率中位数</dt><dd>${formatStat(stats.uptime.value, formatUptime)}</dd><small>样本 ${stats.uptime.sample}/${stats.total}</small></div><div><dt>延迟中位数</dt><dd>${formatStat(stats.latency.value, formatLatency)}</dd><small>样本 ${stats.latency.sample}/${stats.total}</small></div><div><dt>模型数量中位数</dt><dd>${formatStat(stats.modelCount.value, (value) => `${number.format(value)} 个`)}</dd><small>样本 ${stats.modelCount.sample}/${stats.total}</small></div></dl>
       </section>
 
-      ${renderTopicDirectory(allSites, topic.slug)}
+      ${renderTopicDirectory(topicPages, topic.slug)}
 
-      <section class="topic-guide" id="topic-guide" aria-labelledby="topic-guide-title"><div><p class="section-kicker">专项验收</p><h2 id="topic-guide-title">选择 ${escapeHtml(topic.label)} 要检查什么</h2><p>${escapeHtml(topic.intro)} 建议使用固定测试集保存请求时间、模型名、错误码、Token 和扣费，以便对不同站点做可复现比较。</p></div><div class="topic-focus-grid">${topic.focus.map((item, index) => `<article><span>0${index + 1}</span><h3>${escapeHtml(item)}</h3><p>不要只查看模型名称；应在自己的客户端完成真实请求，并核对响应能力与请求级账单。</p></article>`).join("")}</div></section>
+      <section class="topic-guide" id="topic-guide" aria-labelledby="topic-guide-title"><div><p class="section-kicker">复核路径</p><h2 id="topic-guide-title">怎样验证 ${escapeHtml(topic.label)} 数据</h2><p>先记录榜单中的字段覆盖度，再进入站点核对模型标识、协议和价格。使用固定请求保存时间、响应模型、错误码、Token 与扣费，才能把来源文字变成可复核证据。</p></div><div class="topic-focus-grid">${topic.focus.map((item, index) => `<article><span>0${index + 1}</span><h3>${escapeHtml(item)}</h3><p>将页面记录视为待验证线索；用同一输入复测并保留请求级结果。</p></article>`).join("")}</div></section>` : `<section class="page-continue"><p>${escapeHtml(topic.label)} · 第 ${page} 页</p><h2>继续查看按统一方法计算的数据结果</h2><a href="${root}/${topic.slug}/#topic-guide">返回专题方法说明 →</a></section>`}
 
-      <section class="ranking topic-ranking" id="topic-ranking" aria-labelledby="topic-ranking-title"><div class="ranking-head"><div><p>MODEL RANKING / ${escapeHtml(topic.short)}</p><h2 id="topic-ranking-title">${escapeHtml(topic.label)}候选站</h2></div><p>展示前 ${sites.length} 家，共匹配 ${allMatches.length} 家</p></div><p class="ranking-note">候选站按综合榜单顺序展示。公开资料提及相关模型不代表当前通道始终可用，请点击站点信息核对最新模型列表、价格和限制。</p><div class="station-list">\n${sites.map(renderSite).join("\n")}\n        </div></section>
+      <section class="ranking topic-ranking" id="topic-ranking" aria-labelledby="topic-ranking-title"><div class="ranking-head"><div><p>MODEL DATA / ${escapeHtml(topic.short)}</p><h2 id="topic-ranking-title">${escapeHtml(topic.label)}数据表</h2></div><p>当前 ${first}–${last}，共 ${allMatches.length} 家</p></div><p class="ranking-note">候选站沿用全站综合分与全局名次；关键词匹配不证明模型可用，请把表中字段作为核验清单。</p>${renderRankingTable(sites, `${topic.label}公开资料候选 ${first}–${last}，按全站综合分排序`)}${renderPagination(page, totalPages, topicPath, `${topic.label}分页`)}</section>
 
-      <section class="faq-section topic-faq" id="faq" aria-labelledby="topic-faq-title"><div class="section-kicker">专题常见问题</div><h2 id="topic-faq-title">${escapeHtml(topic.label)}常见问题</h2><div class="faq-list">${faq.map(([question, answer]) => `<details class="faq-item"><summary>${escapeHtml(question)}</summary><div class="faq-answer"><p>${escapeHtml(answer)}</p></div></details>`).join("")}</div></section>
+      ${firstPageOnly ? `<section class="faq-section topic-faq" id="faq" aria-labelledby="topic-faq-title"><div class="section-kicker">数据问答</div><h2 id="topic-faq-title">如何解读 ${escapeHtml(topic.label)} 索引</h2><div class="faq-list">${faq.map(([question, answer]) => `<details class="faq-item"><summary>${escapeHtml(question)}</summary><div class="faq-answer"><p>${escapeHtml(answer)}</p></div></details>`).join("")}</div></section>` : ""}
     </main>
-    <footer class="footer"><a class="wordmark" href="../"><span>中转站</span><strong>推荐榜</strong></a><p>公开信息用于初筛，使用 ${escapeHtml(topic.label)} 前请自行小额测试。</p><a href="#main">返回顶部 ↑</a></footer>
+    <footer class="footer"><a class="wordmark" href="${root}/"><span>中转站</span><strong>数据榜</strong></a><p>公开字段用于建立核验清单，不代表实时可用或质量担保。</p><a href="#main">返回顶部 ↑</a></footer>
   </body>
 </html>`;
 }
 
 function homeGuide() {
-  const faq = FAQ.map(({ question, answer }) => `            <details class="faq-item">
-              <summary>${escapeHtml(question)}</summary>
-              <div class="faq-answer">${answer.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}</div>
-            </details>`).join("\n");
   return `      <section class="decision-guide" id="guide" aria-labelledby="guide-title">
-        <div class="section-kicker">选择方法</div>
-        <h2 id="guide-title">选择中转站，不要只比较倍率</h2>
-        <p class="section-lead">中转站是一层位于客户端和模型服务之间的网关。真正影响长期体验的，是上游来源是否说明、价格能否复算、高峰期是否稳定、模型能力是否完整，以及发生故障后有没有清楚的处理入口。</p>
+        <div class="section-kicker">评分阅读法</div>
+        <h2 id="guide-title">名次之外，先检查证据覆盖</h2>
+        <p class="section-lead">本站把来源顺序、运行指标、评价、模型广度、运营时间和服务政策放进同一公式。资料缺失不会被当成失败，但会降低覆盖度，并把分数向 50 分收缩。</p>
         <div class="guide-grid">
-          <article><span>01</span><h3>先写清自己的硬需求</h3><p>列出必需模型、接口协议、上下文长度、工具调用、多模态、并发和预算。用于个人聊天、编程代理和企业生产的标准不同，先设门槛才能排除不合适的站点。</p></article>
-          <article><span>02</span><h3>询问并验证上游类型</h3><p>确认是官方按量 API、合规代理、订阅账号池还是第三方产品适配。站点不一定公开具体供应商，但至少应说明渠道性质、能力限制和故障时的切换策略。</p></article>
-          <article><span>03</span><h3>把倍率换算成人民币</h3><p>同时核对充值汇率、模型价格、用户分组、输入输出和缓存计费。只看“0.1 倍”没有可比性；用一条已知 Token 的请求复算，才能知道真实成本。</p></article>
-          <article><span>04</span><h3>用真实任务测稳定性</h3><p>不要只发一句短对话。用平时的代码仓库、长文档或工具调用连续测试，在白天和晚高峰分别记录成功率、首字等待、完整耗时与重试次数。</p></article>
-          <article><span>05</span><h3>核对模型与接口能力</h3><p>检查版本、上下文、流式输出、图片输入、结构化输出和工具调用。名称相同不代表通道能力相同，模型自报身份也不能代替固定测试集。</p></article>
-          <article><span>06</span><h3>检查运营、隐私与售后</h3><p>查看运营时间、公告、客服、日志与数据说明、退款和开票规则。重要业务应设置独立 Key 与额度上限，并准备不同上游的备用接口。</p></article>
+          <article><span>01</span><h3>先看综合分和覆盖度</h3><p>同样的分数，如果一个覆盖 90% 字段、另一个只覆盖 20%，证据强度并不相同。覆盖度越低，越需要进入站点逐项核对。</p></article>
+          <article><span>02</span><h3>把性能值当作历史样本</h3><p>在线率与延迟受采样地点、时段和上游影响。它们适合建立候选范围，不代表你的网络、模型和并发条件下会得到相同结果。</p></article>
+          <article><span>03</span><h3>评价先经过样本修正</h3><p>评分使用贝叶斯平滑，少量五星不会直接获得满分。页面同时保留原始评价和数量，便于判断样本规模。</p></article>
+          <article><span>04</span><h3>区分“不支持”和“未记录”</h3><p>明确的否定是数据证据，空字段只是来源没有提供。退款、发票、支付方式和模型明细都按这一区别展示。</p></article>
+          <article><span>05</span><h3>用固定任务复核</h3><p>对候选站发送相同的长上下文、流式与工具调用请求，记录时间、响应模型、错误码、Token 和扣费，再比较可重复结果。</p></article>
+          <article><span>06</span><h3>保留独立退出路径</h3><p>即使数据排名靠前，也应控制预存金额、隔离密钥和额度，并为关键调用准备不同上游的备用接口。</p></article>
         </div>
-        <aside class="warning-box"><strong>先小额，再加量</strong><p>中转服务可能调价、更换上游或停止运营。第一次只充最低金额，完成多时段测试和账单复算后再增加用量；关键业务保留备用接口，不向不了解的链路提交敏感数据。</p></aside>
+        <aside class="warning-box"><strong>分数不是认证</strong><p>综合分只说明当前快照如何按公开字段计算。模型、价格、线路和政策可能随时变化，付款与生产接入前仍需自行验证。</p></aside>
       </section>
 
-      <section class="cost-section" id="pricing" aria-labelledby="pricing-title">
-        <div class="cost-intro">
-          <div class="section-kicker">价格与倍率</div>
-          <h2 id="pricing-title">先把“0.1 倍”翻译成实际人民币</h2>
-          <p>倍率只是价格公式中的一项。平台还可能把官方美元标价换算成自己的记账单位，并对输入、输出、缓存、图片或不同用户分组分别定价。</p>
-        </div>
-        <div class="formula-card" aria-label="中转站实际扣款估算公式">
-          <span>实际扣款约等于</span>
-          <code>官方标价折算用量 × 平台币换算系数 × 用户倍率</code>
-          <small>最终以站内模型单价、缓存规则和调用账单为准。</small>
-        </div>
-        <div class="example-grid">
-          <article><span>示例 A</span><h3>1 美元额度 = 1 元余额</h3><p>一次请求按官方标价折算为 5 美元，用户倍率 0.1：</p><code>5 × 1 × 0.1 = 0.5 元</code></article>
-          <article><span>示例 B</span><h3>1 美元额度 = 7 元人民币</h3><p>同样是 5 美元用量和 0.1 倍率，充值换算不同：</p><code>5 × 7 × 0.1 = 3.5 元</code></article>
-        </div>
-        <p class="cost-note"><strong>比较时至少记录：</strong>1 元人民币能买多少平台额度、输入与输出单价、缓存写入与命中价格、模型倍率、用户分组倍率，以及一次真实请求的 Token 与最终扣款。面板中的“美元”可能只是官方标价等值单位，并不等于可提现的美元或官方账户余额。</p>
-      </section>
-
-      <section class="channel-section" aria-labelledby="channel-title">
-        <div class="section-kicker">上游类型</div>
-        <h2 id="channel-title">同一个接口页面，背后可能是不同生意</h2>
-        <p class="channel-lead">New API、Sub2API 或自研面板只是管理工具，不能直接证明渠道质量。真正需要判断的是请求最终走向哪里，以及这种上游的限制会不会影响你的任务。</p>
-        <div class="channel-grid">
-          <article><h3>官方按量 API 或合规代理</h3><p>通常按 Token 产生真实成本，模型参数和功能更接近官方。重点核对代理层是否改写参数、如何处理日志，以及故障赔付和合同主体。</p><strong>更适合：</strong><span>稳定生产、敏感或可审计业务</span></article>
-          <article><h3>订阅账号池</h3><p>把订阅产品的可用量集中调度，再按官方 API 标价折算为站内额度。成本可能较低，但会受周限额、账号风控、排队和账号切换影响。</p><strong>重点测试：</strong><span>高峰期、长任务、缓存连续性与限流</span></article>
-          <article><h3>第三方产品适配</h3><p>将 IDE、代码工具或其他产品的接口转换成通用 API。可能附带额外系统提示、上下文压缩或功能限制，产品升级后也可能突然失效。</p><strong>重点测试：</strong><span>工具调用、参数兼容与输出一致性</span></article>
-        </div>
-        <aside class="risk-note"><strong>极低价格需要多做一步成本核验。</strong><p>公开促销、批量采购和高利用率可以合理降价；如果价格长期低到难以覆盖正常成本，且渠道性质、账单和限制都说不清，就应降低预存金额并避免传输敏感数据。不要仅凭低价直接下结论，也不要替无法解释的价格模型承担风险。</p></aside>
+      <section class="cost-section" aria-labelledby="coverage-title">
+        <div class="cost-intro"><div class="section-kicker">缺失值策略</div><h2 id="coverage-title">没有数据，不等于表现为零</h2><p>如果某项没有记录，该分项会从分母中剔除；系统再按可用权重计算覆盖度，将结果向中性值收缩。这样既不奖励信息缺失，也不把“未知”误判成明确失败。</p></div>
+        <div class="formula-card"><span>最终数据分</span><code>50 + (可用项加权分 − 50) × 覆盖置信系数</code><small>完整权重和归一化边界见排名方法页。</small></div>
+        <p class="cost-note"><strong>阅读顺序：</strong>综合分 → 覆盖度 → 有效样本数量 → 具体字段 → 自己的复测结果。不要只截取单个名次或指标传播结论。</p>
       </section>
 
       <section class="test-section" id="checklist" aria-labelledby="test-title">
-        <div>
-          <div class="section-kicker">接入前测试</div>
-          <h2 id="test-title">用同一套任务完成基础验收</h2>
-          <p class="test-lead">最好为候选站点准备相同的提示词、代码任务和长上下文样本，在不同时段重复测试并保存账单。这样比较的是通道，而不是一次偶然输出。</p>
-        </div>
-        <ol class="test-list">
-          <li><strong>最低金额充值</strong><span>核对人民币到账额度、平台币含义和退款条件。</span></li>
-          <li><strong>调用核心模型</strong><span>验证版本、上下文、流式输出、图片和工具调用。</span></li>
-          <li><strong>复算一条账单</strong><span>检查输入、输出、缓存、倍率和最终人民币成本。</span></li>
-          <li><strong>跑长上下文任务</strong><span>观察是否截断、压缩上下文，以及缓存能否持续命中。</span></li>
-          <li><strong>连续请求二十次</strong><span>记录成功率、首字延迟、完整耗时与重试次数。</span></li>
-          <li><strong>晚高峰再次测试</strong><span>账号池拥挤和线路容量问题往往此时更明显。</span></li>
-          <li><strong>验证故障处理</strong><span>确认公告、客服、请求 ID、退款和余额迁移入口。</span></li>
-          <li><strong>设置密钥限额</strong><span>按项目隔离 Key，限制模型和额度，降低泄露风险。</span></li>
-        </ol>
-      </section>
-
-      <section class="faq-section" id="faq" aria-labelledby="faq-title">
-        <div class="section-kicker">常见问题</div>
-        <h2 id="faq-title">关于中转站选择的常见疑问</h2>
-        <div class="faq-list">
-${faq}
-        </div>
+        <div><div class="section-kicker">复核记录</div><h2 id="test-title">把一次体验变成可比较数据</h2><p class="test-lead">使用相同模型、相同请求和相近时段，至少记录以下项目，才能判断公开数据是否适合你的场景。</p></div>
+        <ol class="test-list"><li><strong>字段更新时间</strong><span>确认页面快照和站内公告是否仍有效。</span></li><li><strong>模型与协议</strong><span>记录真实响应模型、接口格式和功能缺口。</span></li><li><strong>首字与总耗时</strong><span>分开记录排队、首字和完整返回时间。</span></li><li><strong>连续成功率</strong><span>多时段重复请求，不用一次成功替代稳定性。</span></li><li><strong>请求级账单</strong><span>保存 Token、缓存、倍率和最终扣费。</span></li><li><strong>政策证据</strong><span>保存退款、发票、日志与客服规则的当前页面。</span></li></ol>
       </section>`;
 }
 
@@ -775,25 +804,25 @@ function renderStructuredData({ page, canonical, title, description, sites, tota
   return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replaceAll("<", "\\u003c");
 }
 
-function renderPage({ page, totalPages, sites, allSites, updatedDate }) {
+function renderPage({ page, totalPages, sites, allSites, topicPages, updatedDate }) {
   const root = relativeRoot(page);
   const canonical = `${ORIGIN}${pagePath(page)}`;
   const first = (page - 1) * PAGE_SIZE + 1;
   const last = first + sites.length - 1;
   const title = page === 1
-    ? `AI 中转站推荐｜${allSites.length} 家 AI API 中转站排名与选择指南`
-    : `AI 中转站推荐第 ${page} 页｜排名 ${first}–${last}`;
+    ? `AI 中转站数据榜｜${allSites.length} 家公开资料评分索引`
+    : `AI 中转站数据榜第 ${page} 页｜排名 ${first}–${last}`;
   const description = page === 1
-    ? `AI 中转站推荐收录 ${allSites.length} 家 AI API 中转站，对比在线率、响应延迟、模型覆盖、支付方式、退款与发票信息，并提供稳定性、计费和安全选择指南。`
-    : `AI 中转站推荐第 ${page} 页，查看排名 ${first} 至 ${last} 的 AI API 中转站简介、成立日期、在线率、延迟、模型数量、用户评分和服务信息。`;
+    ? `AI 中转站数据榜以统一公式重排 ${allSites.length} 家公开资料站点，展示综合分、评分覆盖度、在线率、延迟、模型数量与服务政策，并公开缺失值处理方法。`
+    : `AI 中转站数据榜第 ${page} 页，查看排名 ${first} 至 ${last} 的综合分、字段覆盖度及结构化公开指标。`;
   const stats = pageStats(sites);
   const relations = pageRelations(page, totalPages);
   const jsonLd = renderStructuredData({ page, canonical, title, description, sites, totalSites: allSites.length, updatedDate });
   const hero = page === 1
-    ? `<p class="eyebrow">AI API SERVICE INDEX · ${updatedDate.replaceAll("-", ".")}</p>
-          <h1>AI 中转站推荐</h1>
-          <p class="hero-copy">从运行表现、模型覆盖、用户评价和服务政策出发，先比较，再用真实任务小额验证。</p>
-          <div class="hero-actions"><a href="#ranking">浏览推荐榜</a><a href="#guide">阅读选择方法</a></div>`
+    ? `<p class="eyebrow">OPEN DATA RANKING · ${updatedDate.replaceAll("-", ".")}</p>
+          <h1>AI 中转站<br /><em>数据榜</em></h1>
+          <p class="hero-copy">同一套公式处理所有站点：缺失字段不记零分，证据越少，分数越向中性值收缩。每条说明由结构化事实生成，不照搬来源宣传文字。</p>
+          <div class="hero-actions"><a href="#ranking">查看数据表</a><a href="./methodology/">核对评分公式</a></div>`
     : `<p class="eyebrow">RANKING PAGE ${String(page).padStart(2, "0")} · ${updatedDate.replaceAll("-", ".")}</p>
           <h1>AI 中转站推荐<br /><em>第 ${page} 页</em></h1>
           <p class="hero-copy">本页展示综合排名 ${first}–${last}。需要先了解选择方法？<a href="${root}/#guide">返回首页阅读完整指南</a>。</p>`;
@@ -828,8 +857,8 @@ function renderPage({ page, totalPages, sites, allSites, updatedDate }) {
   <body>
     <a class="skip-link" href="#main">跳到主要内容</a>
     <header class="topbar">
-      <a class="wordmark" href="${root}/" aria-label="AI 中转站推荐首页"><span>中转站</span><strong>推荐榜</strong></a>
-      <nav aria-label="主要导航"><a href="${root}/#ranking">推荐榜</a><a href="${root}/#topics">模型专题</a><a href="${root}/#guide">怎么选</a><a href="${root}/#faq">常见问题</a></nav>
+      <a class="wordmark" href="${root}/" aria-label="AI 中转站数据榜首页"><span>中转站</span><strong>数据榜</strong></a>
+      <nav aria-label="主要导航"><a href="${root}/#ranking">数据榜</a><a href="${root}/#topics">模型索引</a><a href="${root}/methodology/">评分方法</a></nav>
     </header>
     <main id="main">
       ${renderBreadcrumbs(page, root)}
@@ -845,18 +874,16 @@ function renderPage({ page, totalPages, sites, allSites, updatedDate }) {
 
       <section class="ranking" id="ranking" aria-labelledby="ranking-title">
         <div class="ranking-head">
-          <div><p>RANKING / ${String(page).padStart(2, "0")}</p><h2 id="ranking-title">中转站推荐列表</h2></div>
+          <div><p>DATA TABLE / ${String(page).padStart(2, "0")}</p><h2 id="ranking-title">公开指标排名表</h2></div>
           <p>当前显示第 ${first}–${last} 名，共 ${allSites.length} 家</p>
         </div>
-        <p class="ranking-note">指标会随线路和服务状态变化。建议结合自己的网络、模型与调用方式进行小额测试，不要仅凭单次测速或宣传价格决定长期使用。</p>
+        <p class="ranking-note">数据分不是背书：它只合并当前快照中可用的公开字段，并用覆盖度抑制少量有利样本造成的极端结果。表中说明均由结构化字段生成。</p>
         ${renderPageAnalysis(stats, first, last)}
-        <div class="station-list">
-${sites.map(renderSite).join("\n")}
-        </div>
+        ${renderRankingTable(sites, `AI 中转站公开数据排名 ${first}–${last}，共 ${allSites.length} 家`)}
         ${renderPagination(page, totalPages)}
       </section>
 
-${page === 1 ? `${renderTopicDirectory(allSites)}\n\n${homeGuide()}` : `      <section class="page-continue"><p>已经看完第 ${page} 页？</p><h2>回到选择指南，建立自己的测试标准</h2><a href="${root}/#guide">阅读中转站选择方法 →</a></section>`}
+${page === 1 ? `${renderTopicDirectory(topicPages)}\n\n${homeGuide()}` : `      <section class="page-continue"><p>已经看完第 ${page} 页？</p><h2>回到选择指南，建立自己的测试标准</h2><a href="${root}/#guide">阅读中转站选择方法 →</a></section>`}
     </main>
     <footer class="footer">
       <a class="wordmark" href="${root}/"><span>中转站</span><strong>推荐榜</strong></a>
@@ -870,17 +897,13 @@ ${page === 1 ? `${renderTopicDirectory(allSites)}\n\n${homeGuide()}` : `      <s
 
 function renderMethodology({ sites, updatedDate }) {
   const canonical = `${ORIGIN}/methodology/`;
-  const title = `排名方法与数据说明｜${SITE_NAME}`;
-  const description = `了解 ${SITE_NAME} 的公开数据字段、最多 500 条收录规则、每周小范围排序轮换、更新频率与指标局限。`;
+  const title = `数据评分方法与字段说明｜${SITE_NAME}`;
+  const description = `公开 AI 中转站数据榜的评分权重、归一化边界、缺失值处理、覆盖度收缩、确定性排序和每页 40 条规则。`;
   const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": [
     { "@type": "WebSite", "@id": `${ORIGIN}/#website`, url: `${ORIGIN}/`, name: SITE_NAME, inLanguage: "zh-CN" },
     { "@type": "WebPage", "@id": `${canonical}#webpage`, url: canonical, name: title, description, dateModified: updatedDate, inLanguage: "zh-CN", isPartOf: { "@id": `${ORIGIN}/#website` } },
-    { "@type": "BreadcrumbList", "@id": `${canonical}#breadcrumb`, itemListElement: [
-      { "@type": "ListItem", position: 1, name: SITE_NAME, item: `${ORIGIN}/` },
-      { "@type": "ListItem", position: 2, name: "排名方法", item: canonical },
-    ] },
   ] }).replaceAll("<", "\u003c");
-  return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}" /><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" /><meta name="theme-color" content="#111827" /><meta property="og:type" content="website" /><meta property="og:title" content="${escapeHtml(title)}" /><meta property="og:description" content="${escapeHtml(description)}" /><meta property="og:url" content="${canonical}" /><meta property="og:site_name" content="${SITE_NAME}" /><meta property="og:locale" content="zh_CN" /><meta property="og:image" content="${ORIGIN}/assets/og-image.svg" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="${escapeHtml(title)}" /><meta name="twitter:description" content="${escapeHtml(description)}" /><meta name="twitter:image" content="${ORIGIN}/assets/og-image.svg" /><link rel="canonical" href="${canonical}" /><link rel="alternate" hreflang="zh-CN" href="${canonical}" /><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" /><link rel="stylesheet" href="../assets/styles.min.css" /><script type="application/ld+json">${jsonLd}</script></head><body><a class="skip-link" href="#main">跳到主要内容</a><header class="topbar"><a class="wordmark" href="../"><span>AI 中转站</span><strong>推荐</strong></a><nav aria-label="主要导航"><a href="../#ranking">推荐榜</a><a href="../#topics">模型专题</a><a href="../#guide">怎么选</a><a href="./" aria-current="page">排名方法</a></nav></header><main id="main"><nav class="breadcrumbs" aria-label="面包屑"><a href="../">${SITE_NAME}</a><span>/</span><span aria-current="page">排名方法</span></nav><article class="methodology"><p class="eyebrow">METHODOLOGY · ${updatedDate.replaceAll("-", ".")}</p><h1>排名方法与数据说明</h1><p class="methodology__lead">榜单用于建立候选范围，不是质量担保。以下规则说明数据如何进入页面、名次为何会轻微变化，以及哪些指标不能代替亲自测试。</p><section><h2>数据范围与更新</h2><p>当前静态快照更新于 ${formatDate(updatedDate)}，收录 ${sites.length} 家站点。系统从公开数据快照读取名称、简介、成立日期、模型覆盖、在线率、延迟、评价、支付与服务政策，并在每次构建时完成格式和链接校验。</p><p>为控制页面质量和抓取规模，最多保留来源排序靠前的 500 条；同名或同链接项目只保留一条。GitHub Actions 每日同步两次，来源不可用时不会用空数据覆盖现有页面。</p></section><section><h2>为什么排名会轻微变化</h2><p>来源名次先决定入选范围，再按每 5 家一组进行确定性小范围轮换。轮换种子按 ISO 周生成，因此同一周重复构建完全一致，每家相对来源位置最多移动 4 位。这个设计用于避免把相邻名次误读为精确差距，不会把榜尾站点随机推到榜首。</p></section><section><h2>指标如何阅读</h2><div class="method-grid"><article><h3>在线率</h3><p>历史观测比例只能描述样本期，不能保证未来可用性。</p></article><article><h3>平均延迟</h3><p>受测试地区、网络、排队和上游模型影响，不等同于你的首字时间。</p></article><article><h3>用户评分</h3><p>必须和评价数量一起看；少量五星不应胜过真实任务验证。</p></article><article><h3>模型数量</h3><p>表示公开资料覆盖，不证明所有模型、参数和上下文始终可用。</p></article></div></section><section><h2>使用建议</h2><p>先筛选必需模型和协议，再以最低金额充值。用相同的长上下文、流式输出、工具调用和账单复算任务，在普通时段与晚高峰重复测试。涉及密钥、客户资料、未公开代码或强 SLA 的业务，优先选择官方 API 或可审计、可签约的服务。</p></section><aside class="warning-box"><strong>重要声明</strong><p>本站展示公开资料，不代表背书、承诺或实时可用性。价格、模型、退款与发票政策可能随时变化，请在付款前进入对应站点核对。</p></aside></article></main><footer class="footer"><a class="wordmark" href="../"><span>AI 中转站</span><strong>推荐</strong></a><p>公开数据用于初筛，关键任务请独立验证。</p><a href="#main">返回顶部 ↑</a></footer></body></html>`;
+  return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}" /><meta name="robots" content="index, follow" /><meta name="theme-color" content="#173d3c" /><link rel="canonical" href="${canonical}" /><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" /><link rel="stylesheet" href="../assets/styles.min.css" /><script type="application/ld+json">${jsonLd}</script></head><body><a class="skip-link" href="#main">跳到主要内容</a><header class="topbar"><a class="wordmark" href="../"><span>中转站</span><strong>数据榜</strong></a><nav aria-label="主要导航"><a href="../#ranking">数据榜</a><a href="../#topics">模型索引</a><a href="./" aria-current="page">评分方法</a></nav></header><main id="main"><nav class="breadcrumbs" aria-label="面包屑"><a href="../">${SITE_NAME}</a><span>/</span><span aria-current="page">评分方法</span></nav><article class="methodology"><p class="eyebrow">METHODOLOGY · ${updatedDate.replaceAll("-", ".")}</p><h1>数据评分方法</h1><p class="methodology__lead">本站把 ${sites.length} 家公开资料站点放入同一套确定性公式。分数用于整理证据，不是质量认证、购买建议或实时可用性保证。</p><section><h2>入选与分页</h2><p>先按来源顺序去重并保留最多 500 条，再计算分数。主榜和模型专题均使用静态分页，每页最多 40 条；同一份快照重复构建会得到相同排序。</p></section><section><h2>分项与权重</h2><div class="method-grid"><article><h3>运行表现 · 45%</h3><p>在线率 25%：80% 到 100% 线性映射；延迟 20%：1,000 到 15,000 毫秒按对数反向映射。区间外截断，无效值不计。</p></article><article><h3>评价与模型 · 25%</h3><p>评价 15%：使用 10 条、3.5/5 的贝叶斯先验；模型广度 10%：对 1–40 个模型做对数映射，避免数量无限放大。</p></article><article><h3>运营与服务 · 20%</h3><p>运营时间 5%、支付方式 5%、退款 5%、发票 5%。明确不支持按 0 分，未知字段不计；两年运营时间和三种支付方式分别封顶。</p></article><article><h3>来源连续性 · 10%</h3><p>入选后的来源位置线性递减，仅作为弱先验和稳定性参考，不再直接决定展示名次。</p></article></div></section><section><h2>缺失字段如何处理</h2><p>缺失值不会按 0 分惩罚，而是从可用权重分母中剔除：原始分 = 可用分项加权和 ÷ 可用权重。覆盖度等于可用权重占全部权重的比例，置信系数为 0.35 + 0.65 × 覆盖度；最终分 = 50 +（原始分 − 50）× 置信系数。资料越少，结果越接近中性 50 分。</p></section><section><h2>排序和平局</h2><p>排序使用未四舍五入的最终分，页面显示一位小数。分数相同时依次比较覆盖度、来源位置、标准化名称和 URL，再重新编号为连续名次。</p></section><section><h2>页面说明如何生成</h2><p>站点说明不直接输出 data.json 的宣传描述，而是从评分、覆盖度、日期、性能、评价、模型、支付和政策字段生成。多套句式由名称与 URL 的稳定哈希选择；“未记录”与“明确不支持”始终分开表达。</p></section><section><h2>指标局限</h2><p>在线率与延迟受采样时段、地区和上游影响；评价可能存在样本偏差；模型数量不证明型号、参数和上下文当前可用；退款、发票和支付政策可能变化。专题关键词匹配也只代表公开文字提及。</p></section><aside class="warning-box"><strong>使用边界</strong><p>请用自己的网络、模型和真实请求复测，保存响应模型、错误码、Token、扣费与政策页面。涉及敏感数据或强 SLA 时，应优先选择官方或可审计、可签约服务。</p></aside></article></main><footer class="footer"><a class="wordmark" href="../"><span>中转站</span><strong>数据榜</strong></a><p>公式公开，结果可复核；数据分不等于背书。</p><a href="#main">返回顶部 ↑</a></footer></body></html>`;
 }
 
 function minifyHtml(html) {
@@ -912,10 +935,10 @@ function minifyCss(css) {
   return `${minified}\n`;
 }
 
-function renderSitemap(totalPages, updatedDate) {
+function renderSitemap(totalPages, topicPages, updatedDate) {
   const urls = [
     ...Array.from({ length: totalPages }, (_, index) => `${ORIGIN}${pagePath(index + 1)}`),
-    ...TOPICS.map((topic) => `${ORIGIN}/${topic.slug}/`),
+    ...topicPages.flatMap(({ topic, totalPages: pages }) => Array.from({ length: pages }, (_, index) => `${ORIGIN}${topicPagePath(topic, index + 1)}`)),
     `${ORIGIN}/methodology/`,
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -930,14 +953,14 @@ ${urls.map((url, index) => `  <url>
 `;
 }
 
-async function cleanOldPages(totalPages) {
+async function cleanNumericPageDirectories(pageRoot, totalPages) {
   let entries = [];
-  try { entries = await readdir(PAGE_ROOT, { withFileTypes: true }); } catch (error) {
+  try { entries = await readdir(pageRoot, { withFileTypes: true }); } catch (error) {
     if (error?.code !== "ENOENT") throw error;
   }
   await Promise.all(entries
     .filter((entry) => entry.isDirectory() && /^\d+$/.test(entry.name) && Number(entry.name) > totalPages)
-    .map((entry) => rm(path.join(PAGE_ROOT, entry.name), { recursive: true, force: true })));
+    .map((entry) => rm(path.join(pageRoot, entry.name), { recursive: true, force: true })));
 }
 
 async function build() {
@@ -949,26 +972,40 @@ async function build() {
     .filter((site, index, items) => items.findIndex((candidate) =>
       candidate.name.toLowerCase() === site.name.toLowerCase() || candidate.url === site.url) === index)
     .slice(0, MAX_SITES);
-  const sites = lightlyShuffle(normalized, updatedDate);
+  const sites = rankSites(normalized, updatedDate).map((site) => ({
+    ...site,
+    searchableText: [site.name, site.description, ...site.models].join(" ").toLowerCase(),
+  }));
   const totalPages = Math.ceil(sites.length / PAGE_SIZE);
   const topicPages = TOPICS.map((topic) => {
     const matches = sites.filter((site) => topicMatches(site, topic));
-    return { topic, matches, html: renderTopicPage({ topic, sites: matches.slice(0, PAGE_SIZE), allMatches: matches, allSites: sites, updatedDate }) };
+    return { topic, matches, stats: topicStats(matches), totalPages: Math.ceil(matches.length / PAGE_SIZE) };
   });
-  await cleanOldPages(totalPages);
-  await atomicWrite(MINIFIED_STYLES_PATH, minifyCss(await readFile(STYLES_PATH, "utf8")));
+  await Promise.all([
+    cleanNumericPageDirectories(PAGE_ROOT, totalPages),
+    ...topicPages.map(({ topic, totalPages: pages }) => cleanNumericPageDirectories(path.join(ROOT, topic.slug, "page"), pages)),
+    atomicWrite(MINIFIED_STYLES_PATH, minifyCss(await readFile(STYLES_PATH, "utf8"))),
+  ]);
 
   for (let page = 1; page <= totalPages; page += 1) {
     const pageSites = sites.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     const target = page === 1 ? path.join(ROOT, "index.html") : path.join(PAGE_ROOT, String(page), "index.html");
-    await atomicWrite(target, minifyHtml(renderPage({ page, totalPages, sites: pageSites, allSites: sites, updatedDate })));
+    await atomicWrite(target, minifyHtml(renderPage({ page, totalPages, sites: pageSites, allSites: sites, topicPages, updatedDate })));
   }
-  for (const { topic, html } of topicPages) {
-    await atomicWrite(path.join(ROOT, topic.slug, "index.html"), minifyHtml(html));
+  for (const { topic, matches, stats, totalPages: pages } of topicPages) {
+    for (let page = 1; page <= pages; page += 1) {
+      const pageSites = matches.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+      const target = page === 1
+        ? path.join(ROOT, topic.slug, "index.html")
+        : path.join(ROOT, topic.slug, "page", String(page), "index.html");
+      await atomicWrite(target, minifyHtml(renderTopicPage({ topic, page, totalPages: pages, sites: pageSites, allMatches: matches, topicPages, updatedDate, stats })));
+    }
   }
   await atomicWrite(path.join(ROOT, "methodology", "index.html"), minifyHtml(renderMethodology({ sites, updatedDate })));
-  await atomicWrite(path.join(ROOT, "sitemap.xml"), renderSitemap(totalPages, updatedDate));
-  process.stdout.write(`已生成 ${totalPages} 个分页、${topicPages.length} 个模型专题，共 ${sites.length} 个站点；数据日期 ${updatedDate}\n`);
+  await atomicWrite(path.join(ROOT, "sitemap.xml"), renderSitemap(totalPages, topicPages, updatedDate));
+  process.stdout.write(`已生成 ${totalPages} 个榜单分页、${topicPages.reduce((sum, item) => sum + item.totalPages, 0)} 个专题分页，共 ${sites.length} 个站点；数据日期 ${updatedDate}\n`);
 }
 
-await build();
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  await build();
+}
