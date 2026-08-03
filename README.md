@@ -32,7 +32,7 @@ npm test        # 检查数据评分、表格语义、分页、SEO 与静态产�
 
 ## 页面与样式
 
-榜单使用原生 HTML `table`、caption、列头和行头。移动端保留表格语义，并在独立区域内横向滚动查看全部指标。请修改 `scripts/build.mjs` 和 `assets/styles.css`，然后运行 `npm run build`；不要直接维护生成的 HTML 或 `assets/styles.min.css`。
+榜单使用原生 HTML `table`、caption、列头和行头，每个站点严格占据一个 `<tbody>` 数据行。移动端保留九列表格语义，并在独立区域内横向滚动查看全部指标。请修改 `scripts/build.mjs` 和 `assets/styles.css`，然后运行 `npm run build`；不要直接维护生成的 HTML 或 `assets/styles.min.css`。
 
 ## GitHub Pages
 

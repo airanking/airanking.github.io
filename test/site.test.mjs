@@ -66,7 +66,10 @@ test("main ranking uses semantic tables and at most 40 sites per page", async ()
     assert.match(html, /<colgroup>/);
     assert.match(html, /<thead><tr><th scope="col">/);
     assert.equal((html.match(/<th class="site-cell" scope="row"/g) || []).length, rows.length);
-    assert.equal((html.match(/<tr class="ranking-detail-row"/g) || []).length, rows.length);
+    assert.equal((html.match(/<tbody><tr class="ranking-row"/g) || []).length, 1);
+    assert.equal((html.match(/<tr class="ranking-row"/g) || []).length, rows.length);
+    assert.doesNotMatch(html, /ranking-detail-row|ranking-note|page-analysis|PAGE DATA|table-scroll-hint|当前显示第/);
+    assert.match(html, /<\/div><div class="ranking-table-wrap"/);
     assert.doesNotMatch(html, /station-card|station-list/);
     rendered.push(...rows);
   }
@@ -126,6 +129,8 @@ test("topic results are completely paginated at 40 items", async () => {
       const html = await readFile(file, "utf8");
       const rows = rankingRows(html);
       assert.ok(rows.length > 0 && rows.length <= 40);
+      assert.equal((html.match(/<tr class="ranking-row"/g) || []).length, rows.length);
+      assert.doesNotMatch(html, /ranking-detail-row|ranking-note|page-analysis|PAGE DATA|table-scroll-hint|>当前 \d+–\d+，共/);
       names.push(...rows.map(({ name }) => name));
       assert.ok(html.includes(`<link rel="canonical" href="${origin}/${slug}/${page === 1 ? "" : `page/${page}/`}"`));
       assert.doesNotThrow(() => jsonLd(html));
@@ -147,9 +152,10 @@ test("methodology, sitemap, resources and CSS match the generated site", async (
   assert.ok(locations.some((url) => /-zhongzhuanzhan\/page\/2\/$/.test(url)));
   const css = await readFile(path.join(root, "assets", "styles.css"), "utf8");
   assert.match(css, /\.ranking-table-wrap[\s\S]*overflow-x: auto/);
+  assert.match(css, /\.ranking-table \{[^}]*min-width: 900px[^}]*table-layout: fixed/);
   assert.match(css, /font-variant-numeric: tabular-nums/);
   assert.match(css, /@media \(max-width: 680px\)/);
-  assert.doesNotMatch(css, /\.station-card|\.station-list|\.rank-badge/);
+  assert.doesNotMatch(css, /\.station-card|\.station-list|\.rank-badge|\.ranking-detail-row|\.ranking-note|\.page-analysis|\.analysis-grid|\.table-scroll-hint/);
   for (const asset of ["favicon.svg", "og-image.svg", "styles.css", "styles.min.css"]) await access(path.join(root, "assets", asset));
   const pageDirs = (await readdir(path.join(root, "page"), { withFileTypes: true })).filter((entry) => entry.isDirectory() && /^\d+$/.test(entry.name));
   assert.equal(pageDirs.length, totalPages - 1);

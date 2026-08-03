@@ -433,11 +433,6 @@ function formatStat(value, formatter) {
   return value === null ? "暂无可计算值" : formatter(value);
 }
 
-function renderPageAnalysis(stats, first, last) {
-  const summary = `排名 ${first}–${last} 的 ${stats.total} 家站点中，${stats.descriptions} 家收录了简介，${stats.established} 家收录了成立日期，${stats.modelDetails} 家提供模型厂商明细，${stats.paymentDetails} 家提供支付方式信息。退款政策已知 ${stats.refund.known} 家，其中 ${stats.refund.yes} 家明确支持；发票政策已知 ${stats.invoice.known} 家，其中 ${stats.invoice.yes} 家明确支持。`;
-  return `<section class="page-analysis" aria-labelledby="page-analysis-title"><div class="page-analysis__head"><div><p>PAGE DATA / ${first}–${last}</p><h3 id="page-analysis-title">本页数据概览</h3></div><p>${escapeHtml(summary)}</p></div><dl class="analysis-grid"><div><dt>在线率中位数</dt><dd>${formatStat(stats.uptime.value, formatUptime)}</dd><small>样本 ${stats.uptime.sample}/${stats.total}</small></div><div><dt>延迟中位数</dt><dd>${formatStat(stats.latency.value, formatLatency)}</dd><small>样本 ${stats.latency.sample}/${stats.total}</small></div><div><dt>模型数量中位数</dt><dd>${formatStat(stats.modelCount.value, (value) => `${number.format(value)} 个`)}</dd><small>样本 ${stats.modelCount.sample}/${stats.total}</small></div><div><dt>用户评分中位数</dt><dd>${formatStat(stats.rating.value, (value) => `${number.format(value)} / 5`)}</dd><small>样本 ${stats.rating.sample}/${stats.total}</small></div></dl></section>`;
-}
-
 function policyFact(label, value) {
   if (value === true) return `数据明确标记支持${label}`;
   if (value === false) return `数据明确标记不支持${label}`;
@@ -501,11 +496,10 @@ function dataState(value) {
   return value === null ? "data-unknown" : value ? "data-known" : "data-negative";
 }
 
-function renderSiteRows(site) {
+function renderSiteRow(site) {
   const url = escapeHtml(site.url);
   const rowId = `station-${site.rank}`;
-  const detailId = `station-detail-${site.rank}`;
-  return `              <tr class="ranking-row" id="rank-${site.rank}" aria-describedby="${detailId}" data-rank="${site.rank}" data-score="${site.score.toFixed(6)}">
+  return `              <tr class="ranking-row" id="rank-${site.rank}" data-rank="${site.rank}" data-score="${site.score.toFixed(6)}">
                 <td class="rank-cell numeric"><strong>${site.rank}</strong></td>
                 <th class="site-cell" scope="row" id="${rowId}"><a href="${url}" target="_blank" rel="nofollow noopener" referrerpolicy="origin">${escapeHtml(site.name)}</a><p>${escapeHtml(site.copy.description)}</p></th>
                 <td class="score-cell numeric"><strong>${number.format(site.score)}</strong><small>覆盖 ${Math.round(site.scoreCoverage * 100)}%</small></td>
@@ -515,12 +509,11 @@ function renderSiteRows(site) {
                 <td class="numeric">${escapeHtml(formatRating(site))}</td>
                 <td class="policy-cell"><span class="${dataState(site.supportsRefund)}">退：${status(site.supportsRefund)}</span><span class="${dataState(site.supportsInvoice)}">票：${status(site.supportsInvoice)}</span></td>
                 <td><a class="table-link" href="${url}" target="_blank" rel="nofollow noopener" referrerpolicy="origin" aria-label="访问 ${escapeHtml(site.name)}">访问 ↗</a></td>
-              </tr>
-              <tr class="ranking-detail-row" id="${detailId}"><td></td><td colspan="8"><p>${escapeHtml(site.copy.detail)}</p></td></tr>`;
+              </tr>`;
 }
 
 function renderRankingTable(sites, caption) {
-  return `<p class="table-scroll-hint">表格可左右滑动查看全部指标</p><div class="ranking-table-wrap" role="region" aria-label="中转站数据排名表" tabindex="0"><table class="ranking-table"><caption>${escapeHtml(caption)}</caption><colgroup><col class="col-rank" /><col class="col-site" /><col class="col-score" /><col class="col-metric" span="4" /><col class="col-policy" /><col class="col-action" /></colgroup><thead><tr><th scope="col">排名</th><th scope="col">站点与数据说明</th><th scope="col">数据评分</th><th scope="col">在线率</th><th scope="col">延迟</th><th scope="col">模型</th><th scope="col">评价</th><th scope="col">服务信息</th><th scope="col">访问</th></tr></thead><tbody>\n${sites.map(renderSiteRows).join("\n")}\n            </tbody></table></div>`;
+  return `<div class="ranking-table-wrap" role="region" aria-label="中转站数据排名表，可横向滚动查看全部指标" tabindex="0"><table class="ranking-table"><caption>${escapeHtml(caption)}</caption><colgroup><col class="col-rank" /><col class="col-site" /><col class="col-score" /><col class="col-uptime" /><col class="col-latency" /><col class="col-models" /><col class="col-rating" /><col class="col-policy" /><col class="col-action" /></colgroup><thead><tr><th scope="col">排名</th><th scope="col">站点与数据说明</th><th scope="col">数据评分</th><th scope="col">在线率</th><th scope="col">延迟</th><th scope="col">模型</th><th scope="col">评价</th><th scope="col">服务信息</th><th scope="col">访问</th></tr></thead><tbody>\n${sites.map(renderSiteRow).join("\n")}\n            </tbody></table></div>`;
 }
 
 function pagePath(page) {
@@ -699,7 +692,7 @@ function renderTopicPage({ topic, page, totalPages, sites, allMatches, topicPage
 
       <section class="topic-guide" id="topic-guide" aria-labelledby="topic-guide-title"><div><p class="section-kicker">复核路径</p><h2 id="topic-guide-title">怎样验证 ${escapeHtml(topic.label)} 数据</h2><p>先记录榜单中的字段覆盖度，再进入站点核对模型标识、协议和价格。使用固定请求保存时间、响应模型、错误码、Token 与扣费，才能把来源文字变成可复核证据。</p></div><div class="topic-focus-grid">${topic.focus.map((item, index) => `<article><span>0${index + 1}</span><h3>${escapeHtml(item)}</h3><p>将页面记录视为待验证线索；用同一输入复测并保留请求级结果。</p></article>`).join("")}</div></section>` : `<section class="page-continue"><p>${escapeHtml(topic.label)} · 第 ${page} 页</p><h2>继续查看按统一方法计算的数据结果</h2><a href="${root}/${topic.slug}/#topic-guide">返回专题方法说明 →</a></section>`}
 
-      <section class="ranking topic-ranking" id="topic-ranking" aria-labelledby="topic-ranking-title"><div class="ranking-head"><div><p>MODEL DATA / ${escapeHtml(topic.short)}</p><h2 id="topic-ranking-title">${escapeHtml(topic.label)}数据表</h2></div><p>当前 ${first}–${last}，共 ${allMatches.length} 家</p></div><p class="ranking-note">候选站沿用全站综合分与全局名次；关键词匹配不证明模型可用，请把表中字段作为核验清单。</p>${renderRankingTable(sites, `${topic.label}公开资料候选 ${first}–${last}，按全站综合分排序`)}${renderPagination(page, totalPages, topicPath, `${topic.label}分页`)}</section>
+      <section class="ranking topic-ranking" id="topic-ranking" aria-labelledby="topic-ranking-title"><div class="ranking-head"><div><p>MODEL DATA / ${escapeHtml(topic.short)}</p><h2 id="topic-ranking-title">${escapeHtml(topic.label)}数据表</h2></div></div>${renderRankingTable(sites, `${topic.label}公开资料候选 ${first}–${last}，按全站综合分排序`)}${renderPagination(page, totalPages, topicPath, `${topic.label}分页`)}</section>
 
       ${firstPageOnly ? `<section class="faq-section topic-faq" id="faq" aria-labelledby="topic-faq-title"><div class="section-kicker">数据问答</div><h2 id="topic-faq-title">如何解读 ${escapeHtml(topic.label)} 索引</h2><div class="faq-list">${faq.map(([question, answer]) => `<details class="faq-item"><summary>${escapeHtml(question)}</summary><div class="faq-answer"><p>${escapeHtml(answer)}</p></div></details>`).join("")}</div></section>` : ""}
     </main>
@@ -815,7 +808,6 @@ function renderPage({ page, totalPages, sites, allSites, topicPages, updatedDate
   const description = page === 1
     ? `AI 中转站数据榜以统一公式重排 ${allSites.length} 家公开资料站点，展示综合分、评分覆盖度、在线率、延迟、模型数量与服务政策，并公开缺失值处理方法。`
     : `AI 中转站数据榜第 ${page} 页，查看排名 ${first} 至 ${last} 的综合分、字段覆盖度及结构化公开指标。`;
-  const stats = pageStats(sites);
   const relations = pageRelations(page, totalPages);
   const jsonLd = renderStructuredData({ page, canonical, title, description, sites, totalSites: allSites.length, updatedDate });
   const hero = page === 1
@@ -875,10 +867,7 @@ function renderPage({ page, totalPages, sites, allSites, topicPages, updatedDate
       <section class="ranking" id="ranking" aria-labelledby="ranking-title">
         <div class="ranking-head">
           <div><p>DATA TABLE / ${String(page).padStart(2, "0")}</p><h2 id="ranking-title">公开指标排名表</h2></div>
-          <p>当前显示第 ${first}–${last} 名，共 ${allSites.length} 家</p>
         </div>
-        <p class="ranking-note">数据分不是背书：它只合并当前快照中可用的公开字段，并用覆盖度抑制少量有利样本造成的极端结果。表中说明均由结构化字段生成。</p>
-        ${renderPageAnalysis(stats, first, last)}
         ${renderRankingTable(sites, `AI 中转站公开数据排名 ${first}–${last}，共 ${allSites.length} 家`)}
         ${renderPagination(page, totalPages)}
       </section>
