@@ -105,7 +105,8 @@ test("ranking pages have unique static SEO and correct relations", async () => {
     assert.ok(html.startsWith("<!doctype html>"));
     assert.ok(html.includes(`<link rel="canonical" href="${canonical}"`));
     assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1);
-    assert.doesNotMatch(html, /<script(?! type="application\/ld\+json")/);
+    assert.equal((html.match(/<script>/g) || []).length, 1);
+    assert.match(html, /hm\.baidu\.com\/hm\.js\?3d6633a4dcec220780c0e0a0c60c994d/);
     assert.doesNotMatch(html, /\/page\/1\//);
     titles.add(html.match(/<title>([^<]+)<\/title>/)?.[1]);
     descriptions.add(html.match(/<meta name="description" content="([^"]+)"/)?.[1]);
@@ -143,6 +144,7 @@ test("topic results are completely paginated at 40 items", async () => {
 test("methodology, sitemap, resources and CSS match the generated site", async () => {
   const methodology = await readFile(path.join(root, "methodology", "index.html"), "utf8");
   assert.ok(methodology.includes("贝叶斯先验"));
+  assert.equal((methodology.match(/hm\.baidu\.com\/hm\.js\?3d6633a4dcec220780c0e0a0c60c994d/g) || []).length, 1);
   assert.ok(methodology.includes("每页最多 40 条"));
   assert.ok(methodology.includes("最终分 = 50"));
   const sitemap = await readFile(path.join(root, "sitemap.xml"), "utf8");
