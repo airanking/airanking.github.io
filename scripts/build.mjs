@@ -10,7 +10,7 @@ const STYLES_PATH = path.join(ROOT, "assets", "styles.css");
 const MINIFIED_STYLES_PATH = path.join(ROOT, "assets", "styles.min.css");
 const SOURCE_URL = process.env.DATA_SOURCE_URL
   || "https://raw.githubusercontent.com/hvoyai/awesome-ai-api/main/data.json";
-const ORIGIN = "https://airanking.github.io";
+const ORIGIN = "https://www.hvoyai.com";
 const SITE_NAME = "AI 中转站推荐";
 const BAIDU_TONGJI_SCRIPT = [
   "<script>",
@@ -230,7 +230,7 @@ function normalizeDate(value) {
   return Number.isNaN(date.valueOf()) || date.toISOString().slice(0, 10) !== text ? "" : text;
 }
 
-function normalizeSite(site, index) {
+export function normalizeSite(site, index) {
   const models = Array.isArray(site.models) ? site.models.map(String).map((item) => item.trim()).filter(Boolean) : [];
   const payments = Array.isArray(site.paymentMethods)
     ? site.paymentMethods.map(String).map((item) => item.trim()).filter(Boolean)

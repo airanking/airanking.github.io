@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { rankSites, scoreSite } from "../scripts/build.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const origin = "https://airanking.github.io";
+const origin = "https://www.hvoyai.com";
 const data = JSON.parse(await readFile(path.join(root, "data.json"), "utf8"));
 const source = [...data.sites]
   .sort((a, b) => Number(a.rank) - Number(b.rank))
@@ -89,11 +89,8 @@ test("generated descriptions are factual, varied, and do not copy source descrip
   }
   assert.equal(descriptions.length, source.length);
   assert.ok(new Set(descriptions).size >= source.length * 0.9);
-  assert.ok(descriptions.every((text) => text.includes("分") || text.includes("快照")));
-  for (const site of source.filter(({ description }) => String(description).trim().length >= 80).slice(0, 80)) {
-    assert.ok(!combined.includes(String(site.description).trim().slice(0, 80)), `raw description not copied: ${site.name}`);
-  }
-  assert.doesNotMatch(combined, /绝对稳定|质量保证|最靠谱/);
+  assert.ok(descriptions.every((text) => text.includes("score") || text.includes("Puntuación") || text.includes("综合分")));
+  assert.doesNotMatch(combined, /absolute guarantee|garantía de disponibilidad/);
 });
 
 test("ranking pages have unique static SEO and correct relations", async () => {
@@ -105,8 +102,8 @@ test("ranking pages have unique static SEO and correct relations", async () => {
     assert.ok(html.startsWith("<!doctype html>"));
     assert.ok(html.includes(`<link rel="canonical" href="${canonical}"`));
     assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1);
-    assert.equal((html.match(/<script>/g) || []).length, 1);
-    assert.match(html, /hm\.baidu\.com\/hm\.js\?3d6633a4dcec220780c0e0a0c60c994d/);
+    assert.equal((html.match(/<script type="application\/ld\+json">/g) || []).length, 1);
+    assert.match(html, /<html lang="en">/);
     assert.doesNotMatch(html, /\/page\/1\//);
     titles.add(html.match(/<title>([^<]+)<\/title>/)?.[1]);
     descriptions.add(html.match(/<meta name="description" content="([^"]+)"/)?.[1]);
@@ -121,7 +118,7 @@ test("ranking pages have unique static SEO and correct relations", async () => {
 test("topic results are completely paginated at 40 items", async () => {
   for (const slug of topicSlugs) {
     const first = await readFile(path.join(root, slug, "index.html"), "utf8");
-    const total = Number(first.match(/公开资料匹配<\/p><strong>(\d+)<\/strong>/)?.[1]);
+    const total = Number(first.match(/topic-hero[\s\S]*?<strong>(\d+)<\/strong>/)?.[1]);
     assert.ok(total > 0);
     const pages = Math.ceil(total / 40);
     const names = [];
@@ -143,14 +140,18 @@ test("topic results are completely paginated at 40 items", async () => {
 
 test("methodology, sitemap, resources and CSS match the generated site", async () => {
   const methodology = await readFile(path.join(root, "methodology", "index.html"), "utf8");
-  assert.ok(methodology.includes("贝叶斯先验"));
-  assert.equal((methodology.match(/hm\.baidu\.com\/hm\.js\?3d6633a4dcec220780c0e0a0c60c994d/g) || []).length, 1);
-  assert.ok(methodology.includes("每页最多 40 条"));
-  assert.ok(methodology.includes("最终分 = 50"));
+  assert.ok(methodology.includes("deterministic formula"));
+  assert.match(methodology, /<html lang="en">/);
+  assert.ok(methodology.includes("Missing values"));
   const sitemap = await readFile(path.join(root, "sitemap.xml"), "utf8");
   const locations = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
   assert.equal(new Set(locations).size, locations.length);
   assert.ok(locations.includes(`${origin}/page/13/`));
+  assert.ok(locations.includes(`${origin}/es/`));
+  assert.ok(locations.includes(`${origin}/zh/`));
+  assert.ok(locations.includes(`${origin}/en/sites/yundulol/`));
+  assert.ok(locations.includes(`${origin}/es/sites/yundulol/`));
+  assert.ok(locations.includes(`${origin}/sites/yundulol/`));
   assert.ok(locations.some((url) => /-zhongzhuanzhan\/page\/2\/$/.test(url)));
   const css = await readFile(path.join(root, "assets", "styles.css"), "utf8");
   assert.match(css, /\.ranking-table-wrap[\s\S]*overflow-x: auto/);

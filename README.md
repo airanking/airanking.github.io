@@ -9,6 +9,8 @@
 ```bash
 npm run build   # 使用仓库中的数据快照重新生成
 npm run sync    # 获取最新公开数据并重新生成
+npm run translate # 使用 AI_API_* 环境变量更新英文/西语翻译缓存
+npm run build:localized # 仅根据数据和翻译缓存生成多语言页面
 npm test        # 检查数据评分、表格语义、分页、SEO 与静态产物
 ```
 
@@ -21,6 +23,9 @@ npm test        # 检查数据评分、表格语义、分页、SEO 与静态产�
 - `methodology/index.html`：评分权重、归一化、缺失值、覆盖度和平局规则
 - `sitemap.xml`、`robots.txt`、`404.html`：搜索引擎与错误页支持
 - `data.json`：构建使用的最多 500 条公开数据快照
+- `translations/en.json`、`translations/es.json`：按站点 URL slug 和源文本哈希保存的翻译缓存；不使用排名作为键
+- `/`、`/page/*`：默认英文页面；`/es/*` 为西班牙语；`/zh/*` 为中文
+- `/en/sites/*`、`/es/sites/*`、`/sites/*`：英文、西班牙语、中文站点详情页
 
 ## 排名方法
 
@@ -41,4 +46,18 @@ npm test        # 检查数据评分、表格语义、分页、SEO 与静态产�
 3. 在 **Build and deployment** 中选择 **Deploy from a branch**。
 4. 选择 `main` 分支和 `/ (root)` 目录。
 
-`.github/workflows/update-site.yml` 每天 UTC 02:17 和 14:17 同步两次，验证成功后仅在内容变化时提交生成产物。也可以在 Actions 页面手动运行。
+`.github/workflows/update-site.yml` 每天 UTC 03:23 同步一次，验证成功后仅在内容变化时提交生成产物。也可以在 Actions 页面手动运行。
+
+## 多语言翻译
+
+GitHub Actions 不把 API Key 写入仓库。工作流从 GitHub Actions Secrets 读取 `AI_API_KEY`、`AI_BASE_URL` 和 `AI_MODEL`，调用 OpenAI-compatible 的 `/chat/completions` 接口，批量翻译 `data.json` 中新增或发生变化的站点描述，然后提交翻译缓存和三种语言的静态页面。
+
+翻译脚本是缓存优先的：接口超时、返回错误或结果缺少站点时，会保留上一版英文/西班牙语翻译；没有历史翻译的记录使用结构化回退文本，构建不会因为翻译服务暂时不可用而失败。API Key 只存在于 Actions 运行环境，不能放进 HTML、`data.json` 或提交记录。
+
+在仓库中配置：`Settings → Secrets and variables → Actions → New repository secret`。
+
+```text
+AI_API_KEY   你的 AI 服务密钥
+AI_BASE_URL  例如 https://api.example.com/v1
+AI_MODEL     你的模型名称
+```
