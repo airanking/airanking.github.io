@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { rankSites, scoreSite } from "../scripts/build.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const origin = "https://www.hvoyai.com";
+const origin = "https://airanking.github.io";
 const data = JSON.parse(await readFile(path.join(root, "data.json"), "utf8"));
 const source = [...data.sites]
   .sort((a, b) => Number(a.rank) - Number(b.rank))
@@ -148,7 +148,8 @@ test("methodology, sitemap, resources and CSS match the generated site", async (
   assert.equal(new Set(locations).size, locations.length);
   assert.ok(locations.includes(`${origin}/page/13/`));
   assert.ok(locations.includes(`${origin}/es/`));
-  assert.ok(locations.includes(`${origin}/zh/`));
+  assert.ok(locations.includes(`${origin}/cn/`));
+  assert.ok(locations.includes(`${origin}/en/`));
   assert.ok(locations.includes(`${origin}/en/sites/yundulol/`));
   assert.ok(locations.includes(`${origin}/es/sites/yundulol/`));
   assert.ok(locations.includes(`${origin}/sites/yundulol/`));
@@ -162,6 +163,19 @@ test("methodology, sitemap, resources and CSS match the generated site", async (
   for (const asset of ["favicon.svg", "og-image.svg", "styles.css", "styles.min.css"]) await access(path.join(root, "assets", asset));
   const pageDirs = (await readdir(path.join(root, "page"), { withFileTypes: true })).filter((entry) => entry.isDirectory() && /^\d+$/.test(entry.name));
   assert.equal(pageDirs.length, totalPages - 1);
+});
+
+test("localized entry routes use the GitHub Pages origin", async () => {
+  for (const [locale, expectedPath] of [["en", "/en/"], ["es", "/es/"], ["cn", "/cn/"]]) {
+    const html = await readFile(path.join(root, locale, "index.html"), "utf8");
+    assert.ok(html.includes(`<link rel="canonical" href="${origin}${expectedPath}"`));
+    assert.match(html, new RegExp(`class="language-link[^>]+href="${origin}/en/`));
+    assert.match(html, new RegExp(`class="language-link[^>]+href="${origin}/es/`));
+    assert.match(html, new RegExp(`class="language-link[^>]+href="${origin}/cn/`));
+    assert.doesNotMatch(html, /class="language-link[^>]+www\.hvoyai\.com/);
+  }
+  const rootHome = await readFile(path.join(root, "index.html"), "utf8");
+  assert.ok(rootHome.includes(`<link rel="canonical" href="${origin}/"`));
 });
 
 test("external station links use safe attributes", async () => {

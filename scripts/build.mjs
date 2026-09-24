@@ -10,7 +10,7 @@ const STYLES_PATH = path.join(ROOT, "assets", "styles.css");
 const MINIFIED_STYLES_PATH = path.join(ROOT, "assets", "styles.min.css");
 const SOURCE_URL = process.env.DATA_SOURCE_URL
   || "https://raw.githubusercontent.com/hvoyai/awesome-ai-api/main/data.json";
-const ORIGIN = "https://www.hvoyai.com";
+const ORIGIN = "https://airanking.github.io";
 const SITE_NAME = "AI 中转站推荐";
 const BAIDU_TONGJI_SCRIPT = [
   "<script>",

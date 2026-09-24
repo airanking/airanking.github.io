@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { normalizeSite, rankSites } from "./build.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const ORIGIN = "https://www.hvoyai.com";
+const ORIGIN = "https://airanking.github.io";
 const PAGE_SIZE = 40;
 const MAX_SITES = 500;
 const number = {
@@ -68,10 +68,9 @@ const TEXT = {
 function esc(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
 function slug(site) { try { return new URL(site.url).pathname.replace(/^\/|\/$/g, "").split("/").pop() || "site"; } catch { return "site"; } }
 function sitePath(locale, id) { return locale === "zh" ? `/sites/${id}/` : `/${locale}/sites/${id}/`; }
-function basePath(locale) { return locale === "en" ? "" : `/${locale}`; }
+function basePath(locale) { return locale === "en" ? "/en" : locale === "zh" ? "/cn" : "/es"; }
 function pagePath(locale, page) { const base = basePath(locale); return page === 1 ? `${base}/` : `${base}/page/${page}/`; }
 function topicPath(locale, topic, page = 1) { const base = basePath(locale); return page === 1 ? `${base}/${topic.slug}/` : `${base}/${topic.slug}/page/${page}/`; }
-function sourcePath(page) { return page === 1 ? "/" : `/page/${page}/`; }
 function formatDate(date, locale) { if (!date) return TEXT[locale].pending; const [y, m, d] = date.split("-"); return locale === "en" ? `${y}-${m}-${d}` : locale === "es" ? `${d}/${m}/${y}` : `${y} 年 ${Number(m)} 月 ${Number(d)} 日`; }
 function formatUptime(value, locale) { return value === null ? TEXT[locale].pending : `${number[locale].format(value)}%`; }
 function formatLatency(value, locale) { if (value === null) return TEXT[locale].pending; if (locale === "en") return value >= 1000 ? `${number.en.format(value / 1000)} s` : `${Math.round(value)} ms`; if (locale === "es") return value >= 1000 ? `${number.es.format(value / 1000)} s` : `${Math.round(value)} ms`; return value >= 1000 ? `${number.zh.format(value / 1000)} 秒` : `${Math.round(value)} 毫秒`; }
@@ -83,7 +82,7 @@ function searchable(site) { return [site.name, site.description, ...site.models]
 function htmlHead({ locale, title, description, canonical, alternates, root = "", previous = "", next = "" }) {
   const t = TEXT[locale];
   const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@type": "WebPage", name: title, description, url: canonical, inLanguage: t.lang, isPartOf: { "@type": "WebSite", name: t.siteName, url: `${ORIGIN}${basePath(locale)}/` } }).replaceAll("<", "\\u003c");
-  return `<!doctype html><html lang="${t.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="robots" content="index, follow, max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:site_name" content="${esc(t.siteName)}"><meta property="og:locale" content="${t.locale}"><link rel="canonical" href="${canonical}">${alternates.map((item) => `<link rel="alternate" hreflang="${item.lang}" href="${item.url}">`).join("")}<link rel="alternate" hreflang="x-default" href="${ORIGIN}/">${previous ? `<link rel="prev" href="${previous}">` : ""}${next ? `<link rel="next" href="${next}">` : ""}<link rel="icon" href="${root}/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="${root}/assets/styles.min.css"><script type="application/ld+json">${jsonLd}</script></head>`;
+  return `<!doctype html><html lang="${t.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="robots" content="index, follow, max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:site_name" content="${esc(t.siteName)}"><meta property="og:locale" content="${t.locale}"><link rel="canonical" href="${canonical}">${alternates.map((item) => `<link rel="alternate" hreflang="${item.lang}" href="${item.url}">`).join("")}<link rel="alternate" hreflang="x-default" href="${ORIGIN}/">${previous ? `<link rel="prev" href="${previous}">` : ""}${next ? `<link rel="next" href="${next}">` : ""}<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/styles.min.css"><script type="application/ld+json">${jsonLd}</script></head>`;
 }
 function shell({ locale, body, title, description, canonical, alternates, root, previous = "", next = "" }) {
   const t = TEXT[locale];
@@ -112,7 +111,7 @@ function renderHome({ locale, page, totalPages, sites, allSites, topics, updated
   const canonical = `${ORIGIN}${pagePath(locale, page)}`;
   const title = page === 1 ? t.homeTitle : `${t.homeTitle} - ${t.page} ${page}`;
   const description = page === 1 ? `${t.homeLead} ${allSites.length} ${t.stations}.` : `${t.homeTitle}, ${t.page} ${page}, ${t.range} ${first}-${last}.`;
-  const alternates = [{ lang: "en", url: `${ORIGIN}${sourcePath(page)}` }, { lang: "es", url: `${ORIGIN}${pagePath("es", page)}` }, { lang: "zh-CN", url: `${ORIGIN}${pagePath("zh", page)}` }];
+  const alternates = [{ lang: "en", url: `${ORIGIN}${pagePath("en", page)}` }, { lang: "es", url: `${ORIGIN}${pagePath("es", page)}` }, { lang: "zh-CN", url: `${ORIGIN}${pagePath("zh", page)}` }];
   const root = page === 1 ? "." : "../..";
   const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a>${page > 1 ? `<span>/</span><span>${t.page} ${page}</span>` : ""}</nav><section class="hero"><div class="hero__copy"><p class="eyebrow">OPEN DATA RANKING · ${updatedDate.replaceAll("-", ".")}</p><h1>${esc(t.homeH1)}<br><em>${esc(t.homeH1Em)}</em></h1><p class="hero-copy">${esc(t.homeLead)}</p><div class="hero-actions"><a href="#ranking">${t.viewTable}</a><a href="${basePath(locale)}/methodology/">${t.viewMethod}</a></div></div><aside class="hero__panel"><p>${t.collected}</p><strong>${allSites.length}</strong><span>${t.stations}</span><dl><div><dt>${t.page}</dt><dd>${page} / ${totalPages}</dd></div><div><dt>${t.range}</dt><dd>${first}-${last}</dd></div><div><dt>${t.updated}</dt><dd>${updatedDate}</dd></div></dl></aside></section><section class="ranking" id="ranking"><div class="ranking-head"><div><p>DATA TABLE / ${String(page).padStart(2, "0")}</p><h2>${t.rankingTitle}</h2></div></div>${renderTable(locale, sites, t.tableCaption.replace("{first}", first).replace("{last}", last).replace("{total}", allSites.length), root)}${pagination(locale, page, totalPages, (value) => pagePath(locale, value))}</section>${page === 1 ? topicCards(locale, topics) : ""}</main>`;
   return shell({ locale, body, title, description, canonical, alternates, root, previous: page > 1 ? `${ORIGIN}${pagePath(locale, page - 1)}` : "", next: page < totalPages ? `${ORIGIN}${pagePath(locale, page + 1)}` : "" });
@@ -149,17 +148,42 @@ for (const locale of ["en", "es", "zh"]) {
   const sites = localeSites[locale]; const topics = allTopicData[locale]; const totalPages = Math.ceil(sites.length / PAGE_SIZE);
   for (let page = 1; page <= totalPages; page += 1) {
     const content = renderHome({ locale, page, totalPages, sites: sites.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), allSites: sites, topics, updatedDate });
-    const target = locale === "en" ? (page === 1 ? path.join(ROOT, "index.html") : path.join(ROOT, "page", String(page), "index.html")) : (page === 1 ? path.join(ROOT, locale, "index.html") : path.join(ROOT, locale, "page", String(page), "index.html"));
+    const target = page === 1
+      ? path.join(ROOT, basePath(locale).replace(/^\//, ""), "index.html")
+      : path.join(ROOT, basePath(locale).replace(/^\//, ""), "page", String(page), "index.html");
     await write(target, content); generatedUrls.push(`${ORIGIN}${pagePath(locale, page)}`);
+    if (locale === "en") {
+      const aliasTarget = page === 1 ? path.join(ROOT, "index.html") : path.join(ROOT, "page", String(page), "index.html");
+      const aliasPath = page === 1 ? "/" : `/page/${page}/`;
+      const aliasContent = content.replace(`<link rel="canonical" href="${ORIGIN}${pagePath("en", page)}"`, `<link rel="canonical" href="${ORIGIN}${aliasPath}"`);
+      await write(aliasTarget, aliasContent);
+      generatedUrls.push(`${ORIGIN}${page === 1 ? "/" : `/page/${page}/`}`);
+    }
   }
-  await write(path.join(ROOT, locale === "en" ? "methodology" : path.join(locale, "methodology"), "index.html"), renderMethodology({ locale, sites, updatedDate }));
+  const methodology = renderMethodology({ locale, sites, updatedDate })
+    .replaceAll(`${ORIGIN}/zh/`, `${ORIGIN}/cn/`)
+    .replaceAll(`${ORIGIN}/methodology/`, `${ORIGIN}/en/methodology/`);
+  await write(path.join(ROOT, basePath(locale).replace(/^\//, ""), "methodology", "index.html"), methodology);
   generatedUrls.push(`${ORIGIN}${basePath(locale)}/methodology/`);
+  if (locale === "en") {
+    await write(path.join(ROOT, "methodology", "index.html"), methodology);
+    generatedUrls.push(`${ORIGIN}/methodology/`);
+  }
   for (const { topic, matches } of topics) {
     const pages = Math.ceil(matches.length / PAGE_SIZE);
     for (let page = 1; page <= pages; page += 1) {
       const content = renderTopic({ locale, topic, page, totalPages: pages, sites: matches.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), allMatches: matches, topics, updatedDate });
-      const target = locale === "en" ? (page === 1 ? path.join(ROOT, topic.slug, "index.html") : path.join(ROOT, topic.slug, "page", String(page), "index.html")) : (page === 1 ? path.join(ROOT, locale, topic.slug, "index.html") : path.join(ROOT, locale, topic.slug, "page", String(page), "index.html"));
+      const target = page === 1
+        ? path.join(ROOT, basePath(locale).replace(/^\//, ""), topic.slug, "index.html")
+        : path.join(ROOT, basePath(locale).replace(/^\//, ""), topic.slug, "page", String(page), "index.html");
       await write(target, content); generatedUrls.push(`${ORIGIN}${topicPath(locale, topic, page)}`);
+      if (locale === "en") {
+        const aliasTarget = page === 1 ? path.join(ROOT, topic.slug, "index.html") : path.join(ROOT, topic.slug, "page", String(page), "index.html");
+        const aliasPath = page === 1 ? `/${topic.slug}/` : `/${topic.slug}/page/${page}/`;
+        const aliasContent = content.replace(`<link rel="canonical" href="${ORIGIN}${topicPath("en", topic, page)}"`, `<link rel="canonical" href="${ORIGIN}${aliasPath}"`);
+        await write(aliasTarget, aliasContent);
+        generatedUrls.push(`${ORIGIN}/${topic.slug}/${page === 1 ? "" : `page/${page}/`}`);
+      }
     }
   }
   for (const site of sites) { await write(path.join(ROOT, sitePath(locale, slug(site)).replace(/^\//, ""), "index.html"), renderSite({ locale, site, translated: site.translated, updatedDate })); generatedUrls.push(`${ORIGIN}${sitePath(locale, slug(site))}`); }
