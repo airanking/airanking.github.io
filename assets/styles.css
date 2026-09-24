@@ -42,6 +42,9 @@ a:focus-visible, summary:focus-visible { outline: 3px solid var(--coral); outlin
 .topbar nav { display: flex; gap: 20px; }
 .topbar nav a { color: var(--muted); font-size: 14px; font-weight: 700; text-decoration: none; }
 .topbar nav a:hover { color: var(--forest); }
+.language-switcher { gap: 6px !important; margin-left: 4px; }
+.language-link { min-height: 32px; padding: 4px 7px; border: 1px solid transparent; border-radius: 6px; font-size: 12px !important; }
+.language-link.is-current { border-color: var(--line); background: var(--soft); color: var(--forest) !important; }
 
 main { overflow-x: clip; }
 .breadcrumbs { display: flex; width: min(var(--page), calc(100% - 40px)); margin: 18px auto 0; gap: 9px; align-items: center; color: var(--muted); font-size: 12px; font-weight: 700; }
@@ -246,6 +249,8 @@ main { overflow-x: clip; }
   .topbar nav { gap: 14px; }
   .topbar nav a { font-size: 12px; }
   .topbar nav a:last-child { display: none; }
+  .language-switcher { gap: 2px !important; margin-left: 0; }
+  .language-link { padding-inline: 5px; font-size: 11px !important; }
   .wordmark span { font-size: 15px; }
   .wordmark strong { font-size: 18px; }
   .hero, .ranking, .topic-directory, .topic-overview, .topic-guide, .decision-guide, .cost-section, .channel-section, .test-section, .faq-section, .page-continue, .footer, .breadcrumbs { width: min(100% - 28px, var(--page)); }
