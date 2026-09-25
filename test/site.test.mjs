@@ -169,8 +169,8 @@ test("localized entry routes use the GitHub Pages origin", async () => {
   for (const [locale, expectedPath] of [["en", "/en/"], ["es", "/es/"], ["cn", "/cn/"]]) {
     const html = await readFile(path.join(root, locale, "index.html"), "utf8");
     assert.ok(html.includes(`<link rel="canonical" href="${origin}${expectedPath}"`));
-    assert.match(html, /<meta name="keywords" content="[^"]+">/);
-    assert.match(html, /search-vocabulary__terms/);
+    assert.doesNotMatch(html, /<meta name="keywords"/);
+    assert.doesNotMatch(html, /search-vocabulary__terms/);
     assert.match(html, new RegExp(`class="language-link[^>]+href="${origin}/en/`));
     assert.match(html, new RegExp(`class="language-link[^>]+href="${origin}/es/`));
     assert.match(html, new RegExp(`class="language-link[^>]+href="${origin}/cn/`));
@@ -178,7 +178,13 @@ test("localized entry routes use the GitHub Pages origin", async () => {
   }
   const rootHome = await readFile(path.join(root, "index.html"), "utf8");
   assert.ok(rootHome.includes(`<link rel="canonical" href="${origin}/"`));
-  assert.match(rootHome, /AI API gateway/);
+  assert.doesNotMatch(rootHome, /search-vocabulary__terms/);
+  for (const [locale, route] of [["en", "en/search-vocabulary"], ["es", "es/search-vocabulary"], ["cn", "cn/search-vocabulary"]]) {
+    const vocabulary = await readFile(path.join(root, route, "index.html"), "utf8");
+    assert.match(vocabulary, /search-vocabulary__terms/);
+    assert.match(vocabulary, /<link rel="canonical" href="https:\/\/airanking\.github\.io\//);
+    assert.match(vocabulary, new RegExp(locale === "cn" ? "AI 中转站|API 中转站" : locale === "es" ? "pasarela API de IA" : "AI API gateway"));
+  }
 });
 
 test("external station links use safe attributes", async () => {

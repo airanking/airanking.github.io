@@ -37,4 +37,4 @@ Sources used for the snapshot:
 
 ## How The Site Uses Them
 
-The terms are stored in `scripts/build-localized.mjs` by locale. They are rendered as a visible “Search vocabulary” section on each language homepage and emitted in the page `keywords` metadata. They are deliberately kept separate from model-topic matching, so generic search language cannot incorrectly claim that every listed provider supports every model.
+The terms are stored in `scripts/build-localized.mjs` by locale. They are rendered on dedicated `/search-vocabulary/` pages linked from the footer, rather than being appended to ranking pages. The site does not rely on the obsolete `meta keywords` tag. The terms are deliberately kept separate from model-topic matching, so generic search language cannot incorrectly claim that every listed provider supports every model.

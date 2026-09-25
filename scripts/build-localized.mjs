@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeSite, rankSites } from "./build.mjs";
@@ -45,9 +45,9 @@ const SEARCH_TERMS = {
 };
 
 const SEARCH_COPY = {
-  en: { title: "Search vocabulary", lead: "Common terms people use to find multi-model API access. Terminology varies by region and search engine; verify providers with the public evidence above." },
-  es: { title: "Vocabulario de búsqueda", lead: "Términos habituales para encontrar acceso a API con varios modelos. La terminología cambia según la región y el buscador; verifica cada proveedor con la evidencia pública." },
-  zh: { title: "搜索词汇", lead: "下面整理 Google 和 Bing 结果中常见的多模型 API 访问词汇。词汇会随地区和搜索引擎变化，仍需根据公开证据核验站点。" },
+  en: { title: "Search vocabulary", lead: "Common terms people use to find multi-model API access. Terminology varies by region and search engine; verify providers with the public evidence above.", note: "These terms describe how people may look for multi-model API access. They are discovery vocabulary, not evidence that a provider supports a model, protocol, price, or availability claim." },
+  es: { title: "Vocabulario de búsqueda", lead: "Términos habituales para encontrar acceso a API con varios modelos. La terminología cambia según la región y el buscador; verifica cada proveedor con la evidencia pública.", note: "Estos términos describen cómo se puede buscar acceso a API con varios modelos. Son vocabulario de descubrimiento, no pruebas de que un proveedor admita un modelo, protocolo, precio o disponibilidad concretos." },
+  zh: { title: "搜索词汇", lead: "下面整理 Google 和 Bing 结果中常见的多模型 API 访问词汇。词汇会随地区和搜索引擎变化，仍需根据公开证据核验站点。", note: "这些词汇用于描述人们可能如何寻找多模型 API 访问服务，仅供检索参考，不代表供应商一定支持某个模型、协议、价格或可用性。" },
 };
 
 const TEXT = {
@@ -62,7 +62,7 @@ const TEXT = {
     topicsTitle: "Find gateways by model", topicsLead: "Keyword matching creates a review shortlist. Confirm the model, protocol, pricing and data policy on the provider site before use.", topicMatches: "public matches", viewTopic: "View topic", currentTopic: "Current topic",
     methodologyTitle: "Scoring methodology", methodologyLead: "This directory applies a deterministic formula to public data. Scores organize evidence; they are not certification or a guarantee of availability.",
     detailTitle: "Gateway profile", details: "Current public record", sourceDescription: "Source description", translatedDescription: "Translated description", sourcePage: "Open provider page", back: "Back to rankings", updated: "Updated", modelsList: "Listed models", payments: "Payment methods", noDescription: "No description recorded.",
-    footer: "Compare first, test with a small balance, and keep a backup provider.", previous: "Previous", next: "Next", language: "Language", faqTitle: "Frequently asked questions",
+    footer: "Compare first, test with a small balance, and keep a backup provider.", previous: "Previous", next: "Next", language: "Language", faqTitle: "Frequently asked questions", searchTerms: "Search vocabulary",
     scoreSentence: (s) => `Current public-data score: ${s.score}, with ${s.coverage}% field coverage.`, performance: (s) => `Uptime ${s.uptime}; latency ${s.latency}.`,
   },
   es: {
@@ -76,7 +76,7 @@ const TEXT = {
     topicsTitle: "Buscar gateways por modelo", topicsLead: "Las coincidencias de palabras clave crean una lista para revisar. Confirma el modelo, el protocolo, el precio y la política de datos en el sitio antes de usarlo.", topicMatches: "coincidencias públicas", viewTopic: "Ver tema", currentTopic: "Tema actual",
     methodologyTitle: "Metodología de puntuación", methodologyLead: "Este directorio aplica una fórmula determinista a datos públicos. Las puntuaciones organizan evidencias; no son una certificación ni garantizan disponibilidad.",
     detailTitle: "Perfil del gateway", details: "Registro público actual", sourceDescription: "Descripción de origen", translatedDescription: "Descripción traducida", sourcePage: "Abrir página del proveedor", back: "Volver al ranking", updated: "Actualizado", modelsList: "Modelos registrados", payments: "Métodos de pago", noDescription: "No hay descripción registrada.",
-    footer: "Compara primero, prueba con un saldo pequeño y conserva un proveedor de respaldo.", previous: "Anterior", next: "Siguiente", language: "Idioma", faqTitle: "Preguntas frecuentes",
+    footer: "Compara primero, prueba con un saldo pequeño y conserva un proveedor de respaldo.", previous: "Anterior", next: "Siguiente", language: "Idioma", faqTitle: "Preguntas frecuentes", searchTerms: "Vocabulario de búsqueda",
     scoreSentence: (s) => `Puntuación basada en datos públicos: ${s.score}, con una cobertura del ${s.coverage} % de los campos.`, performance: (s) => `Disponibilidad ${s.uptime}; latencia ${s.latency}.`,
   },
   zh: {
@@ -86,7 +86,7 @@ const TEXT = {
     viewTable: "查看数据表", viewMethod: "阅读评分方法", collected: "公开收录", stations: "家 AI API 中转站", page: "第", range: "范围", perPage: "每页", rankingTitle: "公开指标排名", tableCaption: "AI 中转站公开数据排名 {first}–{last}，共 {total} 家",
     rank: "排名", siteData: "站点与数据说明", score: "数据评分", coverage: "覆盖度", uptime: "在线率", latency: "延迟", models: "模型", rating: "评价", policy: "服务信息", visit: "访问", pending: "暂无", supported: "支持", unsupported: "不支持", confirm: "待确认",
     topicsTitle: "按模型查找中转站", topicsLead: "关键词匹配只用于建立核验清单。使用前仍需进入站点确认模型、协议、价格和数据政策。", topicMatches: "家公开资料匹配", viewTopic: "查看专题", currentTopic: "当前专题",
-    methodologyTitle: "数据评分方法", methodologyLead: "本站把公开数据放入同一套确定性公式。分数用于整理证据，不是认证或实时可用性保证。", detailTitle: "站点详情", details: "当前公开记录", sourceDescription: "来源描述", translatedDescription: "翻译描述", sourcePage: "打开站点", back: "返回榜单", updated: "更新时间", modelsList: "收录模型", payments: "支付方式", noDescription: "暂无描述记录。", footer: "先比较，后测试；少量充值，为关键调用保留备用方案。", previous: "上一页", next: "下一页", language: "语言", faqTitle: "常见问题",
+    methodologyTitle: "数据评分方法", methodologyLead: "本站把公开数据放入同一套确定性公式。分数用于整理证据，不是认证或实时可用性保证。", detailTitle: "站点详情", details: "当前公开记录", sourceDescription: "来源描述", translatedDescription: "翻译描述", sourcePage: "打开站点", back: "返回榜单", updated: "更新时间", modelsList: "收录模型", payments: "支付方式", noDescription: "暂无描述记录。", footer: "先比较，后测试；少量充值，为关键调用保留备用方案。", previous: "上一页", next: "下一页", language: "语言", faqTitle: "常见问题", searchTerms: "搜索词汇",
     scoreSentence: (s) => `当前公开数据综合分 ${s.score}，评分字段覆盖 ${s.coverage}%。`, performance: (s) => `在线率 ${s.uptime}；延迟 ${s.latency}。`,
   },
 };
@@ -97,6 +97,7 @@ function sitePath(locale, id) { return locale === "zh" ? `/sites/${id}/` : `/${l
 function basePath(locale) { return locale === "en" ? "/en" : locale === "zh" ? "/cn" : "/es"; }
 function pagePath(locale, page) { const base = basePath(locale); return page === 1 ? `${base}/` : `${base}/page/${page}/`; }
 function topicPath(locale, topic, page = 1) { const base = basePath(locale); return page === 1 ? `${base}/${topic.slug}/` : `${base}/${topic.slug}/page/${page}/`; }
+function vocabularyPath(locale) { return `${basePath(locale)}/search-vocabulary/`; }
 function formatDate(date, locale) { if (!date) return TEXT[locale].pending; const [y, m, d] = date.split("-"); return locale === "en" ? `${y}-${m}-${d}` : locale === "es" ? `${d}/${m}/${y}` : `${y} 年 ${Number(m)} 月 ${Number(d)} 日`; }
 function formatUptime(value, locale) { return value === null ? TEXT[locale].pending : `${number[locale].format(value)}%`; }
 function formatLatency(value, locale) { if (value === null) return TEXT[locale].pending; if (locale === "en") return value >= 1000 ? `${number.en.format(value / 1000)} s` : `${Math.round(value)} ms`; if (locale === "es") return value >= 1000 ? `${number.es.format(value / 1000)} s` : `${Math.round(value)} ms`; return value >= 1000 ? `${number.zh.format(value / 1000)} 秒` : `${Math.round(value)} 毫秒`; }
@@ -107,15 +108,14 @@ function searchable(site) { return [site.name, site.description, ...site.models]
 
 function htmlHead({ locale, title, description, canonical, alternates, root = "", previous = "", next = "" }) {
   const t = TEXT[locale];
-  const keywords = SEARCH_TERMS[locale].join(", ");
   const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@type": "WebPage", name: title, description, url: canonical, inLanguage: t.lang, isPartOf: { "@type": "WebSite", name: t.siteName, url: `${ORIGIN}${basePath(locale)}/` } }).replaceAll("<", "\\u003c");
-  return `<!doctype html><html lang="${t.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="keywords" content="${esc(keywords)}"><meta name="robots" content="index, follow, max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:site_name" content="${esc(t.siteName)}"><meta property="og:locale" content="${t.locale}"><link rel="canonical" href="${canonical}">${alternates.map((item) => `<link rel="alternate" hreflang="${item.lang}" href="${item.url}">`).join("")}<link rel="alternate" hreflang="x-default" href="${ORIGIN}/">${previous ? `<link rel="prev" href="${previous}">` : ""}${next ? `<link rel="next" href="${next}">` : ""}<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/styles.min.css"><script type="application/ld+json">${jsonLd}</script></head>`;
+  return `<!doctype html><html lang="${t.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="robots" content="index, follow, max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:site_name" content="${esc(t.siteName)}"><meta property="og:locale" content="${t.locale}"><link rel="canonical" href="${canonical}">${alternates.map((item) => `<link rel="alternate" hreflang="${item.lang}" href="${item.url}">`).join("")}<link rel="alternate" hreflang="x-default" href="${ORIGIN}/">${previous ? `<link rel="prev" href="${previous}">` : ""}${next ? `<link rel="next" href="${next}">` : ""}<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/styles.min.css"><script type="application/ld+json">${jsonLd}</script></head>`;
 }
 function shell({ locale, body, title, description, canonical, alternates, root, previous = "", next = "" }) {
   const t = TEXT[locale];
   const labels = { en: "EN", es: "ES", "zh-CN": "中文" };
   const languageLinks = alternates.map((item) => `<a class="language-link${item.lang === t.lang ? " is-current" : ""}" href="${item.url}" hreflang="${item.lang}"${item.lang === t.lang ? " aria-current=\"page\"" : ""}>${labels[item.lang] || item.lang}</a>`).join("");
-  return `${htmlHead({ locale, title, description, canonical, alternates, root, previous, next })}<body><a class="skip-link" href="#main">${t.skip}</a><header class="topbar"><a class="wordmark" href="${basePath(locale)}/" aria-label="${esc(t.siteName)}"><span>${esc(t.brand)}</span><strong>${esc(t.brandStrong)}</strong></a><nav aria-label="${esc(t.navRanking)}"><a href="${basePath(locale)}/#ranking">${t.navRanking}</a><a href="${basePath(locale)}/#topics">${t.navTopics}</a><a href="${basePath(locale)}/methodology/">${t.navMethod}</a></nav><nav class="language-switcher" aria-label="${esc(t.language)}">${languageLinks}</nav></header>${body}<footer class="footer"><a class="wordmark" href="${basePath(locale)}/"><span>${esc(t.brand)}</span><strong>${esc(t.brandStrong)}</strong></a><p>${t.footer}</p><a href="#main">↑</a></footer></body></html>\n`;
+  return `${htmlHead({ locale, title, description, canonical, alternates, root, previous, next })}<body><a class="skip-link" href="#main">${t.skip}</a><header class="topbar"><a class="wordmark" href="${basePath(locale)}/" aria-label="${esc(t.siteName)}"><span>${esc(t.brand)}</span><strong>${esc(t.brandStrong)}</strong></a><nav aria-label="${esc(t.navRanking)}"><a href="${basePath(locale)}/#ranking">${t.navRanking}</a><a href="${basePath(locale)}/#topics">${t.navTopics}</a><a href="${basePath(locale)}/methodology/">${t.navMethod}</a></nav><nav class="language-switcher" aria-label="${esc(t.language)}">${languageLinks}</nav></header>${body}<footer class="footer"><a class="wordmark" href="${basePath(locale)}/"><span>${esc(t.brand)}</span><strong>${esc(t.brandStrong)}</strong></a><p>${t.footer}</p><a href="${vocabularyPath(locale)}">${t.searchTerms}</a><a href="#main">↑</a></footer></body></html>\n`;
 }
 
 function renderTable(locale, sites, caption, root) {
@@ -145,7 +145,7 @@ function renderHome({ locale, page, totalPages, sites, allSites, topics, updated
   const description = page === 1 ? `${t.homeLead} ${allSites.length} ${t.stations}.` : `${t.homeTitle}, ${t.page} ${page}, ${t.range} ${first}-${last}.`;
   const alternates = [{ lang: "en", url: `${ORIGIN}${pagePath("en", page)}` }, { lang: "es", url: `${ORIGIN}${pagePath("es", page)}` }, { lang: "zh-CN", url: `${ORIGIN}${pagePath("zh", page)}` }];
   const root = page === 1 ? "." : "../..";
-  const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a>${page > 1 ? `<span>/</span><span>${t.page} ${page}</span>` : ""}</nav><section class="hero"><div class="hero__copy"><p class="eyebrow">OPEN DATA RANKING · ${updatedDate.replaceAll("-", ".")}</p><h1>${esc(t.homeH1)}<br><em>${esc(t.homeH1Em)}</em></h1><p class="hero-copy">${esc(t.homeLead)}</p><div class="hero-actions"><a href="#ranking">${t.viewTable}</a><a href="${basePath(locale)}/methodology/">${t.viewMethod}</a></div></div><aside class="hero__panel"><p>${t.collected}</p><strong>${allSites.length}</strong><span>${t.stations}</span><dl><div><dt>${t.page}</dt><dd>${page} / ${totalPages}</dd></div><div><dt>${t.range}</dt><dd>${first}-${last}</dd></div><div><dt>${t.updated}</dt><dd>${updatedDate}</dd></div></dl></aside></section><section class="ranking" id="ranking"><div class="ranking-head"><div><p>DATA TABLE / ${String(page).padStart(2, "0")}</p><h2>${t.rankingTitle}</h2></div></div>${renderTable(locale, sites, t.tableCaption.replace("{first}", first).replace("{last}", last).replace("{total}", allSites.length), root)}${pagination(locale, page, totalPages, (value) => pagePath(locale, value))}</section>${page === 1 ? `${topicCards(locale, topics)}${searchVocabulary(locale)}` : ""}</main>`;
+  const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a>${page > 1 ? `<span>/</span><span>${t.page} ${page}</span>` : ""}</nav><section class="hero"><div class="hero__copy"><p class="eyebrow">OPEN DATA RANKING · ${updatedDate.replaceAll("-", ".")}</p><h1>${esc(t.homeH1)}<br><em>${esc(t.homeH1Em)}</em></h1><p class="hero-copy">${esc(t.homeLead)}</p><div class="hero-actions"><a href="#ranking">${t.viewTable}</a><a href="${basePath(locale)}/methodology/">${t.viewMethod}</a></div></div><aside class="hero__panel"><p>${t.collected}</p><strong>${allSites.length}</strong><span>${t.stations}</span><dl><div><dt>${t.page}</dt><dd>${page} / ${totalPages}</dd></div><div><dt>${t.range}</dt><dd>${first}-${last}</dd></div><div><dt>${t.updated}</dt><dd>${updatedDate}</dd></div></dl></aside></section><section class="ranking" id="ranking"><div class="ranking-head"><div><p>DATA TABLE / ${String(page).padStart(2, "0")}</p><h2>${t.rankingTitle}</h2></div></div>${renderTable(locale, sites, t.tableCaption.replace("{first}", first).replace("{last}", last).replace("{total}", allSites.length), root)}${pagination(locale, page, totalPages, (value) => pagePath(locale, value))}</section>${page === 1 ? topicCards(locale, topics) : ""}</main>`;
   return shell({ locale, body, title, description, canonical, alternates, root, previous: page > 1 ? `${ORIGIN}${pagePath(locale, page - 1)}` : "", next: page < totalPages ? `${ORIGIN}${pagePath(locale, page + 1)}` : "" });
 }
 
@@ -162,7 +162,26 @@ function renderSite({ locale, site, translated, updatedDate }) {
 
 function renderMethodology({ locale, sites, updatedDate }) { const t = TEXT[locale]; const canonical = `${ORIGIN}${basePath(locale)}/methodology/`; const root = locale === "zh" ? ".." : "../.."; const alternates = [{ lang: "en", url: `${ORIGIN}/methodology/` }, { lang: "es", url: `${ORIGIN}/es/methodology/` }, { lang: "zh-CN", url: `${ORIGIN}/zh/methodology/` }]; const paragraphs = locale === "en" ? ["We deduplicate the source list, keep up to 500 records, and rank them with the same deterministic formula on every build.", "Uptime is weighted at 25%, latency at 20%, reviews at 15%, model breadth at 10%, tenure at 5%, payment methods at 5%, refund at 5%, invoice at 5%, and source continuity at 10%.", "Missing values are excluded from the available-weight denominator and the result is pulled toward 50 according to field coverage. Unknown is not the same as an explicit negative.", "The ranking is a research index. Verify the provider, model mapping, privacy policy, limits and billing with your own requests before production use."] : locale === "es" ? ["Eliminamos duplicados, conservamos hasta 500 registros y los ordenamos con la misma fórmula determinista en cada compilación.", "La disponibilidad pesa un 25 %, la latencia un 20 %, las opiniones un 15 %, la amplitud de modelos un 10 %, la antigüedad un 5 %, los métodos de pago un 5 %, el reembolso un 5 %, la factura un 5 % y la continuidad de la fuente un 10 %.", "Los campos ausentes se excluyen del denominador y el resultado se acerca a 50 según la cobertura. Desconocido no significa negativo explícito.", "Este ranking es un índice de investigación. Verifica el proveedor, el modelo, la privacidad, los límites y la facturación con tus propias solicitudes antes de usarlo en producción."] : ["先去重并保留最多 500 条公开资料，再用同一套确定性公式排序。", "在线率 25%、延迟 20%、评价 15%、模型广度 10%、运营时间 5%、支付方式 5%、退款 5%、发票 5%、来源连续性 10%。", "缺失字段从可用权重分母中剔除，并按覆盖度把结果向 50 分收缩。未知不等于明确不支持。", "榜单用于整理研究线索。生产使用前，请用自己的请求核对供应商、模型映射、隐私、限制和账单。"]; const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a><span>/</span><span>${t.navMethod}</span></nav><article class="methodology"><p class="eyebrow">METHODOLOGY · ${updatedDate.replaceAll("-", ".")}</p><h1>${t.methodologyTitle}</h1><p class="methodology__lead">${t.methodologyLead} ${sites.length}.</p>${paragraphs.map((p) => `<section><p>${esc(p)}</p></section>`).join("")}</article></main>`; return shell({ locale, body, title: `${t.methodologyTitle} | ${t.siteName}`, description: t.methodologyLead, canonical, alternates, root }); }
 
+function renderSearchVocabulary({ locale, updatedDate }) {
+  const t = TEXT[locale];
+  const copy = SEARCH_COPY[locale];
+  const canonical = `${ORIGIN}${vocabularyPath(locale)}`;
+  const alternates = [{ lang: "en", url: `${ORIGIN}${vocabularyPath("en")}` }, { lang: "es", url: `${ORIGIN}${vocabularyPath("es")}` }, { lang: "zh-CN", url: `${ORIGIN}${vocabularyPath("zh")}` }];
+  const root = "../..";
+  const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a><span>/</span><span>${esc(copy.title)}</span></nav><article class="methodology"><p class="eyebrow">SEARCH RESEARCH · ${updatedDate.replaceAll("-", ".")}</p><h1>${esc(copy.title)}</h1><p class="methodology__lead">${esc(copy.lead)}</p><p>${esc(copy.note)}</p></article>${searchVocabulary(locale)}</main>`;
+  return shell({ locale, body, title: `${copy.title} | ${t.siteName}`, description: copy.lead, canonical, alternates, root });
+}
+
 async function write(target, content) { await mkdir(path.dirname(target), { recursive: true }); await writeFile(target, content, "utf8"); }
+async function pruneGeneratedSites(locale, ids) {
+  const directory = path.join(ROOT, sitePath(locale, "").replace(/\/$/, "").replace(/^\//, ""));
+  let entries;
+  try { entries = await readdir(directory, { withFileTypes: true }); } catch { return; }
+  for (const entry of entries) {
+    if (!entry.isDirectory() || ids.has(entry.name)) continue;
+    await rm(path.join(directory, entry.name), { recursive: true, force: true });
+  }
+}
 function localizedSite(site, locale, caches) { const translated = translation(locale, caches[locale], site); return { ...site, displayName: translated.name || site.name, translated }; }
 
 const payload = JSON.parse(await readFile(path.join(ROOT, "data.json"), "utf8"));
@@ -178,6 +197,7 @@ const generatedUrls = [];
 
 for (const locale of ["en", "es", "zh"]) {
   const sites = localeSites[locale]; const topics = allTopicData[locale]; const totalPages = Math.ceil(sites.length / PAGE_SIZE);
+  await pruneGeneratedSites(locale, new Set(sites.map((site) => slug(site))));
   for (let page = 1; page <= totalPages; page += 1) {
     const content = renderHome({ locale, page, totalPages, sites: sites.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), allSites: sites, topics, updatedDate });
     const target = page === 1
@@ -200,6 +220,13 @@ for (const locale of ["en", "es", "zh"]) {
   if (locale === "en") {
     await write(path.join(ROOT, "methodology", "index.html"), methodology);
     generatedUrls.push(`${ORIGIN}/methodology/`);
+  }
+  const vocabulary = renderSearchVocabulary({ locale, updatedDate });
+  await write(path.join(ROOT, basePath(locale).replace(/^\//, ""), "search-vocabulary", "index.html"), vocabulary);
+  generatedUrls.push(`${ORIGIN}${vocabularyPath(locale)}`);
+  if (locale === "en") {
+    await write(path.join(ROOT, "search-vocabulary", "index.html"), vocabulary.replace(`<link rel="canonical" href="${ORIGIN}${vocabularyPath("en")}"`, `<link rel="canonical" href="${ORIGIN}/search-vocabulary/"`));
+    generatedUrls.push(`${ORIGIN}/search-vocabulary/`);
   }
   for (const { topic, matches } of topics) {
     const pages = Math.ceil(matches.length / PAGE_SIZE);
