@@ -141,6 +141,9 @@ main { overflow-x: clip; }
 .topic-directory__grid a, .topic-directory__current { margin-left: auto; color: var(--forest); font-size: 12px; font-weight: 850; text-decoration: none; }
 .topic-directory__grid a:hover { color: var(--coral); }
 .topic-directory__current { border-radius: 999px; padding: 5px 10px; background: var(--soft); }
+.search-vocabulary { margin-top: 90px; padding-bottom: 10px; }
+.search-vocabulary__terms { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+.search-vocabulary__terms span { border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; color: var(--ink); background: var(--surface); font-size: 13px; }
 
 .topic-overview { display: grid; margin-top: 10px; grid-template-columns: .65fr 1.35fr; gap: 44px; border-block: 1px solid var(--ink); padding-block: 24px; }
 .topic-overview > div > p:last-child { max-width: 520px; margin: 18px 0 0; color: var(--muted); }
@@ -274,7 +277,7 @@ main { overflow-x: clip; }
   .topic-directory__grid article { min-height: 0; padding: 18px; }
   .topic-directory__grid article > div { align-items: flex-start; flex-wrap: wrap; }
   .topic-directory__grid a, .topic-directory__current { width: 100%; margin: 8px 0 0; }
-  .topic-overview + .topic-directory, .topic-guide, .topic-ranking, .topic-faq { margin-top: 78px; }
+  .topic-overview + .topic-directory, .topic-guide, .topic-ranking, .topic-faq, .search-vocabulary { margin-top: 78px; }
   .topic-focus-grid { grid-template-columns: 1fr; }
   .topic-focus-grid article { min-height: 0; }
   .guide-grid { grid-template-columns: 1fr; }

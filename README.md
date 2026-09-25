@@ -24,6 +24,7 @@ npm test        # 检查数据评分、表格语义、分页、SEO 与静态产�
 - `sitemap.xml`、`robots.txt`、`404.html`：搜索引擎与错误页支持
 - `data.json`：构建使用的最多 500 条公开数据快照
 - `translations/en.json`、`translations/es.json`：按站点 URL slug 和源文本哈希保存的翻译缓存；不使用排名作为键
+- `docs/search-vocabulary.md`：记录 Google Trends、Google 和 Bing 的搜索词研究快照；词汇会在三语首页和页面元数据中使用
 - `/`、`/page/*`：默认英文页面；`/en/*` 为英文明确入口；`/es/*` 为西班牙语；`/cn/*` 为中文
 - `/en/sites/*`、`/es/sites/*`、`/sites/*`：英文、西班牙语、中文站点详情页
 

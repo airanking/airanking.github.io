@@ -24,6 +24,32 @@ const TOPICS = [
   { slug: "kimi-zhongzhuanzhan", terms: ["kimi", "moonshot", "月之暗面"], en: "Kimi API Gateways", es: "Gateways de API de Kimi", zh: "Kimi 中转站" },
 ];
 
+// Search vocabulary is maintained separately from model matching. It reflects
+// the terms observed in Google Trends and Google/Bing result pages, not claims
+// about a provider or a guarantee of search volume.
+const SEARCH_TERMS = {
+  en: [
+    "AI API gateway", "AI gateway", "LLM gateway", "AI API proxy", "AI API aggregator",
+    "multi-model API", "OpenAI-compatible API", "AI model router", "open source AI gateway",
+    "Kimi API", "Bifrost AI gateway", "Helicone",
+  ],
+  es: [
+    "pasarela API de IA", "gateway de IA", "proxy de API de IA", "agregador de API de IA",
+    "API unificada de IA", "API multimodelo", "acceso a modelos de IA",
+  ],
+  zh: [
+    "AI 中转站", "API 中转站", "AI API 中转站", "AI 中转站排行榜", "AI 中转站评测",
+    "AI 中转站推荐", "中转站价格对比", "AI 中转站靠谱吗", "AI 中转站搭建",
+    "国外 API 中转站", "大模型 API 集成平台", "大模型 API 聚合平台", "AI API 网关", "AI 接口代理",
+  ],
+};
+
+const SEARCH_COPY = {
+  en: { title: "Search vocabulary", lead: "Common terms people use to find multi-model API access. Terminology varies by region and search engine; verify providers with the public evidence above." },
+  es: { title: "Vocabulario de búsqueda", lead: "Términos habituales para encontrar acceso a API con varios modelos. La terminología cambia según la región y el buscador; verifica cada proveedor con la evidencia pública." },
+  zh: { title: "搜索词汇", lead: "下面整理 Google 和 Bing 结果中常见的多模型 API 访问词汇。词汇会随地区和搜索引擎变化，仍需根据公开证据核验站点。" },
+};
+
 const TEXT = {
   en: {
     lang: "en", locale: "en_US", siteName: "AI API Gateway Rankings", brand: "Gateway", brandStrong: "Rankings",
@@ -81,8 +107,9 @@ function searchable(site) { return [site.name, site.description, ...site.models]
 
 function htmlHead({ locale, title, description, canonical, alternates, root = "", previous = "", next = "" }) {
   const t = TEXT[locale];
+  const keywords = SEARCH_TERMS[locale].join(", ");
   const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@type": "WebPage", name: title, description, url: canonical, inLanguage: t.lang, isPartOf: { "@type": "WebSite", name: t.siteName, url: `${ORIGIN}${basePath(locale)}/` } }).replaceAll("<", "\\u003c");
-  return `<!doctype html><html lang="${t.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="robots" content="index, follow, max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:site_name" content="${esc(t.siteName)}"><meta property="og:locale" content="${t.locale}"><link rel="canonical" href="${canonical}">${alternates.map((item) => `<link rel="alternate" hreflang="${item.lang}" href="${item.url}">`).join("")}<link rel="alternate" hreflang="x-default" href="${ORIGIN}/">${previous ? `<link rel="prev" href="${previous}">` : ""}${next ? `<link rel="next" href="${next}">` : ""}<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/styles.min.css"><script type="application/ld+json">${jsonLd}</script></head>`;
+  return `<!doctype html><html lang="${t.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="keywords" content="${esc(keywords)}"><meta name="robots" content="index, follow, max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:site_name" content="${esc(t.siteName)}"><meta property="og:locale" content="${t.locale}"><link rel="canonical" href="${canonical}">${alternates.map((item) => `<link rel="alternate" hreflang="${item.lang}" href="${item.url}">`).join("")}<link rel="alternate" hreflang="x-default" href="${ORIGIN}/">${previous ? `<link rel="prev" href="${previous}">` : ""}${next ? `<link rel="next" href="${next}">` : ""}<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/styles.min.css"><script type="application/ld+json">${jsonLd}</script></head>`;
 }
 function shell({ locale, body, title, description, canonical, alternates, root, previous = "", next = "" }) {
   const t = TEXT[locale];
@@ -105,6 +132,11 @@ function pagination(locale, page, total, pathForPage) {
 
 function topicCards(locale, topics) { const t = TEXT[locale]; return `<section class="topic-directory" id="topics"><div class="topic-directory__head"><div><p class="section-kicker">${t.navTopics}</p><h2 id="topics-title">${t.topicsTitle}</h2></div><p>${t.topicsLead}</p></div><div class="topic-directory__grid">${topics.map(({ topic, matches }) => `<article><span>${esc(topic.en)}</span><h3>${esc(topic[locale])}</h3><p>${esc(topic.intro?.[locale] || t.topicsLead)}</p><div><strong>${matches.length}</strong><small>${t.topicMatches}</small><a href="${topicPath(locale, topic)}">${t.viewTopic} →</a></div></article>`).join("")}</div></section>`; }
 
+function searchVocabulary(locale) {
+  const copy = SEARCH_COPY[locale];
+  return `<section class="search-vocabulary" aria-labelledby="search-vocabulary-title"><div class="topic-directory__head"><div><p class="section-kicker">SEARCH TERMS</p><h2 id="search-vocabulary-title">${copy.title}</h2></div><p>${copy.lead}</p></div><p class="search-vocabulary__terms">${SEARCH_TERMS[locale].map((term) => `<span>${esc(term)}</span>`).join("")}</p></section>`;
+}
+
 function renderHome({ locale, page, totalPages, sites, allSites, topics, updatedDate }) {
   const t = TEXT[locale];
   const first = (page - 1) * PAGE_SIZE + 1; const last = first + sites.length - 1;
@@ -113,7 +145,7 @@ function renderHome({ locale, page, totalPages, sites, allSites, topics, updated
   const description = page === 1 ? `${t.homeLead} ${allSites.length} ${t.stations}.` : `${t.homeTitle}, ${t.page} ${page}, ${t.range} ${first}-${last}.`;
   const alternates = [{ lang: "en", url: `${ORIGIN}${pagePath("en", page)}` }, { lang: "es", url: `${ORIGIN}${pagePath("es", page)}` }, { lang: "zh-CN", url: `${ORIGIN}${pagePath("zh", page)}` }];
   const root = page === 1 ? "." : "../..";
-  const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a>${page > 1 ? `<span>/</span><span>${t.page} ${page}</span>` : ""}</nav><section class="hero"><div class="hero__copy"><p class="eyebrow">OPEN DATA RANKING · ${updatedDate.replaceAll("-", ".")}</p><h1>${esc(t.homeH1)}<br><em>${esc(t.homeH1Em)}</em></h1><p class="hero-copy">${esc(t.homeLead)}</p><div class="hero-actions"><a href="#ranking">${t.viewTable}</a><a href="${basePath(locale)}/methodology/">${t.viewMethod}</a></div></div><aside class="hero__panel"><p>${t.collected}</p><strong>${allSites.length}</strong><span>${t.stations}</span><dl><div><dt>${t.page}</dt><dd>${page} / ${totalPages}</dd></div><div><dt>${t.range}</dt><dd>${first}-${last}</dd></div><div><dt>${t.updated}</dt><dd>${updatedDate}</dd></div></dl></aside></section><section class="ranking" id="ranking"><div class="ranking-head"><div><p>DATA TABLE / ${String(page).padStart(2, "0")}</p><h2>${t.rankingTitle}</h2></div></div>${renderTable(locale, sites, t.tableCaption.replace("{first}", first).replace("{last}", last).replace("{total}", allSites.length), root)}${pagination(locale, page, totalPages, (value) => pagePath(locale, value))}</section>${page === 1 ? topicCards(locale, topics) : ""}</main>`;
+  const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a>${page > 1 ? `<span>/</span><span>${t.page} ${page}</span>` : ""}</nav><section class="hero"><div class="hero__copy"><p class="eyebrow">OPEN DATA RANKING · ${updatedDate.replaceAll("-", ".")}</p><h1>${esc(t.homeH1)}<br><em>${esc(t.homeH1Em)}</em></h1><p class="hero-copy">${esc(t.homeLead)}</p><div class="hero-actions"><a href="#ranking">${t.viewTable}</a><a href="${basePath(locale)}/methodology/">${t.viewMethod}</a></div></div><aside class="hero__panel"><p>${t.collected}</p><strong>${allSites.length}</strong><span>${t.stations}</span><dl><div><dt>${t.page}</dt><dd>${page} / ${totalPages}</dd></div><div><dt>${t.range}</dt><dd>${first}-${last}</dd></div><div><dt>${t.updated}</dt><dd>${updatedDate}</dd></div></dl></aside></section><section class="ranking" id="ranking"><div class="ranking-head"><div><p>DATA TABLE / ${String(page).padStart(2, "0")}</p><h2>${t.rankingTitle}</h2></div></div>${renderTable(locale, sites, t.tableCaption.replace("{first}", first).replace("{last}", last).replace("{total}", allSites.length), root)}${pagination(locale, page, totalPages, (value) => pagePath(locale, value))}</section>${page === 1 ? `${topicCards(locale, topics)}${searchVocabulary(locale)}` : ""}</main>`;
   return shell({ locale, body, title, description, canonical, alternates, root, previous: page > 1 ? `${ORIGIN}${pagePath(locale, page - 1)}` : "", next: page < totalPages ? `${ORIGIN}${pagePath(locale, page + 1)}` : "" });
 }
 

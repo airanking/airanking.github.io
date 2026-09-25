@@ -169,6 +169,8 @@ test("localized entry routes use the GitHub Pages origin", async () => {
   for (const [locale, expectedPath] of [["en", "/en/"], ["es", "/es/"], ["cn", "/cn/"]]) {
     const html = await readFile(path.join(root, locale, "index.html"), "utf8");
     assert.ok(html.includes(`<link rel="canonical" href="${origin}${expectedPath}"`));
+    assert.match(html, /<meta name="keywords" content="[^"]+">/);
+    assert.match(html, /search-vocabulary__terms/);
     assert.match(html, new RegExp(`class="language-link[^>]+href="${origin}/en/`));
     assert.match(html, new RegExp(`class="language-link[^>]+href="${origin}/es/`));
     assert.match(html, new RegExp(`class="language-link[^>]+href="${origin}/cn/`));
@@ -176,6 +178,7 @@ test("localized entry routes use the GitHub Pages origin", async () => {
   }
   const rootHome = await readFile(path.join(root, "index.html"), "utf8");
   assert.ok(rootHome.includes(`<link rel="canonical" href="${origin}/"`));
+  assert.match(rootHome, /AI API gateway/);
 });
 
 test("external station links use safe attributes", async () => {
