@@ -1,6 +1,6 @@
 {
   "locale": "en",
-  "sourceHash": "90a5fe7aad483d88cd5fc2c7f367e1a94a25f98f1728f9947e1483deaa25ad92",
+  "sourceHash": "a4f65fcc98225784b045b7ca0083e30743d1b4d4ed21b965cb5567d5bb7792c5",
   "noteHash": "61ccafa8e97651a08d840fd857db9f8a57e0a4c957dd486dad2ef38e29cf335e",
   "note": "所有数据来自于https://www.hvoyai.com 实时更新数据,全网最专业最靠谱的AI 中转站排行榜推荐",
   "noteTranslated": false,
@@ -53,16 +53,6 @@
         "Corporate Bank Transfer"
       ]
     },
-    "toolcodecc": {
-      "sourceHash": "55ef68be9b859e45b42d322ace9bfab624de6c02382b6063ef37a0e5f8812bc1",
-      "translated": true,
-      "name": "ToolCode",
-      "description": "Tool Code is dedicated to building a high-quality relay service specifically for GPT users. Its core goal is to provide services continuously in a stable and cost-effective manner. It focuses not only on availability, but also on long-term stability, response efficiency, and usage costs, enabling both individual and team users to obtain a more reliable and smoother GPT service experience at more reasonable prices.",
-      "paymentMethods": [
-        "Alipay",
-        "Corporate Bank Transfer"
-      ]
-    },
     "sudocodechat": {
       "sourceHash": "1805722f79b3738bd8d8fca6947602f4c723458b9a6960a8c8a282cc46dc1d2a",
       "translated": true,
@@ -80,39 +70,6 @@
       "translated": true,
       "name": "吉吉不降智AI",
       "description": "The first relay service on the web focused on Codex without capability degradation.\nFor official capability-reduction mechanisms, we have developed proprietary technology that can effectively address capability degradation across various models and issues such as poor-quality outputs, allowing talented programmers to work at full capacity without obstruction. Always maintaining full, uncompromised performance and ready for any task.",
-      "paymentMethods": [
-        "USDT",
-        "WeChat",
-        "Alipay",
-        "Corporate Bank Transfer"
-      ]
-    },
-    "chiyicncom": {
-      "sourceHash": "ce777ff0569ddad845be877a86b31807e9ec580b8adad990f780e2597b905e34",
-      "translated": true,
-      "name": "词易",
-      "description": "This website focuses on GPT API relay and AI capability aggregation services, providing stable, high-speed chat, drawing, image generation, and other functions, suitable for developer integration and personal use. The platform offers fast response times, strong compatibility, and stable routing; it supports multi-model calls and convenient management, with transparent pricing and timely after-sales support to continuously ensure service availability and user experience.",
-      "paymentMethods": [
-        "WeChat",
-        "Alipay",
-        "Corporate Bank Transfer"
-      ]
-    },
-    "sidruneai": {
-      "sourceHash": "43f669ac666b328805dddb7636e4e616a71b532c0aa243e9de1e609676cef4cb",
-      "translated": true,
-      "name": "sidrune",
-      "description": "Sidrune AI is a multi-model AI access and management platform for enterprise users and individual developers. Through one account and a unified API, users can access currently available models such as GPT, Claude, Grok, DeepSeek, GLM, and Kimi, without separately managing accounts, keys, and bills for each model.\n\nThe platform provides self-operated account pools and multiple unofficial API routes. Users can choose between price-priority and stability-priority routes based on their budget and use cases. Sidrune AI is compatible with commonly used OpenAI and Anthropic interfaces, can connect to AI coding tools and clients that support custom interfaces, and can also be used through SDKs for applications, scripts, and automated workflows. Multi-route scheduling is intended to reduce the impact of fluctuations in any single route, but actual availability remains subject to the status of each route.\n\nThe model marketplace publicly displays current models, routes, and prices; the workspace provides invocation usage and cost records to help users verify spending. The platform supports usage-based balances and subscription plans, and provides RMB settlement, Chinese guides, and support. Models, prices, and available routes are subject to real-time information in the official website's model marketplace.",
-      "paymentMethods": [
-        "WeChat",
-        "Alipay"
-      ]
-    },
-    "eirouterai": {
-      "sourceHash": "881069f996a99dae4f1c11b5e20fb9227295680db2a5f23f152746191bef01ad",
-      "translated": true,
-      "name": "EiRouter",
-      "description": "Join the official TG to receive $3; test connectivity before considering a top-up: https://t.me/eirouter\nUse one account to call Claude, GPT, and Gemini. The displayed price is the settlement price, with input / output / cache billed separately and no hidden multipliers.\nFor Cursor / Claude Code / Codex, only change the base_url. Whichever official model you call is the one used; no imitation models passed off as genuine.\nNo credit card required for registration. WeChat, Alipay, USDT, and corporate payments are supported; invoices and refunds are available.\nUnused official subscription quota can be hosted; providers retain 75%, with real-time settlement on Solana and public verification: https://cloud.eirouter.ai",
       "paymentMethods": [
         "USDT",
         "WeChat",
@@ -142,6 +99,16 @@
         "Alipay"
       ]
     },
+    "sidruneai": {
+      "sourceHash": "43f669ac666b328805dddb7636e4e616a71b532c0aa243e9de1e609676cef4cb",
+      "translated": true,
+      "name": "sidrune",
+      "description": "Sidrune AI is a multi-model AI access and management platform for enterprise users and individual developers. Through one account and a unified API, users can access currently available models such as GPT, Claude, Grok, DeepSeek, GLM, and Kimi, without separately managing accounts, keys, and bills for each model.\n\nThe platform provides self-operated account pools and multiple unofficial API routes. Users can choose between price-priority and stability-priority routes based on their budget and use cases. Sidrune AI is compatible with commonly used OpenAI and Anthropic interfaces, can connect to AI coding tools and clients that support custom interfaces, and can also be used through SDKs for applications, scripts, and automated workflows. Multi-route scheduling is intended to reduce the impact of fluctuations in any single route, but actual availability remains subject to the status of each route.\n\nThe model marketplace publicly displays current models, routes, and prices; the workspace provides invocation usage and cost records to help users verify spending. The platform supports usage-based balances and subscription plans, and provides RMB settlement, Chinese guides, and support. Models, prices, and available routes are subject to real-time information in the official website's model marketplace.",
+      "paymentMethods": [
+        "WeChat",
+        "Alipay"
+      ]
+    },
     "wkapipro": {
       "sourceHash": "7bd8cd6af5a92784999b212d4a046caac4cce131a412b85a8b3a0bfcc7987edc",
       "translated": true,
@@ -163,15 +130,16 @@
         "Corporate Bank Transfer"
       ]
     },
-    "znbcodecom": {
-      "sourceHash": "146d7a158e0b04fbc28c13d0868485fabf659915abce27e99cfd22649e15dacf",
+    "eirouterai": {
+      "sourceHash": "881069f996a99dae4f1c11b5e20fb9227295680db2a5f23f152746191bef01ad",
       "translated": true,
-      "name": "ZNB.ai",
-      "description": "Mainly offers Claude/GPT/Deepseek/Grok\n[ Top-up rate: 1￥ = 1$ ]\nChatGPT - special offer [0.12x]\nChatGPT-Pro - no capability reduction [0.3x]\nznb-cc-max - special offer [1x]\ndeepseek-v4.1-flash [0.5x]\ngrok-4.7 [0.15x]",
+      "name": "EiRouter",
+      "description": "Join the official TG to receive $3; test connectivity before considering a top-up: https://t.me/eirouter\nUse one account to call Claude, GPT, and Gemini. The displayed price is the settlement price, with input / output / cache billed separately and no hidden multipliers.\nFor Cursor / Claude Code / Codex, only change the base_url. Whichever official model you call is the one used; no imitation models passed off as genuine.\nNo credit card required for registration. WeChat, Alipay, USDT, and corporate payments are supported; invoices and refunds are available.\nUnused official subscription quota can be hosted; providers retain 75%, with real-time settlement on Solana and public verification: https://cloud.eirouter.ai",
       "paymentMethods": [
         "USDT",
         "WeChat",
-        "Alipay"
+        "Alipay",
+        "Corporate Bank Transfer"
       ]
     },
     "frameflycomcn": {
@@ -241,15 +209,6 @@
         "Corporate Bank Transfer"
       ]
     },
-    "aimonikertop": {
-      "sourceHash": "c4615dcf5d29111ad5c007c4553041f7cf2087e76230e8f2f15df226342cb842",
-      "translated": true,
-      "name": "Moniker",
-      "description": "This site focuses on the CCMax pure-account version, supplemented by the Codex-Pro pure-account pool, and is committed to providing users with stable, high-quality AI API services. Currently, most users choose the CCMax group, which has received consistent praise from many users for its stable experience and pure-account performance.\nCore advantages\nStable pure-account pool\nPool stability is one of this site's greatest advantages. We maintain pure-account pools over the long term and continuously optimize availability to ensure users receive a stable and smooth experience.\n\nFast response and efficient problem resolution\nWe always put user experience first. Whether users encounter issues during use, model abnormalities, account failures, or other situations, we respond and handle them as quickly as possible, minimizing recovery time so users can use the service without worries.\n\nQuality after-sales service\nService has always been this site's greatest competitiveness. We value feedback from every user and maintain fast response, proactive communication, and efficient problem resolution, delivering every after-sales service interaction professionally and responsibly. Every customer deserves serious attention.\n\nPricing, stability, and after-sales support\nCCMax: Uses the same billing method as the official API, with RMB 1:1 top-ups, at approximately 14% of the official price.\nCodex: Prices as low as RMB 0.06, balancing cost-effectiveness and a stable experience.\nStability: Maintains a long-term availability rate of 95%+ and continuously optimizes pool quality.\nAfter-sales: Fast response and timely handling are advantages most recognized by users and service principles we have upheld over the long term.\n\nWe hope to provide not only favorable prices, but also stable account pools, reliable service, and ongoing after-sales support, allowing every user to use the service with confidence over the long term.",
-      "paymentMethods": [
-        "Alipay"
-      ]
-    },
     "9527codes": {
       "sourceHash": "9ab04f1e23a6055f7b113c1499965f00b60106561df92c152eebcc51fdc17231",
       "translated": true,
@@ -292,16 +251,17 @@
         "Corporate Bank Transfer"
       ]
     },
-    "ccgoaiclub": {
-      "sourceHash": "3e6fd720de2245c3d44f8532367c91f8af3cb8d80e2900bcd284db928f1ba9dc",
+    "cunai": {
+      "sourceHash": "224fe039b563704edd874b374c38a937a5e8ea1ec8b8829897a4a3ba3db9fdc9",
       "translated": true,
-      "name": "ccgo",
-      "description": "Background: The maintenance team was created by members with backgrounds at major technology companies, with some members maintaining it full time.\nSupported models: GPT uses a directly operated first-hand account pool. All accounts are Pro20x subscription accounts at standard pricing with billing, with a multiplier of 0.35.\nClaude models launch at a multiplier of 1.5. cctest checks https://cctest.ai/zh/status/ccgo-claude hourly and discloses the results to users.\nWe support no-reason refunds, can issue invoices, and have a registered company and corporate account.\nFor our self-operated GPT models, requests with first-token time >6s receive a 50% fee reduction; requests >30s receive a 100% fee reduction.\nFor privacy, users can configure requests to undergo local desensitization on ccgo servers before being forwarded to upstream AI models. Sensitive fragments such as email addresses, mobile phone numbers, IP addresses, API Keys, Tokens, passwords, and private keys are automatically replaced with placeholders, reducing the risk of sensitive information being mistakenly sent to upstream models.",
+      "name": "CUN.ai",
+      "description": "CUN.ai is an AI model API aggregation platform for developers and teams, providing unified access to mainstream large models such as GPT, Claude, DeepSeek, Gemini, and Qwen. Users can access multiple models through one API Key, suitable for AI application development, Agent building, product prototype validation, API testing, and internal enterprise tool integration.\nThe platform supports usage-based billing, subscription plans, balance top-ups, transparent model price displays, and other features, helping developers manage model usage costs more conveniently and reduce the cost of multi-platform account configuration and API adaptation. CUN.ai is committed to providing developers with a stable, convenient, and cost-effective large-model API access experience.",
       "paymentMethods": [
+        "USDT",
         "WeChat",
         "Alipay",
-        "Corporate bank transfer",
-        "Credit card"
+        "Corporate Bank Transfer",
+        "Credit Card"
       ]
     },
     "lianjieaitop": {
@@ -310,17 +270,6 @@
       "name": "连接AI",
       "description": "连接AI, a leading large-model invocation experience.\nHigh stability and high concurrency, without low-price, low-quality models.\n24/7 customer service, guided support, and free AI usage tutorials.",
       "paymentMethods": [
-        "WeChat",
-        "Alipay"
-      ]
-    },
-    "portalgpteamservicescom": {
-      "sourceHash": "7f513b016899df50f89cff03d0582398e8cdd41e7e5a21ca81ea57360457f710",
-      "translated": true,
-      "name": "GPTEAM",
-      "description": "Focused on providing stable and reliable GPT-series model services. The underlying infrastructure uses a pool of official Pro subscription accounts; zero failures in April, May, and June, with exceptional stability. Focused on high cost-effectiveness, with GPT-5.5 at approximately ￥1.3 / 1M Token. Provides worry-free after-sales support, including refund protection for issues such as prolonged unavailability.",
-      "paymentMethods": [
-        "USDT",
         "WeChat",
         "Alipay"
       ]
@@ -335,6 +284,28 @@
         "WeChat",
         "Alipay",
         "Corporate Bank Transfer"
+      ]
+    },
+    "portalgpteamservicescom": {
+      "sourceHash": "7f513b016899df50f89cff03d0582398e8cdd41e7e5a21ca81ea57360457f710",
+      "translated": true,
+      "name": "GPTEAM",
+      "description": "Focused on providing stable and reliable GPT-series model services. The underlying infrastructure uses a pool of official Pro subscription accounts; zero failures in April, May, and June, with exceptional stability. Focused on high cost-effectiveness, with GPT-5.5 at approximately ￥1.3 / 1M Token. Provides worry-free after-sales support, including refund protection for issues such as prolonged unavailability.",
+      "paymentMethods": [
+        "USDT",
+        "WeChat",
+        "Alipay"
+      ]
+    },
+    "znbcodecom": {
+      "sourceHash": "146d7a158e0b04fbc28c13d0868485fabf659915abce27e99cfd22649e15dacf",
+      "translated": true,
+      "name": "ZNB.ai",
+      "description": "Mainly offers Claude/GPT/Deepseek/Grok\n[ Top-up rate: 1￥ = 1$ ]\nChatGPT - special offer [0.12x]\nChatGPT-Pro - no capability reduction [0.3x]\nznb-cc-max - special offer [1x]\ndeepseek-v4.1-flash [0.5x]\ngrok-4.7 [0.15x]",
+      "paymentMethods": [
+        "USDT",
+        "WeChat",
+        "Alipay"
       ]
     },
     "logitstokencom": {
@@ -360,17 +331,15 @@
         "Credit card"
       ]
     },
-    "haoai": {
-      "sourceHash": "4bc2b4f230f4fc57721b8bd329fc7fe04dffa4f35fa7e7b8d9d38da0b6477ca2",
+    "fluxtokenai": {
+      "sourceHash": "a674859744116f20a3ce54f6cfa59cb91f6d0d5e0e3f6ef34e5da4d723dd5876",
       "translated": true,
-      "name": "hao.ai",
-      "description": "hao.ai is a unified large-model API gateway for developers and teams. It supports access to mainstream AI models such as GPT, Claude, and xAI Grok through a single API Key, and is compatible with commonly used protocols and SDKs such as OpenAI, Anthropic, and xAI Grok. The platform is suitable for AI application development, coding assistants, automation tools, content generation, internal enterprise systems, and other scenarios, helping users reduce the cost of multi-model integration and maintenance.\n\nhao.ai features include OpenAI-compatible interfaces, common APIs such as Responses / Chat Completions, OpenAI Responses WebSocket persistent connection support, a web-based Chat experience, a multi-model catalog, model price comparison, model routing, failover, and invocation logs. The platform provides complete invocation detail records. Users can view the model, API Key, invocation time, input/output usage, cache usage, cache hit rate, latency, status, error information, and cost details for each request, facilitating cost accounting, troubleshooting, and usage analysis.\n\nhao.ai supports team management capabilities. Teams can centrally manage members, API Keys, wallet balances, and usage permissions, and set different budgets and limits for teams, members, or API Keys, making it suitable for multi-person collaboration and internal enterprise projects.\n\nIn terms of pricing, hao.ai uses a pay-as-you-go model. Users can use different models based on actual usage without separately maintaining accounts across multiple model platforms. The platform provides clear model pricing displays and comparisons with official reference prices, helping users evaluate costs across different models.\n\nIn terms of service, hao.ai provides Chinese documentation, API documentation, integration tutorials, and technical support, covering common development tools and clients such as Claude Code, Codex, Cursor, Cherry Studio, and Chatbox, helping users quickly complete integration and troubleshoot issues.",
+      "name": "FluxToken",
+      "description": "FluxToken is a multi-upstream aggregation access platform for developers. We do not rely on a single source: the Claude, GPT, and Grok lines each connect to multiple upstream providers with automatic failover, so fluctuations from a single upstream do not affect overall availability. Multipliers as low as 0.06x; the Claude side offers tiers from the Kiro benefit tier at 0.11x to the Max stable tier at 1.0x. Models cover the full Claude 5 series (Fable 5 / Opus 5 / Sonnet 5 / Opus 4.6–4.8), GPT-6 Astra·Sol, the GPT-5.6 series, and Grok 4.5–4.7. Image generation supports GPT-Image-2/2.5, Gemini banana, and Grok Imagine. The availability and latency of each route are published in real time on the platform, with 60 probe records available for review.",
       "paymentMethods": [
-        "USDT",
         "WeChat",
         "Alipay",
-        "Corporate bank transfer",
-        "Credit card"
+        "Credit Card"
       ]
     },
     "modcontop": {
@@ -378,16 +347,6 @@
       "translated": true,
       "name": "ModCon",
       "description": "ModCon focuses on providing one-stop aggregated relay services for Codex and Claude Code. Transparent billing and competitively priced. Stable, sufficient, and cost-effective. A relay service with integrity.",
-      "paymentMethods": [
-        "WeChat",
-        "Alipay"
-      ]
-    },
-    "aruhubcom": {
-      "sourceHash": "3ba7fd1b713b24613a720845a5631643fbc097a4d6e696131715fbdef456c446",
-      "translated": true,
-      "name": "aruhub API",
-      "description": "AruHub provides API access to models such as GPT and Claude, with transparent pricing and no hidden dilution. Its large account pool responds quickly with high stability, and billing is based on actual usage. Contact after-sales support if issues arise. Invoices are available.",
       "paymentMethods": [
         "WeChat",
         "Alipay"
@@ -430,26 +389,16 @@
       "description": "BuyToken was established in mid-2025, initially serving ToB enterprise users and now expanding to consumer users. Its account pool is stable and pricing is reasonable. Trial use is welcome.",
       "paymentMethods": []
     },
-    "fluxtokenai": {
-      "sourceHash": "a674859744116f20a3ce54f6cfa59cb91f6d0d5e0e3f6ef34e5da4d723dd5876",
+    "ccgoaiclub": {
+      "sourceHash": "3e6fd720de2245c3d44f8532367c91f8af3cb8d80e2900bcd284db928f1ba9dc",
       "translated": true,
-      "name": "FluxToken",
-      "description": "FluxToken is a multi-upstream aggregation access platform for developers. We do not rely on a single source: the Claude, GPT, and Grok lines each connect to multiple upstream providers with automatic failover, so fluctuations from a single upstream do not affect overall availability. Multipliers as low as 0.06x; the Claude side offers tiers from the Kiro benefit tier at 0.11x to the Max stable tier at 1.0x. Models cover the full Claude 5 series (Fable 5 / Opus 5 / Sonnet 5 / Opus 4.6–4.8), GPT-6 Astra·Sol, the GPT-5.6 series, and Grok 4.5–4.7. Image generation supports GPT-Image-2/2.5, Gemini banana, and Grok Imagine. The availability and latency of each route are published in real time on the platform, with 60 probe records available for review.",
+      "name": "ccgo",
+      "description": "Background: The maintenance team was created by members with backgrounds at major technology companies, with some members maintaining it full time.\nSupported models: GPT uses a directly operated first-hand account pool. All accounts are Pro20x subscription accounts at standard pricing with billing, with a multiplier of 0.35.\nClaude models launch at a multiplier of 1.5. cctest checks https://cctest.ai/zh/status/ccgo-claude hourly and discloses the results to users.\nWe support no-reason refunds, can issue invoices, and have a registered company and corporate account.\nFor our self-operated GPT models, requests with first-token time >6s receive a 50% fee reduction; requests >30s receive a 100% fee reduction.\nFor privacy, users can configure requests to undergo local desensitization on ccgo servers before being forwarded to upstream AI models. Sensitive fragments such as email addresses, mobile phone numbers, IP addresses, API Keys, Tokens, passwords, and private keys are automatically replaced with placeholders, reducing the risk of sensitive information being mistakenly sent to upstream models.",
       "paymentMethods": [
         "WeChat",
         "Alipay",
-        "Credit Card"
-      ]
-    },
-    "newapidragon3apicom": {
-      "sourceHash": "c54631a81eff0d73c9d4e2149e0735ec35bc37f2b41997aad00d61550a2d1423",
-      "translated": true,
-      "name": "DragonAPI",
-      "description": "DragonAPI · Large-model API relay\n\nFocused on providing cost-effective large-model interface services for developers. One account connects to mainstream models, with interfaces fully compatible with the OpenAI standard. Simply change the base_url to use it, with no code changes required.\n\nPrice advantage\nBilled at 0.03x the official rate: US$1 in on-site credit is approximately equivalent to US$33 of official usage. The same budget can achieve over 30 times the usage. Usage-based billing means you are charged only for what you use, with no monthly fee or plan, so you do not pay for idle credit.\n\nStability\nDedicated-line clusters with direct connectivity, multi-node load balancing, and no queuing or disconnections under high concurrency. Native direct interface connections without intermediate conversion layers, with response speed matching the official service.\n\nTransparent and verifiable\nDashboard bills update in real time, with every call's model, token consumption, and charged amount fully traceable. Spending details are clear at a glance, with no hidden charges.\n\nTop up and use immediately\nRecharge using redemption codes, credited in seconds, with credit permanently valid and never cleared. Multiple denominations are available for top-ups as needed.\n\nBroad compatibility\nWorks out of the box with mainstream development tools including VS Code, Cursor, Cherry Studio, Claude Code, and the Codex native client. Complete documentation is provided, enabling beginners to integrate in minutes by following the documentation.\n\nAfter-sales support\nLong-term operation with responses available for issues at any time. For any integration issue, contact support directly for assistance troubleshooting until calls work normally.",
-      "paymentMethods": [
-        "WeChat",
-        "Alipay",
-        "Corporate bank transfer"
+        "Corporate bank transfer",
+        "Credit card"
       ]
     },
     "mirgotop": {
@@ -462,13 +411,17 @@
         "Alipay"
       ]
     },
-    "apimodelscubecom": {
-      "sourceHash": "51f62a13408e5483ae9d931d42c178d2071b678f46ee7a0346636b9063643672",
+    "haoai": {
+      "sourceHash": "4bc2b4f230f4fc57721b8bd329fc7fe04dffa4f35fa7e7b8d9d38da0b6477ca2",
       "translated": true,
-      "name": "模方",
-      "description": "Modelscube is a one-stop AI model API platform covering multiple types of large models, with stable routes, low rates, rapid response, 24/7 online after-sales support, and suitability for commercial development scenarios.",
+      "name": "hao.ai",
+      "description": "hao.ai is a unified large-model API gateway for developers and teams. It supports access to mainstream AI models such as GPT, Claude, and xAI Grok through a single API Key, and is compatible with commonly used protocols and SDKs such as OpenAI, Anthropic, and xAI Grok. The platform is suitable for AI application development, coding assistants, automation tools, content generation, internal enterprise systems, and other scenarios, helping users reduce the cost of multi-model integration and maintenance.\n\nhao.ai features include OpenAI-compatible interfaces, common APIs such as Responses / Chat Completions, OpenAI Responses WebSocket persistent connection support, a web-based Chat experience, a multi-model catalog, model price comparison, model routing, failover, and invocation logs. The platform provides complete invocation detail records. Users can view the model, API Key, invocation time, input/output usage, cache usage, cache hit rate, latency, status, error information, and cost details for each request, facilitating cost accounting, troubleshooting, and usage analysis.\n\nhao.ai supports team management capabilities. Teams can centrally manage members, API Keys, wallet balances, and usage permissions, and set different budgets and limits for teams, members, or API Keys, making it suitable for multi-person collaboration and internal enterprise projects.\n\nIn terms of pricing, hao.ai uses a pay-as-you-go model. Users can use different models based on actual usage without separately maintaining accounts across multiple model platforms. The platform provides clear model pricing displays and comparisons with official reference prices, helping users evaluate costs across different models.\n\nIn terms of service, hao.ai provides Chinese documentation, API documentation, integration tutorials, and technical support, covering common development tools and clients such as Claude Code, Codex, Cursor, Cherry Studio, and Chatbox, helping users quickly complete integration and troubleshoot issues.",
       "paymentMethods": [
-        "Alipay"
+        "USDT",
+        "WeChat",
+        "Alipay",
+        "Corporate bank transfer",
+        "Credit card"
       ]
     },
     "apitopcom": {
@@ -503,17 +456,25 @@
         "Alipay"
       ]
     },
-    "modelsellcom": {
-      "sourceHash": "f5069459f5df8a07e48b8d0006fc141443e9232557ac2ec1a6be84eb175b600c",
+    "aruhubcom": {
+      "sourceHash": "3ba7fd1b713b24613a720845a5631643fbc097a4d6e696131715fbdef456c446",
       "translated": true,
-      "name": "Modelsell",
-      "description": "Enterprise-grade Models unified API gateway, providing unified access to OpenAI, Claude, Gemini, DeepSeek, and private channels, along with shared keys, billing, failover routing, and real-time request visibility. Discounts as low as 50% off.",
+      "name": "aruhub API",
+      "description": "AruHub provides API access to models such as GPT and Claude, with transparent pricing and no hidden dilution. Its large account pool responds quickly with high stability, and billing is based on actual usage. Contact after-sales support if issues arise. Invoices are available.",
       "paymentMethods": [
-        "USDT",
+        "WeChat",
+        "Alipay"
+      ]
+    },
+    "chiyicncom": {
+      "sourceHash": "ce777ff0569ddad845be877a86b31807e9ec580b8adad990f780e2597b905e34",
+      "translated": true,
+      "name": "词易",
+      "description": "This website focuses on GPT API relay and AI capability aggregation services, providing stable, high-speed chat, drawing, image generation, and other functions, suitable for developer integration and personal use. The platform offers fast response times, strong compatibility, and stable routing; it supports multi-model calls and convenient management, with transparent pricing and timely after-sales support to continuously ensure service availability and user experience.",
+      "paymentMethods": [
         "WeChat",
         "Alipay",
-        "Corporate Bank Transfer",
-        "Credit Card"
+        "Corporate Bank Transfer"
       ]
     },
     "meisgoldtop": {
@@ -543,17 +504,6 @@
         "Credit Card"
       ]
     },
-    "codekeyai": {
-      "sourceHash": "3ba2730f3123f4b2f14040557d021b957996a8dd5981f2aef78cf9bd00f9eb1f",
-      "translated": true,
-      "name": "CodeKey",
-      "description": "CodeKey is a one-stop multi-model API access platform supporting mainstream models such as OpenAI, Claude, Gemini, and DeepSeek, covering AI programming, text conversations, image generation, and multimodal applications. Compatible with mainstream API calling methods, it provides usage-based billing, intelligent routing, key management, and usage queries, making it easier for developers to access models, manage calls, and control costs.",
-      "paymentMethods": [
-        "USDT",
-        "WeChat",
-        "Alipay"
-      ]
-    },
     "apikotop": {
       "sourceHash": "bc431eec6376fb6afb6059212ae6600310caced1e20911a4f2d859e434d37547",
       "translated": true,
@@ -564,12 +514,14 @@
         "Alipay"
       ]
     },
-    "app6901top": {
-      "sourceHash": "6c4da516504bdaa02844d7cf21c0da0d58a55dcbeaae783c88118372c0a8aca6",
+    "codekeyai": {
+      "sourceHash": "3ba2730f3123f4b2f14040557d021b957996a8dd5981f2aef78cf9bd00f9eb1f",
       "translated": true,
-      "name": "Nexora",
-      "description": "Nexora provides relay services for commonly available large models on the market, values customer privacy, and does not store your data.\nOur most competitive model at present is: deepseek v4.1 flash, priced at 0.088 times the official price (less than 0.1!). Average first-token time is 5 seconds, with a total time of 15 seconds.",
+      "name": "CodeKey",
+      "description": "CodeKey is a one-stop multi-model API access platform supporting mainstream models such as OpenAI, Claude, Gemini, and DeepSeek, covering AI programming, text conversations, image generation, and multimodal applications. Compatible with mainstream API calling methods, it provides usage-based billing, intelligent routing, key management, and usage queries, making it easier for developers to access models, manage calls, and control costs.",
       "paymentMethods": [
+        "USDT",
+        "WeChat",
         "Alipay"
       ]
     },
@@ -609,15 +561,15 @@
         "Alipay"
       ]
     },
-    "apishayugpttop": {
-      "sourceHash": "679d6fa2702648e91769f2ecbcf08ffe6a17c318d465dc7827b4c2b607a5889e",
+    "newapidragon3apicom": {
+      "sourceHash": "c54631a81eff0d73c9d4e2149e0735ec35bc37f2b41997aad00d61550a2d1423",
       "translated": true,
-      "name": "蓝鲨AI",
-      "description": "We are an API relay platform focused on AI interfaces and related services, providing stable, convenient, and low-barrier model invocation services for developers, studios, and enterprise users, reducing costs and integration difficulty.\nAdvantages and features  \n- Supports a range of mainstream models and interfaces for different needs, including chat, image generation, programming, and batch processing.\n- Simple integration and compatibility with common API formats make migration and deployment convenient.\n- Stable nodes and fast response speeds, suitable for personal projects, automation tools, and commercial applications.\n- Provides usage queries, balance management, and usage records for clear and transparent spending.\n- Dedicated personnel handle pre-sales and after-sales issues, enabling timely feedback and follow-up for interface exceptions.\n- Values user privacy and data security, with standardized management of account and invocation information.\nPricing and stability\nThe platform uses transparent and reasonable billing. Prices may be adjusted based on upstream model costs, exchange rates, and market changes. We aim to keep pricing stable and avoid frequent fluctuations; if upstream costs change, notice will be provided in advance. The platform continuously optimizes routes and interface quality to maintain service availability and continuity.\nRefund policy\nRefunds are supported. Users may contact customer service to apply for handling in cases such as platform failures, long-term interface unavailability, duplicate top-ups, or other situations meeting refund conditions. Unused balances can generally be refunded according to the circumstances; fees already incurred will be calculated based on usage records. Specific refund rules are subject to platform announcements and customer service review results.\nUsers with needs for model invocation, API integration, or project deployment are welcome to try the service and collaborate.",
+      "name": "DragonAPI",
+      "description": "DragonAPI · Large-model API relay\n\nFocused on providing cost-effective large-model interface services for developers. One account connects to mainstream models, with interfaces fully compatible with the OpenAI standard. Simply change the base_url to use it, with no code changes required.\n\nPrice advantage\nBilled at 0.03x the official rate: US$1 in on-site credit is approximately equivalent to US$33 of official usage. The same budget can achieve over 30 times the usage. Usage-based billing means you are charged only for what you use, with no monthly fee or plan, so you do not pay for idle credit.\n\nStability\nDedicated-line clusters with direct connectivity, multi-node load balancing, and no queuing or disconnections under high concurrency. Native direct interface connections without intermediate conversion layers, with response speed matching the official service.\n\nTransparent and verifiable\nDashboard bills update in real time, with every call's model, token consumption, and charged amount fully traceable. Spending details are clear at a glance, with no hidden charges.\n\nTop up and use immediately\nRecharge using redemption codes, credited in seconds, with credit permanently valid and never cleared. Multiple denominations are available for top-ups as needed.\n\nBroad compatibility\nWorks out of the box with mainstream development tools including VS Code, Cursor, Cherry Studio, Claude Code, and the Codex native client. Complete documentation is provided, enabling beginners to integrate in minutes by following the documentation.\n\nAfter-sales support\nLong-term operation with responses available for issues at any time. For any integration issue, contact support directly for assistance troubleshooting until calls work normally.",
       "paymentMethods": [
-        "USDT",
         "WeChat",
-        "Alipay"
+        "Alipay",
+        "Corporate bank transfer"
       ]
     },
     "loopusaicom": {
@@ -629,15 +581,17 @@
         "Alipay"
       ]
     },
-    "shanmaoapicom": {
-      "sourceHash": "63f8603dcc9750b80b27f6940aae37dcb390e2cc4a64e3fd5dce0100b3f27efa",
+    "modelsellcom": {
+      "sourceHash": "f5069459f5df8a07e48b8d0006fc141443e9232557ac2ec1a6be84eb175b600c",
       "translated": true,
-      "name": "尚猫中心",
-      "description": "Provides stable, low-cost, easy-to-integrate AI API relay services, supporting calls to a variety of mainstream models. No complex configuration is required; simply generate an API Key to integrate with websites, applications, bots, and automation tools. Usage-based billing, transparent balances, and clear call records make it suitable for long-term use by individual developers and teams.",
+      "name": "Modelsell",
+      "description": "Enterprise-grade Models unified API gateway, providing unified access to OpenAI, Claude, Gemini, DeepSeek, and private channels, along with shared keys, billing, failover routing, and real-time request visibility. Discounts as low as 50% off.",
       "paymentMethods": [
         "USDT",
         "WeChat",
-        "Alipay"
+        "Alipay",
+        "Corporate Bank Transfer",
+        "Credit Card"
       ]
     },
     "vovokeycom": {
@@ -689,6 +643,15 @@
         "WeChat",
         "Alipay",
         "Corporate bank transfer"
+      ]
+    },
+    "bajieapicom": {
+      "sourceHash": "c99dca26637425328db99f245ae467fcc1be34237a00ba8a2ad4f428cc3d2c87",
+      "translated": true,
+      "name": "八戒API",
+      "description": "We focus on providing stable, cost-effective AI API relay services and currently support popular models including GPT-5.5, GPT-5.6 Sol, Terra, Luna, and GPT Image 2. The platform uses multi-upstream primary and backup routes with intelligent failover, balancing response speed, success rate, and usage cost. Pricing is public and transparent, with input, output, and cache fees clearly listed and no hidden charges. The interface is compatible with mainstream OpenAI request formats and can be quickly integrated with ChatGPT clients, Codex, and various development tools. Whether for daily chat, programming, batch tasks, or image generation, it provides a smooth, stable, and worry-free experience. New users can try it with a small amount, and professional customer service is available to respond at any time.",
+      "paymentMethods": [
+        "Alipay"
       ]
     },
     "a6apicom": {
@@ -743,19 +706,6 @@
       "description": "All domestic models at 0.05x from the true source; Gemini anti-gravity at 0.15x.\n✅ Full DeepSeek series — 0.05x  ✅ Full GLM series — 0.05x  ✅ Kimi — 0.05x\n🔥 Millisecond-level first token, 🔥 stable, fast, high quality  🔥 ultra-low prices for batch processing  🔥 tens-of-millions-level concurrency\nSupports free small-scale testing",
       "paymentMethods": []
     },
-    "cunai": {
-      "sourceHash": "224fe039b563704edd874b374c38a937a5e8ea1ec8b8829897a4a3ba3db9fdc9",
-      "translated": true,
-      "name": "CUN.ai",
-      "description": "CUN.ai is an AI model API aggregation platform for developers and teams, providing unified access to mainstream large models such as GPT, Claude, DeepSeek, Gemini, and Qwen. Users can access multiple models through one API Key, suitable for AI application development, Agent building, product prototype validation, API testing, and internal enterprise tool integration.\nThe platform supports usage-based billing, subscription plans, balance top-ups, transparent model price displays, and other features, helping developers manage model usage costs more conveniently and reduce the cost of multi-platform account configuration and API adaptation. CUN.ai is committed to providing developers with a stable, convenient, and cost-effective large-model API access experience.",
-      "paymentMethods": [
-        "USDT",
-        "WeChat",
-        "Alipay",
-        "Corporate Bank Transfer",
-        "Credit Card"
-      ]
-    },
     "apihangzhalecom": {
       "sourceHash": "4f33a58ed8c209ad202a9c7522b0149a7bbdd51869e03672e352fb524990217a",
       "translated": true,
@@ -800,11 +750,20 @@
         "Credit card"
       ]
     },
-    "bajieapicom": {
-      "sourceHash": "c99dca26637425328db99f245ae467fcc1be34237a00ba8a2ad4f428cc3d2c87",
+    "apimodelscubecom": {
+      "sourceHash": "51f62a13408e5483ae9d931d42c178d2071b678f46ee7a0346636b9063643672",
       "translated": true,
-      "name": "八戒API",
-      "description": "We focus on providing stable, cost-effective AI API relay services and currently support popular models including GPT-5.5, GPT-5.6 Sol, Terra, Luna, and GPT Image 2. The platform uses multi-upstream primary and backup routes with intelligent failover, balancing response speed, success rate, and usage cost. Pricing is public and transparent, with input, output, and cache fees clearly listed and no hidden charges. The interface is compatible with mainstream OpenAI request formats and can be quickly integrated with ChatGPT clients, Codex, and various development tools. Whether for daily chat, programming, batch tasks, or image generation, it provides a smooth, stable, and worry-free experience. New users can try it with a small amount, and professional customer service is available to respond at any time.",
+      "name": "模方",
+      "description": "Modelscube is a one-stop AI model API platform covering multiple types of large models, with stable routes, low rates, rapid response, 24/7 online after-sales support, and suitability for commercial development scenarios.",
+      "paymentMethods": [
+        "Alipay"
+      ]
+    },
+    "aimonikertop": {
+      "sourceHash": "c4615dcf5d29111ad5c007c4553041f7cf2087e76230e8f2f15df226342cb842",
+      "translated": true,
+      "name": "Moniker",
+      "description": "This site focuses on the CCMax pure-account version, supplemented by the Codex-Pro pure-account pool, and is committed to providing users with stable, high-quality AI API services. Currently, most users choose the CCMax group, which has received consistent praise from many users for its stable experience and pure-account performance.\nCore advantages\nStable pure-account pool\nPool stability is one of this site's greatest advantages. We maintain pure-account pools over the long term and continuously optimize availability to ensure users receive a stable and smooth experience.\n\nFast response and efficient problem resolution\nWe always put user experience first. Whether users encounter issues during use, model abnormalities, account failures, or other situations, we respond and handle them as quickly as possible, minimizing recovery time so users can use the service without worries.\n\nQuality after-sales service\nService has always been this site's greatest competitiveness. We value feedback from every user and maintain fast response, proactive communication, and efficient problem resolution, delivering every after-sales service interaction professionally and responsibly. Every customer deserves serious attention.\n\nPricing, stability, and after-sales support\nCCMax: Uses the same billing method as the official API, with RMB 1:1 top-ups, at approximately 14% of the official price.\nCodex: Prices as low as RMB 0.06, balancing cost-effectiveness and a stable experience.\nStability: Maintains a long-term availability rate of 95%+ and continuously optimizes pool quality.\nAfter-sales: Fast response and timely handling are advantages most recognized by users and service principles we have upheld over the long term.\n\nWe hope to provide not only favorable prices, but also stable account pools, reliable service, and ongoing after-sales support, allowing every user to use the service with confidence over the long term.",
       "paymentMethods": [
         "Alipay"
       ]
@@ -815,6 +774,26 @@
       "name": "LoopAPI",
       "description": "Loop API provides one-stop API access to video, audio, image, and text models. It is deployed across dual sites in Chengdu and Tokyo, with traffic routed by region to improve web access for domestic users. It offers a wide selection of video models, with competitive upstream resources and pricing, and supports per-use or per-second billing by model and specification. Beginner tutorials and API documentation are provided, along with integration guidance, troubleshooting, and after-sales support, so developers and creators can receive assistance from initial integration through daily use.",
       "paymentMethods": [
+        "Alipay"
+      ]
+    },
+    "app6901top": {
+      "sourceHash": "6c4da516504bdaa02844d7cf21c0da0d58a55dcbeaae783c88118372c0a8aca6",
+      "translated": true,
+      "name": "Nexora",
+      "description": "Nexora provides relay services for commonly available large models on the market, values customer privacy, and does not store your data.\nOur most competitive model at present is: deepseek v4.1 flash, priced at 0.088 times the official price (less than 0.1!). Average first-token time is 5 seconds, with a total time of 15 seconds.",
+      "paymentMethods": [
+        "Alipay"
+      ]
+    },
+    "shanmaoapicom": {
+      "sourceHash": "63f8603dcc9750b80b27f6940aae37dcb390e2cc4a64e3fd5dce0100b3f27efa",
+      "translated": true,
+      "name": "尚猫中心",
+      "description": "Provides stable, low-cost, easy-to-integrate AI API relay services, supporting calls to a variety of mainstream models. No complex configuration is required; simply generate an API Key to integrate with websites, applications, bots, and automation tools. Usage-based billing, transparent balances, and clear call records make it suitable for long-term use by individual developers and teams.",
+      "paymentMethods": [
+        "USDT",
+        "WeChat",
         "Alipay"
       ]
     },
@@ -1797,6 +1776,259 @@
       "description": "Brother Sun's site.",
       "paymentMethods": []
     },
+    "mzlonetop": {
+      "sourceHash": "66a380e3a4fca1e4b847b0bc4e2c5b5b12be1e6d0b8546c5052b3782b360e4d1",
+      "translated": true,
+      "name": "AIMZ",
+      "description": "AIMZ is an AI aggregation gateway for enterprises and developers. Say goodbye to official subscription issues and account suspension problems, with prices at least 90% lower than official pricing. Unified access to Claude, GPT, Gemini, and domestic large models — enjoy discounted channel pricing and multi-channel redundancy ensuring 99.9% availability. Top-ups can receive up to a 20% discount, suitable for frequent use!",
+      "paymentMethods": [
+        "WeChat",
+        "Alipay",
+        "Corporate bank transfer"
+      ]
+    },
+    "2apirkai6com": {
+      "sourceHash": "35ac5956a3598295d6fd696e41ef678752d98fe6219339693c30cff145a344c0",
+      "translated": true,
+      "name": "RK AI",
+      "description": "Full-capacity ChatGPT Pro 20x account pool: a GPT access service for individuals, developers, and teams. Credits have no time limit and support OpenAI-compatible APIs, AI clients, CLI, and integration with common development tools.\n1. After new users register and log in, they directly receive a $5 trial credit, allowing them to try before topping up.\n2. Full-capacity account pool: a high-quality ChatGPT Pro 20x account pool, suitable for long-term frequent use, development testing, and daily AI workflows.\n3. Official multiplier: official 1x multiplier throughout, with no hidden multipliers or inflated claims; balances are deducted based on actual usage.\n4. Credits do not expire: topped-up balances remain valid long-term and can be used at any time, suitable for long-term use by individuals, developers, and teams.",
+      "paymentMethods": []
+    },
+    "ususclaudeus": {
+      "sourceHash": "d5dbf60caa05c40445cfb71a1919e07d0a4be3fb49405068a04eb1dbc95df04a",
+      "translated": true,
+      "name": "Flux AI",
+      "description": "Connect to 300+ AI models worldwide through an enterprise-grade aggregation platform.\nOne API for access to leading models from OpenAI, Anthropic, Google, and more. Lower cost, higher availability, and faster responses.\n🇨🇳 Controlled by a central state-owned enterprise | Strong capabilities | Long-term stable service assurance",
+      "paymentMethods": []
+    },
+    "chunxueapicom": {
+      "sourceHash": "936e4d01ce2973d32778c8baeb9c05f4903fb940c8ac9bc0ec4d526a2e1db2e3",
+      "translated": true,
+      "name": "ChunXue API",
+      "description": "ChunXue API is an API relay and access service platform for developers and individual users, designed to provide stable, high-quality tokens and access overseas large models with one key. It uses physical servers with 1G high bandwidth to ensure stable request forwarding and response speeds, with transparent pricing and no hidden multiplier adjustments.",
+      "paymentMethods": []
+    },
+    "bossclaworg": {
+      "sourceHash": "ebbd407bbc3d3af09229de7e25df58ad1f6db710b176e82edee9a8c69761143b",
+      "translated": true,
+      "name": "BossClaw",
+      "description": "Shrimp Boss API: a stable, high-speed LLM interface distribution network. Provides global developers with direct OpenAI & Anthropic access without a VPN and with account-suspension resistance. Friendly to the China region and supports WeChat/Alipay payments.",
+      "paymentMethods": []
+    },
+    "easytokencom": {
+      "sourceHash": "aeeb3102964f1078764f85b56c83b8952e58aad126f3db11c294b65a81b4eaa9",
+      "translated": true,
+      "name": "EasyToken",
+      "description": "Easy Token is a large-model API aggregation platform for developers and enterprises, supporting one-stop access to mainstream models including GPT, Claude, Gemini, DeepSeek, and Qwen. The platform is compatible with OpenAI and Claude APIs, allowing unified calls with a single API Key, low integration costs, and simple migration. Pricing is transparent and usage-based, with no subscription fee; top-up packages also include bonuses, and balances remain valid long-term. The service is stable and reliable, supports multi-model routing and failover, provides usage statistics, billing details, API Key management, and timely after-sales and customer support to help teams use AI capabilities with greater peace of mind.",
+      "paymentMethods": []
+    },
+    "cohorsaifun": {
+      "sourceHash": "735abe933a65fac20ff23b245e9a36d53a70da5846c9ddbfad243a05464dc74a",
+      "translated": true,
+      "name": "CohorsAI",
+      "description": "",
+      "paymentMethods": []
+    },
+    "aitokencomcn": {
+      "sourceHash": "1c8b68c936baa138ceb5a5be2f2bb3e611ff518eae68e8ff3a249537207fb030",
+      "translated": true,
+      "name": "NewPowers",
+      "description": "",
+      "paymentMethods": []
+    },
+    "aizhihuichat": {
+      "sourceHash": "2dde470ab418c362f0e71ff4b694bc80dc5b73c0a54af81f6f14581deadbea52",
+      "translated": true,
+      "name": "织绘AI",
+      "description": "",
+      "paymentMethods": []
+    },
+    "tokenmixai": {
+      "sourceHash": "c19da7cbfd8053e9f640f8d292d792c2b696121091798bdd312af67ac56c4594",
+      "translated": true,
+      "name": "TokenMix",
+      "description": "Zero barrier for all models. Use your language and currently supported payment methods to access mainstream AI models. Compatible with OpenAI-style SDKs, with low migration costs.\n1. Unified API: Use models from OpenAI, Anthropic, Google, Meta, and more through one OpenAI-style endpoint.\n2. Native support for six languages: English, Chinese, Japanese, Korean, Spanish, and French. Every developer can use it in their native language.\n3. Transparent billing: Clear model pricing is displayed; pay only for actual API usage.\n4. Security controls: API Keys, account controls, and clear usage records. Your data will not be used for model training.",
+      "paymentMethods": []
+    },
+    "latixai": {
+      "sourceHash": "11c182d18293a93d4db356fbacf060eaad826d0b5ad65b425628ac6aed067ad9",
+      "translated": true,
+      "name": "Latix",
+      "description": "Latix | AI compute scheduling platform\nA unified entry point for all AI categories. Aggregates multiple large models including OpenAI, Claude, Gemini, and DeepSeek. Intelligent routing can save 30%-60% in costs, supports automatic failover, and requires no code changes.",
+      "paymentMethods": []
+    },
+    "thestocklistsite": {
+      "sourceHash": "d8f1d4e2761a83ed66666ef36dd910caa7d25eed19ad8f851fef2429c9dcc442",
+      "translated": true,
+      "name": "Flux API",
+      "description": "Core platform advantages\nFull-capacity output: Solemnly committed! All listed models are official native full-capacity versions, with no dilution or capability reduction, ensuring the highest-quality contextual feedback.\nSupports model testing: Real gold fears no fire! The platform is fully compatible with various mainstream large-model authenticity testing tools (such as Luxun Test and Ruozhiba Test), making verification easy.\nCodex direct integration: Minimalist development! Supports seamless model integration directly via the codex method, greatly lowering integration barriers and improving development efficiency.",
+      "paymentMethods": []
+    },
+    "aixem8k5top": {
+      "sourceHash": "b3da3c826a798dd5a503468a79fb11c4f10a8281260cd07e8a65fb5ff92eacc4",
+      "translated": true,
+      "name": "xem中转站",
+      "description": "xem API is an AI model access platform for developers, currently supporting the full GPT model lineup. All account pools consist of paid subscription accounts.\nNo dilution, no speed limits, and no concurrency limits; all billing is transparent, and invoices are supported.\nDedicated groups are also available for paid users to ensure stable use by paid users.\nCompatible with OpenAI-style APIs, making it convenient to integrate with existing applications, scripts, and automation workflows; also suitable for rapid implementation in team collaboration and project delivery scenarios.\nAn ultra-low-cost image2 API is also available, supporting online web use and API calls.",
+      "paymentMethods": []
+    },
+    "sub2apidaw111asia": {
+      "sourceHash": "856ea0d95a0d8f0cf3c478ecc551d0c513e7a37b1418ca0741c484a9b53b78f6",
+      "translated": true,
+      "name": "大王",
+      "description": "Ultra-low-cost relay service, with mixed Claude models reverse-engineered from web-based models accessible in the Middle East, Japan, and other overseas regions, using free or low-cost registration-granted Claude quotas. However, because it is a reverse-engineered model API similar to Cursor Document AI, extensive prompts, tool-calling logic, usage methods, injected MD documents, injected requirements specifications, and more are added to the relay. It may therefore appear as a non-Claude model on some testing websites, though this website's test score is 89, with points deducted only for the model fingerprint. Evaluate models by capability, not scores; testing shows the model has very strong programming capabilities.\nGoogle Chrome may show an error or danger warning; Microsoft Edge can be used instead.\nTop-up: 1R=1$; Claude models have a 0.7 multiplier, limited to the three Claude models opus4.6, sonnet4.6, and opus4.7.\nAdditionally, this site supports full-capacity official-account gpt5.5 and 5.4 models.",
+      "paymentMethods": []
+    },
+    "apifrontierintelligencetech": {
+      "sourceHash": "1cdffd50f5ca5e5aa6213a03945355c45e3c1a04b8355160a050e0efca0e4336",
+      "translated": true,
+      "name": "Frontier Intelligence",
+      "description": "Frontier Intelligence is an efficient and stable AI model API relay platform, primarily serving research-related clients in Hong Kong and Singapore.\nA single API Key provides access to mainstream frontier models and tools including OpenAI, Claude, DeepSeek, Kimi, Claude Code, OpenClaw, and Hermes Agent.\nThe site commits not to use any unofficial channels, retain user data, or sell user data.",
+      "paymentMethods": [
+        "WeChat",
+        "Alipay",
+        "Corporate bank transfer",
+        "Credit card"
+      ]
+    },
+    "onenodespace": {
+      "sourceHash": "b51079d4a940a310b0b584b67910e26c9f8aebd32a0205ff77ad4e80b1b7ff80",
+      "translated": true,
+      "name": "OneNode API",
+      "description": "This platform provides developers with convenient API relay solutions, including Open AI, Gemini, and Claude series models, simplifying cross-environment interface calls and supporting mainstream development frameworks. Billing multipliers are all set at 1x; the service is stable and reliable, provides detailed documentation and technical support, and offers accurate and transparent usage statistics, making it a reliable assistant for development scenarios.",
+      "paymentMethods": []
+    },
+    "aicostxyz": {
+      "sourceHash": "09de290a3c586163b5ba15bc6d676131f6d2e63eb255ce9bf88a24d1bcb34331",
+      "translated": true,
+      "name": "aicost",
+      "description": "GPT pricing is very low, with a 0.095 multiplier. Self-testing is supported, as are self-managed account pools and Plus account pools. Claude is currently relayed through codex; the main selling point is still GPT models, which have a price advantage — it is simply cheap.",
+      "paymentMethods": []
+    },
+    "apiyueglecom": {
+      "sourceHash": "debf38f72e3b4a22621c6d38773c8c8d8c1b3af16a7c93d4b0f1fb8e3a4f36b9",
+      "translated": true,
+      "name": "Yuegle_API",
+      "description": "?............................................................ Currently, all Claude models are official-relay series and support all parameters including system, temperature, max_tokens, top_p, and more.",
+      "paymentMethods": []
+    },
+    "kelaiapicc": {
+      "sourceHash": "9cc92a81e7f76f81c32d834f7b4f447e7b9f75b42d3314c8ff8f7afcbd06c87f",
+      "translated": true,
+      "name": "kelai",
+      "description": "kelaiapi focuses on full-capacity Max account pools, including standard and high-concurrency Max groups, as well as externally connectable Max account-pool groups. It provides full-capacity Max account pools at appropriate prices. In addition, codex can connect externally to Pro account pools, among others.",
+      "paymentMethods": []
+    },
+    "boluotokencom": {
+      "sourceHash": "bfc062cda7c32be3febdb11af3cdc00d5df9499f3152c15d867eb59c2398b3df",
+      "translated": true,
+      "name": "BoLuo_AI中转服务",
+      "description": "1. User data security\nFull Alibaba Cloud server infrastructure + firewall; commits not to sell data to third parties for distillation.\n2. Pure models, transparent pricing\n100% model purity; multipliers will never be secretly changed; what you see is what you get.\n3. Always comfortable to use\nCurrently improves network speed through methods including edge acceleration and domestic forwarding.",
+      "paymentMethods": []
+    },
+    "unity2ai": {
+      "sourceHash": "f873314447845e0129571bba124d4a1bc104c6c2da80e42fd4e3e41053480e17",
+      "translated": true,
+      "name": "unity2",
+      "description": "**Unity2.ai** is an AI API and bundled-plan platform for developers, teams, enterprises, and individual users. It has long served leading domestic enterprises, handles over **30 billion tokens** in daily calls, and supports high concurrency at the **5000 RPM** level. A single account can manage the costs of calls across multiple models, making it suitable for frequent individual use, centralized team procurement, and long-term enterprise integration. It has now integrated sponsors of the sub2api project, with proven capabilities. Many models are available to choose from, and fable has made a strong return!",
+      "paymentMethods": [
+        "WeChat",
+        "Alipay"
+      ]
+    },
+    "sunnyraecn": {
+      "sourceHash": "24b1a60fb1aa29355f801dc0bd4cf78d068da8cd32c19eac4fc059fb19e316e5",
+      "translated": true,
+      "name": "SunnyRae AI",
+      "description": "SunnyRae AI relay service, focused on domestic direct access to GPT and Codex, with stable routes, transparent pricing, and clear tutorials. The site operator is enthusiastically available to help whenever possible, providing technical support for configuration, calls, troubleshooting errors, and more, so beginners can avoid common pitfalls.",
+      "paymentMethods": []
+    },
+    "zivvpro": {
+      "sourceHash": "eddde5a8a915ed2f8f3ac5dbf64cb5e1236ce911927bbbc5189ded542460d045",
+      "translated": true,
+      "name": "ZIVV API",
+      "description": "Direct Claude MAX account pool, Antigravity account pool, and GPT account pool.\nSelf-built site, independently developed for all protocols; not a wrapper and not open source. 100% full-featured official models, with a focus on stability.",
+      "paymentMethods": [
+        "USDT",
+        "WeChat",
+        "Alipay",
+        "Corporate bank transfer",
+        "Credit card"
+      ]
+    },
+    "subsiphonlabcn": {
+      "sourceHash": "c8f6d857b0eb9920788e9f5b7914426714879123604d3b9a6bb4ba6977bd228f",
+      "translated": true,
+      "name": "siphonlab",
+      "description": "The SiphonLab sub-node is an independent service entry point built for intensive GPT usage scenarios. Originally positioned as an enterprise-only route, it has now been upgraded for both ToB and ToC scenarios.\nServices: It supports stable API access for enterprise customers, high-volume teams, and developer workflows, while also providing high-quality GPT services for frequent individual users, small teams, and professional creators.\nCore advantages:\n- 20x Pro account pool: Uses an independent resource pool composed of official full-price 20 X Pro-tier accounts to support higher quotas, stronger concurrency, and more stable long-term calls.\n- High availability: Reduces the impact of individual account rate limits, quota exhaustion, or temporary issues through multi-account scheduling, load distribution, fault isolation, and failover.\n- Full-featured capabilities: Prioritizes advanced model capabilities such as GPT-5.4, GPT-5.5, and GPT-Image-2, seeking to preserve complete workflows for context, images, tool calls, and high-quality output.\n- ToB / ToC compatibility: Enterprises can use it for business systems, automated workflows, batch processing, and dedicated API services; individual users can use it for development, content production, image generation, and Agent scenarios.\n- Independent operational chain: The sub-node has its own account pool, scheduling, billing, logs, and API Key management, facilitating dedicated enterprise services and commercial operations.\nPositioning:\nThe SiphonLab sub-node is a highly available, full-featured GPT service entry point built on a 20x Pro account pool. It can serve both enterprise-level ToB scenarios and high-quality ToC user needs.",
+      "paymentMethods": []
+    },
+    "apishiyutvcn": {
+      "sourceHash": "2680a5234b305b32cc4e0615ef94d816c8402b68f9051e62f16fed9a5228dd05",
+      "translated": true,
+      "name": "像素群岛",
+      "description": "Official-price channel procurement: Adheres to compliant procurement and does not use resources of unknown origin, abnormally cheap resources, or risky resources.\nFull-featured experience: Retains complete capabilities and stable performance, with no artificial feature cuts or downgraded configurations.\nClean relay: Does not mix in low-quality nodes, swap resources, or affect normal customer usage.\nStable and reliable: Continuously maintains service quality and strives to ensure connection stability and response efficiency.\nLong-term service: Values customer experience and does not pursue short-term, consumptive operations.",
+      "paymentMethods": []
+    },
+    "apixpluseplus": {
+      "sourceHash": "6c48d64f2581a627286f0729dab58f45c8ffdc05fdba82c3472bcccb5aa4edcc",
+      "translated": true,
+      "name": "数智AI",
+      "description": "数智 AI is a one-stop AI model API service platform for developers, AI tool users, and automation scenarios. It provides access to multiple types of models, including OpenAI, Claude, Gemini, and GPT image generation, and is compatible with mainstream OpenAI API call formats. It is suitable for chatbots, coding assistants, content generation, image generation, workflow automation, and other scenarios. The site uses multi-channel grouping and stable route configurations, supports different multipliers and high-stability group options, and offers clear pricing and flexible top-ups. It is suitable for individual developers, small teams, and rapid implementation of AI product prototypes. The platform provides online documentation, model lists, balance and call-record inquiries, and continuously improves availability, response speed, and after-sales support to help users obtain stable, easy-to-integrate AI API services at lower costs.",
+      "paymentMethods": [
+        "USDT",
+        "WeChat",
+        "Alipay"
+      ]
+    },
+    "fkclaudexyz": {
+      "sourceHash": "a80d762356371b44f9707b5b3ae15dbde9d9a6bd505151f379d1ff064ca2422d",
+      "translated": true,
+      "name": "FK Claude",
+      "description": "",
+      "paymentMethods": []
+    },
+    "apilsnowscom": {
+      "sourceHash": "c9c93a7bae8aa432470f34dbf3c1465307c2d54461ad5799b340512139a8f6dd",
+      "translated": true,
+      "name": "落雪",
+      "description": "落雪API is a one-stop AI large-model API aggregation platform that provides lightning-fast integration in 3 steps and supports ChatGPT and Claude.\nIt aims to help developers and creators build AIGC applications efficiently and at low cost, enabling automated workflows and intelligent service upgrades.\nThe platform states that it uses a 100% self-built account pool, with no tricks, no ads, and no retained chat data, providing a stable and clean API source with high cost performance.\n\nIts advantages include no need for circumvention tools, global direct access, no account-ban risk, fast request speeds, no model permission requirements, compatibility with the OpenAI interface protocol, API keys with configurable usage time and balance, 100% privacy protection, and prices far below official pricing.",
+      "paymentMethods": []
+    },
+    "growupapiltd": {
+      "sourceHash": "7eeee33b875fa24465bbd62b84627b6f291b54dff23c902ab7766042b5a2eab9",
+      "translated": true,
+      "name": "GrowUpAPI",
+      "description": "GrowUpAPI is an API relay service for AI coding users, focused on development scenarios such as Codex, Claude Code, and Gemini CLI. Its features include public and transparent pricing, clear model selection, a low barrier to getting started, and after-sales Q&A and usage support. It is suitable for individual developers and small teams that need stable interfaces and cost-effective solutions.",
+      "paymentMethods": []
+    },
+    "ephoneai": {
+      "sourceHash": "505b6a456bfc0c98f22763c9e8bba251f0668c7a014ffbdc987a91d6e1f2a86b",
+      "translated": true,
+      "name": "ePhone AI",
+      "description": "ePhone AI Introduction\nePhone AI is a professional platform focused on AI large-model API relay services. It supports stable access to leading mainstream AI models such as ChatGPT, Claude, and Gemini, supports nearly all image and video models, and is committed to providing developers, enterprises, and creators with low-cost, high-efficiency AIGC application-building solutions.\n\nSince officially launching operations in March 2024, ePhone AI has continuously provided global users with stable, clean, high-cost-performance API services through its complete technical team structure and solid infrastructure. It is one of the API relay service providers with earlier operating history and a relatively comprehensive system.\n\nCore Advantages\n🏗️ Self-built infrastructure: The platform has its own data center and integrates Cloudflare Enterprise network acceleration, ensuring connection stability and request speed from the foundation and addressing unstable relays and high latency.\n\n⚡ Enterprise-grade high-speed channels: Uses 100% enterprise high-speed dedicated channels rather than shared low-cost routes, seeking to maintain excellent response speed and availability even in high-concurrency scenarios.\n\n🔒 Privacy and security commitment: The platform states that it does not retain any chat data, has no ads or tricks, and provides 100% protection for user privacy and data security, making it suitable for enterprise customers with compliance needs.\n\n🌐 Barrier-free global direct access: No need for circumvention tools, with global direct access, no account-ban risk, compatibility with the OpenAI interface protocol, out-of-the-box use, and very low integration costs.\n\n💰 Extreme cost performance: Prices are far below official pricing. API Keys support custom usage periods and balance limits, enabling flexible cost management and adapting to diverse needs from individual developers to large enterprises.\n\nePhone AI consistently follows a technology-driven service approach and seeks to earn trust through stability, serving as a reliable AI infrastructure partner for building intelligent applications and achieving automation upgrades.",
+      "paymentMethods": []
+    },
+    "apiluoyunaicom": {
+      "sourceHash": "a2603a5c8de935710d0684bb900ad5a0d05f01b2c984775588725205ffc212c5",
+      "translated": true,
+      "name": "LUOTUNAI",
+      "description": "Luoyun AI is a platform focused on high-cost-performance AI interface services, dedicated to providing individual developers, students, self-media creators, and enterprise users with stable, high-speed, low-cost AI model calling experiences. The site focuses on low-cost access to GPT-series models, with the GPT-5.5 model priced as low as 0.15 yuan / 1M Tokens. It also supports model purity checks to ensure that interfaces are genuine and stable, rejecting capability downgrades and wrappers. The platform supports OpenAI-compatible calls, with simple integration and fast response speeds, maintains stable routes long term, and provides timely after-sales and technical assistance so users can conduct AI creation, development, and commercial use with greater confidence.",
+      "paymentMethods": []
+    },
+    "wangxiangaiorg": {
+      "sourceHash": "6073a9f2b410cc6d9dee19d949f34829cb18aa173415e41d5d4bdbe44355a65c",
+      "translated": true,
+      "name": "万象",
+      "description": "萬象 deeply aggregates 200+ flagship models including ChatGPT, Claude (fully compatible with Claude Code and Cursor), DeepSeek, and GLM5.1. Built-in globally distributed acceleration nodes eliminate network latency and disconnections under high concurrency. Fully compatible with the OpenAI protocol, enabling you to integrate powerful computing capabilities into your workflow with zero code changes.\n\n万象 provides stable Token relay, AI API relay, OpenAI relay, Claude relay, Gemini relay, model aggregation, model distribution, and unified billing services, suitable for individual developers and enterprise integration.",
+      "paymentMethods": []
+    },
+    "nbilitydev": {
+      "sourceHash": "d261c800a787137a3981b51a64145830ea72ffb1f08b148aacb2803ac63c4422",
+      "translated": true,
+      "name": "Nbility",
+      "description": "Nbility provides teams with unified access to mainstream models such as OpenAI, Claude, and Gemini, centrally handling authentication, quotas, billing, logs, and multi-device synchronization.",
+      "paymentMethods": []
+    },
     "aissgoonet": {
       "sourceHash": "67fbf9df1ecc61582f9455c0957a3d676b780f785895ec89f8bcfce589f88087",
       "translated": true,
@@ -2225,6 +2457,69 @@
       "translated": true,
       "name": "AI 365",
       "description": "AI 365 uses a self-built account pool to relay official GPT, without watering down services or privately altering multipliers, providing users with stable API services suitable for daily calls and task distribution.",
+      "paymentMethods": []
+    },
+    "apilingsuopro": {
+      "sourceHash": "c48abe956d4744ca25c3b253e96ea3c8639f4a4f96936b20679724d603063395",
+      "translated": true,
+      "name": "lingsuoAPI",
+      "description": "This platform focuses on providing large-model Token services and API access for ChatGPT, Claude, and more. It offers affordable pricing, stable data, and efficient after-sales responses, providing developers with reliable AI support.",
+      "paymentMethods": []
+    },
+    "superapibuzz": {
+      "sourceHash": "a45a28070cd214da1cbec507b0a450b5faa5148bef5c01f4ff086096bac498e6",
+      "translated": true,
+      "name": "Super API",
+      "description": "",
+      "paymentMethods": []
+    },
+    "apionlinetop": {
+      "sourceHash": "223956fa9711633beca1f827387de96eba9bc68e22cf341514f5900ea6832a65",
+      "translated": true,
+      "name": "apionline",
+      "description": "This site mainly focuses on the GPT and Claude series, with a complete selection of the latest models. Its main advantages are high cost performance, high stability, factual claims, no misrepresentation, clear pricing and billing, and clearly selectable models. It also supports refundable top-up balances and after-sales support.",
+      "paymentMethods": []
+    },
+    "apilingshuaicc": {
+      "sourceHash": "36459a68c3c9931c59943dc6e4d8a3fc1521c55736347b622062a8ebc3b9d001",
+      "translated": true,
+      "name": "灵枢AI",
+      "description": "Provides customers with low-cost, high-quality full-featured models, with backend support from outstanding graduates of the School of Software Engineering at Fudan University in Shanghai. Compare prices for the same quality and compare quality at the same price; it aims to offer only the best, not the most expensive.",
+      "paymentMethods": []
+    },
+    "apituancom": {
+      "sourceHash": "9808d4a542882edeb7461d4b65db62ad94c2d773b1ba136b6da8cbc5ba014410",
+      "translated": true,
+      "name": "APITuan",
+      "description": "GPT5.5 full-featured at 0.5 yuan/million Token! High quality at an affordable price! Welcome to try it. Contact customer service and provide the code word: hvoy, to receive trial credits. Welcome!",
+      "paymentMethods": []
+    },
+    "10veaicc": {
+      "sourceHash": "9f3a2abaf84c48849ba5d4db2d147afd3e1391165634568e2fb8ff96a22c5842",
+      "translated": true,
+      "name": "10veAI",
+      "description": "This OpenAI API relay service provides stable domestic direct access to GPT-series interface relay services, without requiring overseas network access. It offers low latency and high availability, with rapid integration for models such as GPT5.5/GPT5.4. 10-point service, fully satisfying!",
+      "paymentMethods": []
+    },
+    "tokenqyuanaicom": {
+      "sourceHash": "d48b3686063a2179491ea6f66eb88adf16ea21ea6b3e49463cf70007384d7baa",
+      "translated": true,
+      "name": "Qyuan AI",
+      "description": "Openai API proxy, Claude proxy, and enterprise large-model solution provider. During the new-site promotion period, 1 RMB: 2 USD, approximately a 1:14 top-up discount; pricing is 7% of official pricing. Everyone is welcome to try it.",
+      "paymentMethods": []
+    },
+    "happycodevip": {
+      "sourceHash": "284ab049d3dbede1797f8e999330c53857e39e6f882634d24f58d0f9586b7cb7",
+      "translated": true,
+      "name": "Happy Code",
+      "description": "Happy Code makes AI programming more enjoyable.\nUsage-based billing, ultra-low multiplier rates, servers with optimized routing across three major networks, providing high-quality API services specifically for Codex users.",
+      "paymentMethods": []
+    },
+    "hiapistore": {
+      "sourceHash": "d339a901a7e7304803b0fd52eaa37826dbb742c091ab60f12cc700ae1bba00b5",
+      "translated": true,
+      "name": "hiapi",
+      "description": "System Announcement\n\n🔥 Low-price mixed pool is now online · Transparent pricing · Ready to use upon crediting\n\n💎 On-site conversion: 1Yuan = 100 dollars\n\nSupports mainstream models such as gpt-5.4 / gpt-5.5 / Claude, with usage-based billing. Suitable for daily chat, code generation, long-context tasks, multi-turn tasks, and development testing.\n\n📌 Recommended Usage\n\n• Frequent daily use: gpt-5.4, low price and suitable for long-term use\n\n• High-quality tasks: gpt-5.5, suitable for complex questions, code, and long responses\n\n• Writing/reasoning: Claude, suitable for high-quality writing, analysis, and code scenarios\n\n💰 Pricing Details\n\n• Input, output, and cache are billed separately\n\n• Default mixed pool at 1x, with no additional markup\n\n• Prices are subject to the model pricing page and actual bill\n\n🔑 Token Purchase\n\nToken purchase/top-up: https://pay.ldxp.cn/shop/3KU925G2\n\n👥 Official Group\n\nQQ Group: 1104242619\n\nCustomer Service QQ: 3501667201\n\n⚠️ Usage Tips\n\n• It is recommended to prioritize gpt-5.4 for daily requests\n\n• For high-quality tasks, switch to gpt-5.5 or Claude\n\n• Mixed-pool resources may fluctuate slightly; for critical tasks, small-scale testing is recommended first\n\n• Balance consumption is based on actual token billing\n\nPlease note: Due to restrictions, users in some regions can only use it with a VPN.",
       "paymentMethods": []
     },
     "nexusapicn": {
@@ -2856,27 +3151,14 @@
         "Alipay"
       ]
     },
-    "juapinet": {
-      "sourceHash": "9df38f22021e71813c9ab315a694f9fc6b522aeb516f61789a379b9496a5bd90",
+    "toolcodecc": {
+      "sourceHash": "574a99156cfe063e4717f8c1fcc91fb7e1c78df4a65cf744d1d454482c5b09a8",
       "translated": false,
-      "name": "JUAPI",
-      "description": "这个中转站是真的很好用，请求速度很快，模型质量很高，不降智，输出也很稳定。之前用其他中转站经常断流、卡顿，体验很不稳定，这家基本没遇到过，能一直保持高效率输出。无论是日常对话还是长文本任务都很顺畅。模型种类齐全覆盖全部常用国产模型，而且都是官key出来高效稳定。",
+      "name": "ToolCode",
+      "description": "Tool Code is dedicated to building a high-quality relay service specifically for GPT users. Its core goal is to provide services continuously in a stable and cost-effective manner. It focuses not only on availability, but also on long-term stability, response efficiency, and usage costs, enabling both individual and team users to obtain a more reliable and smoother GPT service experience at more reasonable prices.",
       "paymentMethods": [
-        "微信",
-        "支付宝",
-        "对公转账"
-      ]
-    },
-    "token2uai": {
-      "sourceHash": "8d093802bdadc4dacc948d977dd76bff288da6d5be5b672ba6f070a1fc447a87",
-      "translated": false,
-      "name": "token2u",
-      "description": "token2u 是一家可靠、高效的 API 中转服务商，提供 Claude Code、Codex、Gemini 等多种服务的中转支持。\n\ntoken2u 约于 2024 年底至 2025 年初开始活跃，是国内较早针对 Claude Code 进行优化的服务商之一。其团队专业，客服体系与财务体系成熟，可为用户提供稳定、及时的服务保障。\n\n同时，token2u 与开源社区互动频繁，站长在 Telegram 上均十分活跃，客服响应较快。随着不断发展，token2u 已成为众多中转站的上游供应商。",
-      "paymentMethods": [
-        "微信",
-        "支付宝",
-        "对公转账",
-        "信用卡"
+        "Alipay",
+        "Corporate Bank Transfer"
       ]
     },
     "apiapi2cncom": {
@@ -2924,6 +3206,17 @@
         "信用卡"
       ]
     },
+    "juapinet": {
+      "sourceHash": "9df38f22021e71813c9ab315a694f9fc6b522aeb516f61789a379b9496a5bd90",
+      "translated": false,
+      "name": "JUAPI",
+      "description": "这个中转站是真的很好用，请求速度很快，模型质量很高，不降智，输出也很稳定。之前用其他中转站经常断流、卡顿，体验很不稳定，这家基本没遇到过，能一直保持高效率输出。无论是日常对话还是长文本任务都很顺畅。模型种类齐全覆盖全部常用国产模型，而且都是官key出来高效稳定。",
+      "paymentMethods": [
+        "微信",
+        "支付宝",
+        "对公转账"
+      ]
+    },
     "lingsuansi": {
       "sourceHash": "8aa62a67ccf401910bdc04c307236e824aac918225c99af69527ebf5ec80c235",
       "translated": false,
@@ -2936,13 +3229,6 @@
         "对公转账",
         "信用卡"
       ]
-    },
-    "aigctokencom": {
-      "sourceHash": "55e6f253356ed31b25b7ff196416e70047b9489cc1e8e03da97976235b867a6c",
-      "translated": false,
-      "name": "AIGC Token",
-      "description": "一站式搞定热门AI模型，企业级大模型供应，高并发，不同模型不同渠道不同分组，按量计费，永久有效，余额随时可退",
-      "paymentMethods": []
     },
     "hetunetop": {
       "sourceHash": "aca97d926a7edca5065dc4f21a39bf842d5ea457b01c0ee6125a4e32915a5ea4",
@@ -3005,15 +3291,12 @@
         "信用卡"
       ]
     },
-    "inaitop": {
-      "sourceHash": "54c69085650ac7d2ee2e20012bd596d71774c022d383990769f50177df75aa44",
+    "aigctokencom": {
+      "sourceHash": "55e6f253356ed31b25b7ff196416e70047b9489cc1e8e03da97976235b867a6c",
       "translated": false,
-      "name": "银河算力实验室",
-      "description": "本平台专注于开发、生产、科研及学术场景，面向对模型能力、接口稳定性与持续可用性有明确要求的用户。\n我们坚持以稳定、可靠和高质量调用体验为核心，注重模型能力的一致性与服务品质，不以低价竞争作为主要方向。\n适用于 API 接入、项目开发、系统集成、持续测试及模型研究等专业用途。",
-      "paymentMethods": [
-        "微信",
-        "支付宝"
-      ]
+      "name": "AIGC Token",
+      "description": "一站式搞定热门AI模型，企业级大模型供应，高并发，不同模型不同渠道不同分组，按量计费，永久有效，余额随时可退",
+      "paymentMethods": []
     },
     "mxzzzxyz": {
       "sourceHash": "45cd87d5bf8c08332d9fe33eee3260a5ca4d717cda8af2e71e59b127ba7d461e",
@@ -3064,323 +3347,358 @@
         "对公转账"
       ]
     },
-    "hubcorecn": {
-      "sourceHash": "3cbba49a65c04420fedaba63ac5fecf6a6c93dcbb294563fef39a1b278e04d5a",
-      "translated": false,
-      "name": "HubCore",
-      "description": "HubCore 是面向开发者的 AI API 中转服务，提供统一接入、统一计费与统一调度能力。开发者无需分别对接多家模型供应商，即可在同一平台使用 Claude、GPT、Gemini 等主流模型。\n\n统一接入 Claude、GPT、Gemini 等主流模型\n兼容 OpenAI API 生态\n支持 Codex、Claude Code、Gemini CLI 等开发工具\n平台能力\n\n多线路调度，提升可用性与访问稳定性\nToken 级透明计费，用量可核对、成本可追踪\n用量统计与模型自由选择，便于按场景切换与管控\n适用场景 个人开发、AI 编程、Agent 应用，以及需要统一管理模型调用与成本的团队项目。",
+    "niccomcomcn": {
+      "sourceHash": "8e07817cdf68ce0dd679ede529ec0026498969f48287a420c09702dc5573c2d9",
+      "translated": true,
+      "name": "niccom",
+      "description": "AI application foundation. Don't ask us how we make money—we only make friends through Tokens. Intelligence beyond expectations.\nOfficial website: https://www.niccom.com.cn\nStable token relay service platform | Long-term availability\nEfficient and worry-free, continuously updated, no disconnections\nFocused on various large-model and agent services ✨",
       "paymentMethods": [
-        "微信",
-        "支付宝"
+        "WeChat Pay",
+        "Alipay",
+        "Corporate Bank Transfer"
       ]
     },
-    "cheapaiinfo": {
-      "sourceHash": "7239e5914d1c2271cba71d27acf8e1c44616317b80fd56f3a6a31442992d8fc0",
-      "translated": false,
-      "name": "CheapAI",
-      "description": "低价 + 让所有人都用得起 GPT 最顶尖的模型\n我们的理念\n我们相信，顶尖 AI 不应该被价格挡在门外。我们的理念很简单：低价 + 让所有人都用得起 GPT 最顶尖的模型。\n绝不掺水，不限制并发，欢迎任何人对接使用",
+    "apiddtcom": {
+      "sourceHash": "7602084aee216cec17242ed285db5ce0a66da4d038062f089b7312aea79a3588",
+      "translated": true,
+      "name": "DDTokens",
+      "description": "Join Telegram(https://t.me/DDTokens) cantact admin to get ¥5 quota\nJoin the Telegram contact group (https://t.me/DDTokens) and receive a ¥5 bonus from the group owner\nSupports payment via SBP",
       "paymentMethods": [
         "USDT",
-        "微信",
-        "支付宝",
-        "对公转账",
-        "信用卡"
-      ]
-    },
-    "apiyunmengsale": {
-      "sourceHash": "68ade7b13fa97c3f07d46bc0dd4e89aab0344234742a6f3a032d723f029e4a6e",
-      "translated": false,
-      "name": "云梦",
-      "description": "云梦是一家专注 AI API 中转服务的平台，主要面向个人开发者、AI 重度用户及企业用户，提供高性价比的 OpenAI 等主流 AI 模型 API 接入\n\n相比单纯追求最低价格，云梦更注重长期可用性，通过账号池筛选、渠道监控、异常账号淘汰、故障切换以及并发控制等方式保障服务稳定运行\n\n价格保持在较低水平，同时尽量避免通过牺牲号池质量换取极限低价。对于个人用户提供低成本 API 接入，对于高频及企业用户则更注重稳定性、持续性和售后支持\n\n简单来说，云梦的定位不是最便宜的中转站，而是在价格足够低的基础上，把稳定和可用性做好",
-      "paymentMethods": [
-        "微信",
-        "支付宝"
-      ]
-    },
-    "lietiocom": {
-      "sourceHash": "645cd2f9c830d9c90e6e31c2662e2e043b228c5b59611612be76ff00cb004e43",
-      "translated": false,
-      "name": "Lietio",
-      "description": "Lietio是一家可靠高效的 API 中转服务商，有着稳定自建号池与官转资源，提供Claude Code、Codex、Gemini 等多种服务的中转站点。",
-      "paymentMethods": [
-        "USDT"
+        "Credit Card"
       ]
     },
     "tangsengapicom": {
       "sourceHash": "c343baa0b23382473dd2f90faa7a9c653356061bbdcda282507080cf4d902910",
-      "translated": false,
+      "translated": true,
       "name": "唐僧",
-      "description": "本站有 0.2 倍率 Plus 池和0.34 倍率 Pro20x 池，线路运行稳定可靠，倍率实惠，使用售后有保障。",
+      "description": "This site has a 0.2x Plus pool and a 0.34x Pro20x pool. Routes operate stably and reliably, with affordable multipliers and after-sales support.",
       "paymentMethods": [
-        "微信",
-        "支付宝"
+        "WeChat Pay",
+        "Alipay"
       ]
     },
     "toknexme": {
       "sourceHash": "f9e6beff2dea8e111ba5b2d31f99c73f9cb1a1075698fc9fbf89c91eb81addbb",
-      "translated": false,
+      "translated": true,
       "name": "Toknex",
       "description": "",
       "paymentMethods": [
-        "微信",
-        "支付宝",
-        "信用卡"
+        "WeChat Pay",
+        "Alipay",
+        "Credit Card"
+      ]
+    },
+    "hubcorecn": {
+      "sourceHash": "3cbba49a65c04420fedaba63ac5fecf6a6c93dcbb294563fef39a1b278e04d5a",
+      "translated": true,
+      "name": "HubCore",
+      "description": "HubCore is an AI API relay service for developers, providing unified access, billing, and scheduling. Developers can use mainstream models such as Claude, GPT, and Gemini on one platform without separately integrating with multiple model providers.\n\nUnified access to mainstream models such as Claude, GPT, and Gemini\nCompatible with the OpenAI API ecosystem\nSupports developer tools such as Codex, Claude Code, and Gemini CLI\nPlatform capabilities\n\nMulti-route scheduling to improve availability and access stability\nTransparent token-level billing, with verifiable usage and traceable costs\nUsage statistics and flexible model selection for switching and management by scenario\nUse cases: personal development, AI programming, Agent applications, and team projects requiring unified management of model calls and costs.",
+      "paymentMethods": [
+        "WeChat Pay",
+        "Alipay"
+      ]
+    },
+    "cheapaiinfo": {
+      "sourceHash": "7239e5914d1c2271cba71d27acf8e1c44616317b80fd56f3a6a31442992d8fc0",
+      "translated": true,
+      "name": "CheapAI",
+      "description": "Low prices + making GPT's top models accessible to everyone\nOur philosophy\nWe believe top AI should not be kept out of reach by price. Our philosophy is simple: low prices + making GPT's top models accessible to everyone.\nNo dilution, no concurrency limits; anyone is welcome to integrate and use it.",
+      "paymentMethods": [
+        "USDT",
+        "WeChat Pay",
+        "Alipay",
+        "Corporate Bank Transfer",
+        "Credit Card"
       ]
     },
     "t8apicom": {
       "sourceHash": "ae1334e177af03f7a93215e0a1573d8008351b31826e13529f80987a929d536d",
-      "translated": false,
+      "translated": true,
       "name": "T8 API",
-      "description": "T8 API 是面向 AI 应用的统一 API 网关和大模型 API 管理平台，支持多模型调用、API 密钥管理、用量统计、计费与运营管理。\nT8 API 网关包含多个可用分组,其中多分组兼顾稳定、优惠、推理性能强、性价比高等多优点",
+      "description": "T8 API is a unified API gateway and large-model API management platform for AI applications, supporting multi-model calls, API key management, usage statistics, billing, and operations management.\nThe T8 API gateway includes multiple available groups, with multi-group options offering stability, discounts, strong inference performance, and high cost-effectiveness.",
       "paymentMethods": [
-        "微信",
-        "支付宝"
+        "WeChat Pay",
+        "Alipay",
+        "Corporate Bank Transfer"
       ]
     },
     "apiykhai": {
       "sourceHash": "e34cc328173cb5c0a4ea42a5aa156592dd6e40ba15e1aadad9f0bd45ed0cc70b",
-      "translated": false,
+      "translated": true,
       "name": "YKH.AI",
-      "description": "YKH·AI\nYou Know How.\nYKH 帮你理清想法、写出内容、做出判断，并把问题推进成行动。\n我们是一家可靠高效的 API 中转服务商，自建Pro、MAX号池，提供 Claude Code、Codex、Gemini 等多种服务的中转，稳定可开票。\n最低0.125元/刀，模型价格、倍率全部按照官方模型计算，联系右下角客服领取体验额度。",
+      "description": "YKH·AI\nYou Know How.\nYKH helps you clarify ideas, write content, make decisions, and turn problems into action.\nWe are a reliable and efficient API relay service provider, with self-built Pro and MAX account pools. We provide relays for Claude Code, Codex, Gemini, and other services, with stable service and invoicing available.\nStarting from ¥0.125 per dollar; model prices and multipliers are all calculated according to official models. Contact customer service in the bottom-right corner to receive trial credits.",
       "paymentMethods": [
         "USDT",
-        "微信",
-        "支付宝",
-        "对公转账",
-        "信用卡"
+        "WeChat Pay",
+        "Alipay",
+        "Corporate Bank Transfer",
+        "Credit Card"
       ]
     },
     "tokengoodnet": {
       "sourceHash": "254bf261f3c5c22278a2443bbdb4ac69a04b836ed0d854f0b56b803190ae9a28",
-      "translated": false,
+      "translated": true,
       "name": "TokenGood",
-      "description": "面向个人与企业的一站式 AI 服务平台，主打高质量\n- 不降智，不掺水，会定期检查号池，降智的号不会放出来。\n- 大请求支持，复杂任务接得住：最高支持 128M 大请求，为复杂任务提供充足的承载空间。\n- 会话不留存，隐私更安心：不留存用户会话信息，让工作资料与创作交流更安心。\n- 开发可定制，业务能落地：提供定制开发与应用实施，让 AI 贴合实际需求，融入业务流程。\n- 计费透明，支持开票：按需充值、按量计费，消耗记录清晰可查。",
+      "description": "A one-stop AI service platform for individuals and businesses, focused on high quality.\n- No capability degradation or dilution. Account pools are checked regularly, and degraded accounts are not released.\n- Supports large requests and can handle complex tasks: supports requests up to 128M, providing ample capacity for complex tasks.\n- No conversation retention for greater privacy: user conversation information is not retained, providing greater peace of mind for work materials and creative exchanges.\n- Custom development and deployable solutions: provides custom development and application implementation to align AI with actual needs and integrate it into business workflows.\n- Transparent billing and invoicing: recharge as needed and pay by usage, with clear, traceable consumption records.",
       "paymentMethods": [
-        "微信"
+        "WeChat Pay"
       ]
     },
     "aliapicn": {
       "sourceHash": "0f3806aed9d51082ba47a6fe1081f94787f22144e0fec2d2fedda8bc981f2148",
-      "translated": false,
+      "translated": true,
       "name": "Aliapi",
-      "description": "AliAPI 是面向开发者、团队及企业的大模型 API 中转服务平台，提供 Claude、Kiro、OpenAI 等主流模型的便捷接入服务。平台采用统一标准接口，接入简单、响应高效、计费灵活，帮助用户快速完成 AI 应用开发与模型切换。\n凭借稳定的服务能力和极具竞争力的价格，OpenAI 模型低至官方价格的 0.08 倍 Cluade Max 0.75倍，有效降低模型调用成本。无论是个人项目、批量任务还是企业级应用，AliAPI 都能提供便捷、稳定且高性价比的模型服务。",
+      "description": "AliAPI is a large-model API relay service platform for developers, teams, and enterprises, offering convenient access to mainstream models such as Claude, Kiro, and OpenAI. The platform uses a unified standard interface, with simple integration, efficient responses, and flexible billing, helping users quickly develop AI applications and switch models.\nWith stable service capabilities and highly competitive prices, OpenAI models are as low as 0.08x official pricing and Cluade Max is 0.75x, effectively reducing model invocation costs. Whether for personal projects, batch tasks, or enterprise applications, AliAPI provides convenient, stable, and cost-effective model services.",
       "paymentMethods": [
-        "微信",
-        "支付宝"
+        "WeChat Pay",
+        "Alipay"
       ]
     },
     "uuapiio": {
       "sourceHash": "477cc2d9726efebf0ce307ccfc34860da47cdc14329daf9f39288df0eb68a28e",
-      "translated": false,
+      "translated": true,
       "name": "UU API",
-      "description": "由于8月初uuapi.net主域名被墙，现更换主域名为uuapi.io ，原.net域名开节点可正常使用，key无需更换。\nUU API 是面向全球开发者与企业的 AI 模型聚合平台，秉持「渠道透明、绝不掺水、绝不映射」的初心，所有模型均为官方直连或一手渠道，保证输出质量与官方一致。\n目前已为数千位开发者和上百家企业提供稳定的 AI 基础设施服务，做一个让开发者放心的良心站点。\nUU API  ——让每一次调用都值得。",
+      "description": "As the main domain uuapi.net was blocked in early August, the main domain has now been changed to uuapi.io. The original .net domain can still be used normally by enabling nodes, and API keys do not need to be changed.\nUU API is an AI model aggregation platform for developers and enterprises worldwide. Upholding the principles of \"transparent channels, no dilution, no mapping,\" all models are directly connected to official sources or first-hand channels, ensuring output quality consistent with official offerings.\nIt currently provides stable AI infrastructure services to thousands of developers and hundreds of enterprises, aiming to be a trustworthy site for developers.\nUU API — making every call worthwhile.",
       "paymentMethods": [
         "USDT",
-        "微信",
-        "支付宝",
-        "对公转账"
+        "WeChat Pay",
+        "Alipay",
+        "Corporate Bank Transfer"
       ]
     },
     "noonooai": {
       "sourceHash": "6244e779f193605a4e3e3da47f401bd70775abe88373433a6e10b12b2d2be1f9",
-      "translated": false,
+      "translated": true,
       "name": "noonoo",
-      "description": "Noonoo 是一个面向开发者的 AI 模型聚合平台，提供 OpenAI Compatible API，支持 Claude、GPT等主流大模型统一接入。无需修改业务逻辑即可快速切换模型，帮助开发者降低接入成本、提升开发效率。平台提供稳定的 API 服务、高可用线路、详细的调用日志、透明的计费方式以及持续的模型更新，并提供完善的技术支持，适用于 AI 应用开发、Agent、Cursor、Claude Code、Cline、Open WebUI 等场景。",
+      "description": "Noonoo is an AI model aggregation platform for developers that provides an OpenAI Compatible API and supports unified access to mainstream large models such as Claude and GPT. Models can be switched quickly without modifying business logic, helping developers reduce integration costs and improve development efficiency. The platform provides stable API services, high-availability routes, detailed call logs, transparent billing, continuous model updates, and comprehensive technical support. It is suitable for AI application development, Agents, Cursor, Claude Code, Cline, Open WebUI, and other scenarios.",
       "paymentMethods": [
-        "信用卡"
+        "Credit Card"
       ]
     },
     "apihuanlingicu": {
       "sourceHash": "c3cb2c0be0d384d996e7e21160af0ad4dc3cd0a2705854c88a143b3616243e34",
-      "translated": false,
+      "translated": true,
       "name": "幻灵AI",
-      "description": "提供稳定，平价，高速，高质量的token中转服务，pro分组为官方纯pro号池。模型保真保稳保纯。欢迎大家体验",
+      "description": "Provides stable, affordable, high-speed, high-quality token relay services. The Pro group uses an official pure Pro account pool. Models are guaranteed to be authentic, stable, and pure. Welcome to try it.",
       "paymentMethods": []
+    },
+    "apiyunmengsale": {
+      "sourceHash": "68ade7b13fa97c3f07d46bc0dd4e89aab0344234742a6f3a032d723f029e4a6e",
+      "translated": true,
+      "name": "云梦",
+      "description": "Yunmeng is a platform focused on AI API relay services, primarily serving individual developers, heavy AI users, and enterprise users with cost-effective API access to mainstream AI models such as OpenAI.\n\nRather than simply pursuing the lowest price, Yunmeng focuses more on long-term usability. It ensures stable service operation through account-pool screening, channel monitoring, abnormal account removal, failover, and concurrency control.\n\nPrices remain relatively low while avoiding extreme low prices achieved by sacrificing account-pool quality. It provides low-cost API access for individual users, while placing greater emphasis on stability, continuity, and after-sales support for high-frequency and enterprise users.\n\nSimply put, Yunmeng is positioned not as the cheapest relay service, but as one that delivers stability and usability while keeping prices sufficiently low.",
+      "paymentMethods": [
+        "WeChat Pay",
+        "Alipay"
+      ]
     },
     "euzhivip": {
       "sourceHash": "ea8fa496521226a04f351d8220aa42cf51f08e1d02fabf30a08a39399ba3a1df",
-      "translated": false,
+      "translated": true,
       "name": "Euzhi",
-      "description": "Euzhi API 公益站、优智图及相关服务均由 Euzhi自有上游资源与自建服务链路 统一调度。\n您的请求不会被转售给任何平台，也不会被用于与当前服务无关的用途。\n福利分组倍率0.08。所有分组都很稳定，首字1.5秒内高达98%。\n本站已针对长上下文与 Coding 场景做缓存优化。近期抽样显示，多数命中请求缓存占比可达 95% 以上。缓存命中越高，实际消耗越低。",
+      "description": "The Euzhi API public-benefit site, Euzhi Image, and related services are all centrally scheduled through Euzhi's own upstream resources and self-built service routes.\nYour requests will not be resold to any platform or used for purposes unrelated to the current service.\nThe benefit group multiplier is 0.08. All groups are very stable, with up to 98% first-token responses within 1.5 seconds.\nThis site has optimized caching for long-context and Coding scenarios. Recent sampling shows that the cache ratio for most cache-hit requests can exceed 95%. The higher the cache-hit rate, the lower the actual consumption.",
       "paymentMethods": [
-        "支付宝"
+        "Alipay"
       ]
     },
     "apilmuaiai": {
       "sourceHash": "e04857db81ff5a70af54685fcbea0eef337d53ec4c69cc904c32d04eee09638b",
-      "translated": false,
+      "translated": true,
       "name": "LMU AI · 灵眸",
-      "description": "LMU AI · 灵眸 是一家面向企业与开发者的高可用 AI 大模型中转平台。技术上采用多节点智能路由与自建账号池,保障 API 长期稳定可靠、低延迟流式响应,无突发掉线、限流或临时涨价。模型覆盖国内外主流大模型——Claude 全系(含 Claude Code / CC Max 专业池)、OpenAI 与 Codex、Google Gemini,以及智谱 GLM 等国产模型,一个接口全部打通。坚持原生模型直连、不注入、不降智、不掺水,价格长期稳定。平台由实体企业运营,支持正规开票,并承诺随时退款、0 手续费,真正做到\"试错零成本\",适合对稳定性与合规要求高的长期用户。",
+      "description": "LMU AI · 灵眸 is a highly available AI large-model relay platform for enterprises and developers. It uses multi-node intelligent routing and self-built account pools to ensure long-term API stability and reliability, low-latency streaming responses, and no sudden disconnections, rate limits, or temporary price increases. Models cover mainstream domestic and international large models—including the full Claude lineup (including Claude Code / CC Max professional pools), OpenAI and Codex, Google Gemini, and domestic models such as Zhipu GLM—all accessible through one interface. It adheres to direct native model connections, with no injection, capability degradation, or dilution, and long-term stable pricing. The platform is operated by a registered company, supports official invoicing, and promises refunds at any time with 0 fees, offering \"zero-cost trial and error\" for long-term users with high requirements for stability and compliance.",
       "paymentMethods": [
-        "微信",
-        "支付宝",
-        "对公转账",
-        "信用卡"
+        "WeChat Pay",
+        "Alipay",
+        "Corporate Bank Transfer",
+        "Credit Card"
       ]
     },
     "formohaitop": {
       "sourceHash": "fb5ce6ffff1d6cf8e213876c0fccd8d7080f51746918cb5ee9d0fcaf2492ce50",
-      "translated": false,
+      "translated": true,
       "name": "陌海API",
-      "description": "陌海API致力于提供稳定可靠的大模型服务，充值比例1比1，模型价格透明。主营Codex与主流国模，覆盖大语言模型、生图模型，并提供全天候售前与售后支持。",
+      "description": "Mohai API is committed to providing stable and reliable large-model services, with a 1:1 recharge ratio and transparent model pricing. It primarily offers Codex and provides around-the-clock pre-sales and after-sales support.",
       "paymentMethods": [
         "USDT",
-        "微信",
-        "支付宝"
+        "WeChat Pay",
+        "Alipay"
+      ]
+    },
+    "inaitop": {
+      "sourceHash": "54c69085650ac7d2ee2e20012bd596d71774c022d383990769f50177df75aa44",
+      "translated": true,
+      "name": "银河算力实验室",
+      "description": "This platform focuses on development, production, research, and academic scenarios, serving users with clear requirements for model capabilities, interface stability, and continuous availability.\nWe prioritize stable, reliable, and high-quality invocation experiences, emphasizing consistency in model capabilities and service quality rather than low-price competition.\nSuitable for professional uses such as API integration, project development, system integration, continuous testing, and model research.",
+      "paymentMethods": [
+        "WeChat Pay",
+        "Alipay"
+      ]
+    },
+    "token2uai": {
+      "sourceHash": "8d093802bdadc4dacc948d977dd76bff288da6d5be5b672ba6f070a1fc447a87",
+      "translated": true,
+      "name": "token2u",
+      "description": "token2u is a reliable and efficient API relay service provider, offering relay support for services such as Claude Code, Codex, and Gemini.\n\ntoken2u became active around late 2024 to early 2025 and is one of the earlier domestic service providers to optimize for Claude Code. Its team is professional, with mature customer service and financial systems that provide stable and timely service assurance.\n\nAt the same time, token2u interacts frequently with the open-source community. Its site operators are highly active on Telegram, and customer service responds quickly. With continued development, token2u has become an upstream supplier for many relay services.",
+      "paymentMethods": [
+        "WeChat Pay",
+        "Alipay",
+        "Corporate Bank Transfer",
+        "Credit Card"
       ]
     },
     "ccamayatoday": {
       "sourceHash": "c3f3206a5faf8865dad96dbf8da0ab6f52a806b1b8d788becd96f30fc420f760",
-      "translated": false,
+      "translated": true,
       "name": "BMCCA",
-      "description": "本站为原站点cc.maya.today 新开站点，稳定运行三个月✅\n目前支持 GPT 全系模型，所有号池均为付费订阅账号。注册联系客服即送 1 美金额度试用，无需魔法即可连接。支持自助下单、订阅优惠、多 API Key 管理，并可一键导入 CCSwitch。\n订阅默认使用 Plus + Pro 组合池，倍率 1；充值可另选纯 Pro号池，倍率1.5，注意区分避免浪费。\nPS：充值余额用户可联系客服调整并发和 RPM，体验更佳，性价比满分。",
+      "description": "This is the new site for the original cc.maya.today site, and it has been operating stably for three months ✅\nCurrently supports the full GPT model lineup, with all account pools using paid subscription accounts. Register and contact customer service to receive a US$1 trial credit; no proxy is required to connect. Supports self-service ordering, subscription discounts, multiple API key management, and one-click import into CCSwitch.\nSubscriptions use a Plus + Pro combined pool by default, with a multiplier of 1; recharges can alternatively select a pure Pro account pool, with a multiplier of 1.5. Please distinguish between them to avoid waste.\nPS: Users with recharge balances can contact customer service to adjust concurrency and RPM for a better experience and excellent cost-effectiveness.",
       "paymentMethods": []
     },
     "bobdongcn": {
       "sourceHash": "63203825b5b4f5b6250b5352dec2637a7edfe2b0c6cc3ac1d220bb42f37b22cd",
-      "translated": false,
+      "translated": true,
       "name": "Bob API",
-      "description": "稳定运行半年，主营Claude Max，GPT Plus， Pro号池等，渠道齐全，专门对接中转站，量大实惠，高RPM，高稳定。",
+      "description": "Operating stably for half a year, mainly offering Claude Max, GPT Plus, Pro account pools, and more. Comprehensive channels, specialized in connecting relay services; cost-effective for high volumes, with high RPM and high stability.",
       "paymentMethods": []
     },
     "buzzaicc": {
       "sourceHash": "da4223316c30d3bfd2e0f13dc83488e2f32e8360bd31bfa2f6596338090ccbfa",
-      "translated": false,
+      "translated": true,
       "name": "BUZZ",
-      "description": "BUZZ AI 提供 Claude API 中转网关服务，支持 Claude Opus 4.6、Sonnet 4.6、Haiku 4.5 全系列模型。透明转发、按量计费、原生 Prompt Cache 支持、零数据留存，为中国开发者提供稳定可靠的 Claude API 接入方案。",
+      "description": "BUZZ AI provides Claude API relay gateway services, supporting the full Claude model lineup including Claude Opus 4.6, Sonnet 4.6, and Haiku 4.5. It offers transparent forwarding, usage-based billing, native Prompt Cache support, and zero data retention, providing Chinese developers with a stable and reliable Claude API access solution.",
       "paymentMethods": []
     },
     "bytecatcodeorg": {
       "sourceHash": "179806b2a4583603c84608e2b229e08a05a51866a4e5c12a4c643bd5816c64ce",
-      "translated": false,
+      "translated": true,
       "name": "ByteCat",
       "description": "",
       "paymentMethods": []
     },
     "claudebestswiftercom": {
       "sourceHash": "143be35e4615b73626b03a796a994036e0c936fced6e09105e73e966e2418bf5",
-      "translated": false,
+      "translated": true,
       "name": "ByteClaude",
-      "description": "统一的大模型接口网关\n更好的价格，更好的稳定性",
+      "description": "A unified large-model API gateway\nBetter pricing, better stability",
       "paymentMethods": []
     },
     "ccflycodes": {
       "sourceHash": "bcd7aecde19e8c5a9d3b36b948247d2eb2da94a548c0d9baf8af7e85f5c8463c",
-      "translated": false,
+      "translated": true,
       "name": "CCFly",
-      "description": "让AI编程助手为你所用，稳定、快速、无限制的 Claude Code 体验。开发效率提升10倍，从这里开始。\n三大承诺：\n1.99.9%可用性：分布式架构确保服务稳定，全天候可靠运行\n2.隐私保护：不记录代码内容，数据安全有保障\n3.真人客服：专属客服快速响应，问题及时解决",
+      "description": "Put AI coding assistants to work for you with a stable, fast, unrestricted Claude Code experience. Boost development efficiency by 10x, starting here.\nThree commitments:\n1. 99.9% availability: Distributed architecture ensures stable service and reliable around-the-clock operation.\n2. Privacy protection: Code content is not logged, keeping your data secure.\n3. Human customer support: Dedicated support responds quickly and resolves issues promptly.",
       "paymentMethods": []
     },
     "codeb886top": {
       "sourceHash": "3875bc0670cf99fba1c69573fe7a600f40b183d5b5b04577010d85a1260cd105",
-      "translated": false,
+      "translated": true,
       "name": "CCTQ",
-      "description": "统一的大模型接口网关，更好的价格，更好的稳定性。",
+      "description": "A unified large-model API gateway, with better pricing and better stability.",
       "paymentMethods": []
     },
     "ccvibecom": {
       "sourceHash": "65c57411ccb590d19e8453dbbf2e6472e7e789107c0288343fcd35f3f6acd421",
-      "translated": false,
+      "translated": true,
       "name": "CCVibe",
-      "description": "1.一键接入\n获取一个 API 密钥，即可调用所有已接入的 AI 模型，无需分别申请。\n2.稳定可靠\n智能调度多个上游账号，自动切换和负载均衡，告别频繁报错。\n3.用多少付多少\n按实际使用量计费，支持设置配额上限，团队用量一目了然。",
+      "description": "1. One-click integration\nObtain one API key to call all connected AI models, without applying separately for each one.\n2. Stable and reliable\nIntelligently schedules multiple upstream accounts, with automatic switching and load balancing to avoid frequent errors.\n3. Pay for what you use\nCharged based on actual usage, with support for setting quota limits and clear visibility into team usage.",
       "paymentMethods": []
     },
     "chintaoai": {
       "sourceHash": "2618a66d8df38f60c7bc0305f3370297c95662521a3b2fddb2e507649c5fc267",
-      "translated": false,
+      "translated": true,
       "name": "Chintao AI",
-      "description": "最早一批以不掺水，不私改倍率为Slogan的中转站站点。运营上线两个月，平台累计服务用户已达 5000 人，日常稳定日活 120，订阅企业用户数十家。\n平台采用真人运营，客服可及时响应问题，同时会在社群不定期分享行业相关方案。模型方面，主打 Claude、GPT 主流系列，同步上线 GLM5.1、Kimi 2.6 等国产模型。\n倍率设置覆盖 0.5~4.5 多档区间，能够满足不同使用预算与使用场景的用户需求。\n在产品体验上，我们针对中转用户常见痛点，开发了滑动分组、预设分组令牌、Token 排名、接口状态检测等实用功能。团队成员均为自身站点实际使用者，长期深耕运维与功能优化，持续打磨中转产品体验。",
+      "description": "One of the earliest relay service sites to use “no dilution, no private multiplier adjustments” as its slogan. After two months of operation, the platform has served 5,000 users in total, with a stable daily active user count of 120 and dozens of enterprise subscription users.\n\nThe platform is operated by real people, with customer support able to respond promptly to issues, and industry-related solutions shared periodically in the community. Its models primarily feature mainstream Claude and GPT series, alongside Chinese models such as GLM5.1 and Kimi 2.6.\n\nMultiplier settings cover multiple tiers from 0.5 to 4.5, meeting the needs of users with different budgets and use cases.\n\nFor product experience, we have developed practical features addressing common relay-user pain points, including swipe grouping, preset group tokens, Token rankings, and API status checks. Team members are actual users of their own site and have long focused on operations and feature optimization, continuously refining the relay product experience.",
       "paymentMethods": [
-        "微信",
-        "支付宝"
+        "WeChat Pay",
+        "Alipay"
       ]
     },
     "cialloapicn": {
       "sourceHash": "c34554989067365d21830a4ea7ff35dbf52080862b67cba571e0be07b61f7029",
-      "translated": false,
+      "translated": true,
       "name": "Ciallo API",
-      "description": "一分价钱一分货，本站模型 100% 保真\n我们提供稳定、保真的 API 中转服务，坚持高服务质量下的性价比路线，适合 Coding Agent 与日常聊天场景使用。\n1.采用 ￥ 计费；余额请使用兑换码自助充值。\n2.计费模式可能会随着运营情况在合理范围内波动。我们始终坚持高服务质量下的性价比路线，感谢使用。\n3.新用户有1￥额度，建议先试用后付费哦\n使用说明：本站 API 仅用于 Coding Agent 或聊天，请勿用于其他用途。建议结合 CC Switch 等工具，在 Codex 平台使用，缓存命中更高，模型更聪明。",
+      "description": "You get what you pay for: the models on this site are 100% authentic.\nWe provide stable, authentic API relay services and adhere to a cost-effective approach while maintaining high service quality, suitable for Coding Agent and everyday chat scenarios.\n1. Billing is in ￥; please use redemption codes to top up your balance yourself.\n2. Billing models may fluctuate within a reasonable range depending on operational conditions. We always adhere to a cost-effective approach with high service quality. Thank you for using our service.\n3. New users receive a ￥1 quota; we recommend trying it before paying.\nInstructions: This site's API is only for Coding Agent or chat use. Do not use it for other purposes. It is recommended to use it with tools such as CC Switch on the Codex platform for higher cache hit rates and smarter models.",
       "paymentMethods": []
     },
     "claudeagentcomcn": {
       "sourceHash": "a986e8f8233cff05cc5846f2aacf169a6ca48cd799cd665ef2d0cd2fc7680458",
-      "translated": false,
+      "translated": true,
       "name": "ClaudeAgent",
       "description": "",
       "paymentMethods": []
     },
     "consoleclaudeapicom": {
       "sourceHash": "4fa76cc9e50cb85d32639ac2f1a46ad15e348ea95f395fd8aabf76924892a76a",
-      "translated": false,
+      "translated": true,
       "name": "ClaudeAPI",
-      "description": "让全球开发者稳定、合规使用 Anthropic Claude 全系列模型，包含 Claude Code、Opus、Sonnet、Haiku 全系。\nAnthropic 官方未对中国大陆、中东、东南亚部分地区、非洲、拉美开放服务，当地开发者无法注册付费、正常调用。我们通过 Anthropic 原厂 Key 及 AWS Bedrock 官方正规渠道，为受限地区开发者提供合规模型调用服务。\n优势为原厂原生模型、无逆向不降智，完整支持工具调用、Claude Code 与 200K 长上下文；支持信用卡、加密货币付款，企业可开票并提供专属对接。\n支持 API 无缝中转，仅替换 base_url 即可接入，无需改动业务代码。国内直连，支付宝微信即可充值，无需海外信用卡、无需特殊网络。全球节点加速，延迟低于 200ms，可用性 99.8%。依托 Claude 强推理、顶尖代码能力与最高 1M 超长上下文，零门槛普惠化赋能全球 AI 开发。",
+      "description": "Enabling developers worldwide to use Anthropic Claude's full model lineup stably and compliantly, including Claude Code and the Opus, Sonnet, and Haiku series.\nAnthropic has not officially opened services to Mainland China, parts of the Middle East and Southeast Asia, Africa, or Latin America, preventing local developers from registering, paying, and making normal calls. Through official Anthropic Keys and official AWS Bedrock channels, we provide compliant model invocation services for developers in restricted regions.\n\nAdvantages include original native models with no reverse engineering or capability reduction, full support for tool calling, Claude Code, and 200K long context; credit card and cryptocurrency payments are supported, while enterprises can receive invoices and dedicated integration support.\n\nSupports seamless API relay integration: simply replace the base_url, with no need to modify business code. Direct connections within China, with Alipay and WeChat top-ups available; no overseas credit card or special network is needed. Global node acceleration provides latency below 200ms and 99.8% availability. Powered by Claude's strong reasoning, top-tier coding capabilities, and up to 1M ultra-long context, making AI development accessible worldwide with zero barrier.",
       "paymentMethods": []
     },
     "cckeystop": {
       "sourceHash": "a8672e42bd9507c48d11f62faabd3645cffb659a197a97b25be6298a4c4dc7bb",
-      "translated": false,
-      "name": "Claude密钥",
+      "translated": true,
+      "name": "Claude Key",
       "description": "",
       "paymentMethods": []
     },
     "coderelaycn": {
       "sourceHash": "4d7959d7860e509aa8f30e56d4de64621fa1da04085dbd4211fcc9e419b09074",
-      "translated": false,
+      "translated": true,
       "name": "CodeRelay",
-      "description": "2026 全新上线，专注提供 GPT（Codex）与 Claude 两类 API 服务，接口稳定可靠。\n本站秉承三大原则，1.不开活动 2.不招代理 3.不开订阅\n致力于打造低倍率稳定的接口服务",
+      "description": "Newly launched in 2026, focusing on two types of API services: GPT (Codex) and Claude, with stable and reliable interfaces.\nThis site adheres to three principles: 1. No promotions 2. No agents 3. No subscriptions\nCommitted to building stable API services with low multipliers.",
       "paymentMethods": []
     },
     "codesomeai": {
       "sourceHash": "fc70a8afa17fc8bffbc7261468775885dc505b60a6a1c1190e4e1d077d0b3194",
-      "translated": false,
+      "translated": true,
       "name": "CodeSome",
-      "description": "先进算力，也是一种投资。\n小白友好型 Claude Code AI 社区，为您提供顶级模型接入与企业级交付方案。\n欢迎自媒体用户与 KOL 加入 codesome MCN 矩阵。在先进算力的支持下，共同探索 AI 创作的无限可能，并享受丰厚的创作者收益。",
+      "description": "Advanced computing power is also an investment.\nA beginner-friendly Claude Code AI community, providing access to top models and enterprise-grade delivery solutions.\nSelf-media users and KOLs are welcome to join the codesome MCN network. With the support of advanced computing power, explore the limitless possibilities of AI creation together and enjoy substantial creator earnings.",
       "paymentMethods": []
     },
     "freecodesonlinedev": {
       "sourceHash": "68301dfb660abbb2d3942da316a4dddcc472af17ed7530b5c54c4eb907f1a7b4",
-      "translated": false,
+      "translated": true,
       "name": "CodesOnline",
       "description": "",
       "paymentMethods": []
     },
     "mainnewcodesuctop": {
       "sourceHash": "bd67fa37c4550b8f82a37e07ebc76cf454480f3e7ca4558db3b6f53f01ec30eb",
-      "translated": false,
+      "translated": true,
       "name": "CodeSuc Hub",
-      "description": "CodeSuc Hub 专注提供正版真实AI模型服务，主营Claude、Codex两大热门模型，全程采用原生模型，无套壳分流，使用体验贴近官方标准。平台架构成熟、运行稳定，同时定价亲民实惠，性价比突出。服务接入简单，可满足个人使用与开发调用等多种需求。我们配备8:00至24:00专属售后，咨询与问题反馈平均一小时内即可响应，全程保障使用体验。",
+      "description": "CodeSuc Hub focuses on providing genuine AI model services, primarily offering the popular Claude and Codex models. Native models are used throughout, without wrapper-based traffic splitting, delivering an experience close to official standards. The platform has a mature architecture and stable operation, while offering affordable pricing and strong value for money. Service integration is simple and can meet needs ranging from personal use to development calls. We provide dedicated after-sales support from 8:00 to 24:00, with inquiries and issue reports receiving a response within an average of one hour, ensuring the user experience throughout.",
       "paymentMethods": []
     },
     "cubencecom": {
       "sourceHash": "d8f513f6ebf99543f393b217fddb349175950c9a3710e9825dcbf4cf93106dea",
-      "translated": false,
+      "translated": true,
       "name": "Cubence",
-      "description": "CUBENCE是一个专业的 API 网关，提供对 Claude Code 和 Codex 模型的无缝访问，具备企业级可靠性、监控和分析功能。\n1.定价如何计算：我们提供基于 token 使用量的灵活定价。从免费套餐开始，随着需求增长进行升级。企业方案包含定制定价和专属支持。\n2.支持哪些模型：CUBENCE 支持所有 Claude Code 和 Codex 模型，并根据您的请求自动路由到最合适的模型。\n3.是否有SLA：是的，企业方案包含 99.9% 的正常运行时间 SLA，配备专属支持和基础设施。",
+      "description": "CUBENCE is a professional API gateway that provides seamless access to Claude Code and Codex models, with enterprise-grade reliability, monitoring, and analytics.\n1. How is pricing calculated: We offer flexible pricing based on token usage. Start with a free tier and upgrade as your needs grow. Enterprise plans include custom pricing and dedicated support.\n2. Which models are supported: CUBENCE supports all Claude Code and Codex models and automatically routes your request to the most suitable model.\n3. Is there an SLA: Yes, enterprise plans include a 99.9% uptime SLA, dedicated support, and infrastructure.",
       "paymentMethods": []
     },
     "dataeyesai": {
       "sourceHash": "da37a3f806ca0feae8861169a80aa10daa52f17650b97b523ccb1505c8b32564",
-      "translated": false,
+      "translated": true,
       "name": "DataEyes AI",
-      "description": "DataEyes（数眼智能） 是一家面向全球的企业级 AI 模型云服务商，致力于成为开发者和企业接入大模型的 统一入口。\n\n我们整合 OpenAI、Anthropic Claude、Google Gemini、DeepSeek、通义千问、豆包、可灵等全球主流模型能力，通过一套 API、一份账单、一个控制台，让客户摆脱多供应商对接、跨境结算、稳定性运维的繁琐负担，把精力真正放回业务本身。",
+      "description": "DataEyes (数眼智能) is a global enterprise AI model cloud service provider committed to becoming a unified entry point for developers and enterprises to access large models.\n\nWe integrate leading global model capabilities including OpenAI, Anthropic Claude, Google Gemini, DeepSeek, Tongyi Qianwen, Doubao, and Kling. Through one API, one bill, and one console, customers can avoid the burdens of multi-vendor integration, cross-border settlement, and stability operations, allowing them to focus on their core business.",
       "paymentMethods": []
     },
     "dawclaudecodecom": {
       "sourceHash": "441317ca0652b828cf019ab764925fe49b788fcdf742cde73e6465e5d773ad9c",
-      "translated": false,
+      "translated": true,
       "name": "DawCode",
-      "description": "Daw Code专注编程智能体，极致性能体验\n\n1. 极低延迟\n全球多节点部署，智能就近路由，确保每次 API 调用都以最短路径到达。\n\n2. 纯净 IP 隔离\n动态 IP 池技术，每个请求独立隔离，杜绝污染封禁风险。\n\n3. 超低费率\n特惠系列低至 0.26 一刀，按量计费，余额永不过期。\n\n4. 高缓存命中\n官方级缓存优化策略，大幅提升缓存命中率，特惠渠道同样享有。",
+      "description": "Daw Code focuses on coding agents and an ultimate performance experience.\n\n1. Ultra-low latency\nGlobal multi-node deployment and intelligent nearest-node routing ensure every API call takes the shortest path.\n\n2. Clean IP isolation\nDynamic IP pool technology isolates every request independently, preventing contamination and account-ban risks.\n\n3. Ultra-low rates\nDiscounted series starting as low as 0.26 USD, billed by usage, with balances that never expire.\n\n4. High cache hit rates\nOfficial-grade cache optimization strategies substantially improve cache hit rates, also available through discounted channels.",
       "paymentMethods": [
-        "微信",
-        "支付宝",
-        "信用卡"
+        "WeChat Pay",
+        "Alipay",
+        "Credit Card"
       ]
     },
     "derouterai": {
       "sourceHash": "14f78d67744ba658c2d9b18d8c24cc06dbab0d9b5785447280bc8f5b293382c6",
-      "translated": false,
+      "translated": true,
       "name": "DeRouter",
-      "description": "derouter.ai，一个连接 AI API 需求与闲置配额的去中心化路由网络\n\n如果你有已经订阅但暂时闲置的 AI 账号，可以托管到平台，让其他用户按需使用你未消耗的 API 配额，从而获得额外收入。\n\n如果你无法直接订阅 Claude 或 GPT，也可以通过这种方式，以更低成本使用优质模型。\n\n你可以：\n🔹托管闲置的 AI 订阅账号，获得收入\n🔹以更低价格使用 Claude、GPT 等优质模型\n🔹我们为每个托管账号提供的独立、干净 IP 中转网络，无需担心封号风险",
+      "description": "derouter.ai, a decentralized routing network connecting AI API demand with unused quotas.\n\nIf you have subscribed AI accounts that are temporarily unused, you can host them on the platform and allow other users to use your unconsumed API quota on demand, earning additional income.\n\nIf you cannot subscribe directly to Claude or GPT, you can also use high-quality models this way at a lower cost.\n\nYou can:\n🔹 Host unused AI subscription accounts and earn income\n🔹 Use high-quality models such as Claude and GPT at lower prices\n🔹 Use the independent, clean IP relay network we provide for each hosted account, without worrying about account-ban risks",
       "paymentMethods": []
     },
     "qianweikejifun": {
@@ -3395,308 +3713,6 @@
       "translated": false,
       "name": "巨硬AI",
       "description": "专注官方直连，企业级稳定中转7*24h可用。\n适用于Claude Code、Cursor、Chatbox、OpenAI 兼容客户端。一个接口接入 Claude、GPT、Gemini 等主流模型，开箱即用。",
-      "paymentMethods": []
-    },
-    "mzlonetop": {
-      "sourceHash": "66a380e3a4fca1e4b847b0bc4e2c5b5b12be1e6d0b8546c5052b3782b360e4d1",
-      "translated": true,
-      "name": "AIMZ",
-      "description": "AIMZ is an AI aggregation gateway for enterprises and developers. Say goodbye to official subscription issues and account suspension problems, with prices at least 90% lower than official pricing. Unified access to Claude, GPT, Gemini, and domestic large models — enjoy discounted channel pricing and multi-channel redundancy ensuring 99.9% availability. Top-ups can receive up to a 20% discount, suitable for frequent use!",
-      "paymentMethods": [
-        "WeChat",
-        "Alipay",
-        "Corporate bank transfer"
-      ]
-    },
-    "2apirkai6com": {
-      "sourceHash": "35ac5956a3598295d6fd696e41ef678752d98fe6219339693c30cff145a344c0",
-      "translated": true,
-      "name": "RK AI",
-      "description": "Full-capacity ChatGPT Pro 20x account pool: a GPT access service for individuals, developers, and teams. Credits have no time limit and support OpenAI-compatible APIs, AI clients, CLI, and integration with common development tools.\n1. After new users register and log in, they directly receive a $5 trial credit, allowing them to try before topping up.\n2. Full-capacity account pool: a high-quality ChatGPT Pro 20x account pool, suitable for long-term frequent use, development testing, and daily AI workflows.\n3. Official multiplier: official 1x multiplier throughout, with no hidden multipliers or inflated claims; balances are deducted based on actual usage.\n4. Credits do not expire: topped-up balances remain valid long-term and can be used at any time, suitable for long-term use by individuals, developers, and teams.",
-      "paymentMethods": []
-    },
-    "ususclaudeus": {
-      "sourceHash": "d5dbf60caa05c40445cfb71a1919e07d0a4be3fb49405068a04eb1dbc95df04a",
-      "translated": true,
-      "name": "Flux AI",
-      "description": "Connect to 300+ AI models worldwide through an enterprise-grade aggregation platform.\nOne API for access to leading models from OpenAI, Anthropic, Google, and more. Lower cost, higher availability, and faster responses.\n🇨🇳 Controlled by a central state-owned enterprise | Strong capabilities | Long-term stable service assurance",
-      "paymentMethods": []
-    },
-    "chunxueapicom": {
-      "sourceHash": "936e4d01ce2973d32778c8baeb9c05f4903fb940c8ac9bc0ec4d526a2e1db2e3",
-      "translated": true,
-      "name": "ChunXue API",
-      "description": "ChunXue API is an API relay and access service platform for developers and individual users, designed to provide stable, high-quality tokens and access overseas large models with one key. It uses physical servers with 1G high bandwidth to ensure stable request forwarding and response speeds, with transparent pricing and no hidden multiplier adjustments.",
-      "paymentMethods": []
-    },
-    "bossclaworg": {
-      "sourceHash": "ebbd407bbc3d3af09229de7e25df58ad1f6db710b176e82edee9a8c69761143b",
-      "translated": true,
-      "name": "BossClaw",
-      "description": "Shrimp Boss API: a stable, high-speed LLM interface distribution network. Provides global developers with direct OpenAI & Anthropic access without a VPN and with account-suspension resistance. Friendly to the China region and supports WeChat/Alipay payments.",
-      "paymentMethods": []
-    },
-    "easytokencom": {
-      "sourceHash": "aeeb3102964f1078764f85b56c83b8952e58aad126f3db11c294b65a81b4eaa9",
-      "translated": true,
-      "name": "EasyToken",
-      "description": "Easy Token is a large-model API aggregation platform for developers and enterprises, supporting one-stop access to mainstream models including GPT, Claude, Gemini, DeepSeek, and Qwen. The platform is compatible with OpenAI and Claude APIs, allowing unified calls with a single API Key, low integration costs, and simple migration. Pricing is transparent and usage-based, with no subscription fee; top-up packages also include bonuses, and balances remain valid long-term. The service is stable and reliable, supports multi-model routing and failover, provides usage statistics, billing details, API Key management, and timely after-sales and customer support to help teams use AI capabilities with greater peace of mind.",
-      "paymentMethods": []
-    },
-    "cohorsaifun": {
-      "sourceHash": "735abe933a65fac20ff23b245e9a36d53a70da5846c9ddbfad243a05464dc74a",
-      "translated": true,
-      "name": "CohorsAI",
-      "description": "",
-      "paymentMethods": []
-    },
-    "aitokencomcn": {
-      "sourceHash": "1c8b68c936baa138ceb5a5be2f2bb3e611ff518eae68e8ff3a249537207fb030",
-      "translated": true,
-      "name": "NewPowers",
-      "description": "",
-      "paymentMethods": []
-    },
-    "aizhihuichat": {
-      "sourceHash": "2dde470ab418c362f0e71ff4b694bc80dc5b73c0a54af81f6f14581deadbea52",
-      "translated": true,
-      "name": "织绘AI",
-      "description": "",
-      "paymentMethods": []
-    },
-    "tokenmixai": {
-      "sourceHash": "c19da7cbfd8053e9f640f8d292d792c2b696121091798bdd312af67ac56c4594",
-      "translated": true,
-      "name": "TokenMix",
-      "description": "Zero barrier for all models. Use your language and currently supported payment methods to access mainstream AI models. Compatible with OpenAI-style SDKs, with low migration costs.\n1. Unified API: Use models from OpenAI, Anthropic, Google, Meta, and more through one OpenAI-style endpoint.\n2. Native support for six languages: English, Chinese, Japanese, Korean, Spanish, and French. Every developer can use it in their native language.\n3. Transparent billing: Clear model pricing is displayed; pay only for actual API usage.\n4. Security controls: API Keys, account controls, and clear usage records. Your data will not be used for model training.",
-      "paymentMethods": []
-    },
-    "latixai": {
-      "sourceHash": "11c182d18293a93d4db356fbacf060eaad826d0b5ad65b425628ac6aed067ad9",
-      "translated": true,
-      "name": "Latix",
-      "description": "Latix | AI compute scheduling platform\nA unified entry point for all AI categories. Aggregates multiple large models including OpenAI, Claude, Gemini, and DeepSeek. Intelligent routing can save 30%-60% in costs, supports automatic failover, and requires no code changes.",
-      "paymentMethods": []
-    },
-    "thestocklistsite": {
-      "sourceHash": "d8f1d4e2761a83ed66666ef36dd910caa7d25eed19ad8f851fef2429c9dcc442",
-      "translated": true,
-      "name": "Flux API",
-      "description": "Core platform advantages\nFull-capacity output: Solemnly committed! All listed models are official native full-capacity versions, with no dilution or capability reduction, ensuring the highest-quality contextual feedback.\nSupports model testing: Real gold fears no fire! The platform is fully compatible with various mainstream large-model authenticity testing tools (such as Luxun Test and Ruozhiba Test), making verification easy.\nCodex direct integration: Minimalist development! Supports seamless model integration directly via the codex method, greatly lowering integration barriers and improving development efficiency.",
-      "paymentMethods": []
-    },
-    "aixem8k5top": {
-      "sourceHash": "b3da3c826a798dd5a503468a79fb11c4f10a8281260cd07e8a65fb5ff92eacc4",
-      "translated": true,
-      "name": "xem中转站",
-      "description": "xem API is an AI model access platform for developers, currently supporting the full GPT model lineup. All account pools consist of paid subscription accounts.\nNo dilution, no speed limits, and no concurrency limits; all billing is transparent, and invoices are supported.\nDedicated groups are also available for paid users to ensure stable use by paid users.\nCompatible with OpenAI-style APIs, making it convenient to integrate with existing applications, scripts, and automation workflows; also suitable for rapid implementation in team collaboration and project delivery scenarios.\nAn ultra-low-cost image2 API is also available, supporting online web use and API calls.",
-      "paymentMethods": []
-    },
-    "sub2apidaw111asia": {
-      "sourceHash": "856ea0d95a0d8f0cf3c478ecc551d0c513e7a37b1418ca0741c484a9b53b78f6",
-      "translated": true,
-      "name": "大王",
-      "description": "Ultra-low-cost relay service, with mixed Claude models reverse-engineered from web-based models accessible in the Middle East, Japan, and other overseas regions, using free or low-cost registration-granted Claude quotas. However, because it is a reverse-engineered model API similar to Cursor Document AI, extensive prompts, tool-calling logic, usage methods, injected MD documents, injected requirements specifications, and more are added to the relay. It may therefore appear as a non-Claude model on some testing websites, though this website's test score is 89, with points deducted only for the model fingerprint. Evaluate models by capability, not scores; testing shows the model has very strong programming capabilities.\nGoogle Chrome may show an error or danger warning; Microsoft Edge can be used instead.\nTop-up: 1R=1$; Claude models have a 0.7 multiplier, limited to the three Claude models opus4.6, sonnet4.6, and opus4.7.\nAdditionally, this site supports full-capacity official-account gpt5.5 and 5.4 models.",
-      "paymentMethods": []
-    },
-    "apifrontierintelligencetech": {
-      "sourceHash": "1cdffd50f5ca5e5aa6213a03945355c45e3c1a04b8355160a050e0efca0e4336",
-      "translated": true,
-      "name": "Frontier Intelligence",
-      "description": "Frontier Intelligence is an efficient and stable AI model API relay platform, primarily serving research-related clients in Hong Kong and Singapore.\nA single API Key provides access to mainstream frontier models and tools including OpenAI, Claude, DeepSeek, Kimi, Claude Code, OpenClaw, and Hermes Agent.\nThe site commits not to use any unofficial channels, retain user data, or sell user data.",
-      "paymentMethods": [
-        "WeChat",
-        "Alipay",
-        "Corporate bank transfer",
-        "Credit card"
-      ]
-    },
-    "onenodespace": {
-      "sourceHash": "b51079d4a940a310b0b584b67910e26c9f8aebd32a0205ff77ad4e80b1b7ff80",
-      "translated": true,
-      "name": "OneNode API",
-      "description": "This platform provides developers with convenient API relay solutions, including Open AI, Gemini, and Claude series models, simplifying cross-environment interface calls and supporting mainstream development frameworks. Billing multipliers are all set at 1x; the service is stable and reliable, provides detailed documentation and technical support, and offers accurate and transparent usage statistics, making it a reliable assistant for development scenarios.",
-      "paymentMethods": []
-    },
-    "aicostxyz": {
-      "sourceHash": "09de290a3c586163b5ba15bc6d676131f6d2e63eb255ce9bf88a24d1bcb34331",
-      "translated": true,
-      "name": "aicost",
-      "description": "GPT pricing is very low, with a 0.095 multiplier. Self-testing is supported, as are self-managed account pools and Plus account pools. Claude is currently relayed through codex; the main selling point is still GPT models, which have a price advantage — it is simply cheap.",
-      "paymentMethods": []
-    },
-    "apiyueglecom": {
-      "sourceHash": "debf38f72e3b4a22621c6d38773c8c8d8c1b3af16a7c93d4b0f1fb8e3a4f36b9",
-      "translated": true,
-      "name": "Yuegle_API",
-      "description": "?............................................................ Currently, all Claude models are official-relay series and support all parameters including system, temperature, max_tokens, top_p, and more.",
-      "paymentMethods": []
-    },
-    "kelaiapicc": {
-      "sourceHash": "9cc92a81e7f76f81c32d834f7b4f447e7b9f75b42d3314c8ff8f7afcbd06c87f",
-      "translated": true,
-      "name": "kelai",
-      "description": "kelaiapi focuses on full-capacity Max account pools, including standard and high-concurrency Max groups, as well as externally connectable Max account-pool groups. It provides full-capacity Max account pools at appropriate prices. In addition, codex can connect externally to Pro account pools, among others.",
-      "paymentMethods": []
-    },
-    "boluotokencom": {
-      "sourceHash": "bfc062cda7c32be3febdb11af3cdc00d5df9499f3152c15d867eb59c2398b3df",
-      "translated": true,
-      "name": "BoLuo_AI中转服务",
-      "description": "1. User data security\nFull Alibaba Cloud server infrastructure + firewall; commits not to sell data to third parties for distillation.\n2. Pure models, transparent pricing\n100% model purity; multipliers will never be secretly changed; what you see is what you get.\n3. Always comfortable to use\nCurrently improves network speed through methods including edge acceleration and domestic forwarding.",
-      "paymentMethods": []
-    },
-    "unity2ai": {
-      "sourceHash": "f873314447845e0129571bba124d4a1bc104c6c2da80e42fd4e3e41053480e17",
-      "translated": true,
-      "name": "unity2",
-      "description": "**Unity2.ai** is an AI API and bundled-plan platform for developers, teams, enterprises, and individual users. It has long served leading domestic enterprises, handles over **30 billion tokens** in daily calls, and supports high concurrency at the **5000 RPM** level. A single account can manage the costs of calls across multiple models, making it suitable for frequent individual use, centralized team procurement, and long-term enterprise integration. It has now integrated sponsors of the sub2api project, with proven capabilities. Many models are available to choose from, and fable has made a strong return!",
-      "paymentMethods": [
-        "WeChat",
-        "Alipay"
-      ]
-    },
-    "sunnyraecn": {
-      "sourceHash": "24b1a60fb1aa29355f801dc0bd4cf78d068da8cd32c19eac4fc059fb19e316e5",
-      "translated": true,
-      "name": "SunnyRae AI",
-      "description": "SunnyRae AI relay service, focused on domestic direct access to GPT and Codex, with stable routes, transparent pricing, and clear tutorials. The site operator is enthusiastically available to help whenever possible, providing technical support for configuration, calls, troubleshooting errors, and more, so beginners can avoid common pitfalls.",
-      "paymentMethods": []
-    },
-    "zivvpro": {
-      "sourceHash": "eddde5a8a915ed2f8f3ac5dbf64cb5e1236ce911927bbbc5189ded542460d045",
-      "translated": true,
-      "name": "ZIVV API",
-      "description": "Direct Claude MAX account pool, Antigravity account pool, and GPT account pool.\nSelf-built site, independently developed for all protocols; not a wrapper and not open source. 100% full-featured official models, with a focus on stability.",
-      "paymentMethods": [
-        "USDT",
-        "WeChat",
-        "Alipay",
-        "Corporate bank transfer",
-        "Credit card"
-      ]
-    },
-    "subsiphonlabcn": {
-      "sourceHash": "c8f6d857b0eb9920788e9f5b7914426714879123604d3b9a6bb4ba6977bd228f",
-      "translated": true,
-      "name": "siphonlab",
-      "description": "The SiphonLab sub-node is an independent service entry point built for intensive GPT usage scenarios. Originally positioned as an enterprise-only route, it has now been upgraded for both ToB and ToC scenarios.\nServices: It supports stable API access for enterprise customers, high-volume teams, and developer workflows, while also providing high-quality GPT services for frequent individual users, small teams, and professional creators.\nCore advantages:\n- 20x Pro account pool: Uses an independent resource pool composed of official full-price 20 X Pro-tier accounts to support higher quotas, stronger concurrency, and more stable long-term calls.\n- High availability: Reduces the impact of individual account rate limits, quota exhaustion, or temporary issues through multi-account scheduling, load distribution, fault isolation, and failover.\n- Full-featured capabilities: Prioritizes advanced model capabilities such as GPT-5.4, GPT-5.5, and GPT-Image-2, seeking to preserve complete workflows for context, images, tool calls, and high-quality output.\n- ToB / ToC compatibility: Enterprises can use it for business systems, automated workflows, batch processing, and dedicated API services; individual users can use it for development, content production, image generation, and Agent scenarios.\n- Independent operational chain: The sub-node has its own account pool, scheduling, billing, logs, and API Key management, facilitating dedicated enterprise services and commercial operations.\nPositioning:\nThe SiphonLab sub-node is a highly available, full-featured GPT service entry point built on a 20x Pro account pool. It can serve both enterprise-level ToB scenarios and high-quality ToC user needs.",
-      "paymentMethods": []
-    },
-    "apishiyutvcn": {
-      "sourceHash": "2680a5234b305b32cc4e0615ef94d816c8402b68f9051e62f16fed9a5228dd05",
-      "translated": true,
-      "name": "像素群岛",
-      "description": "Official-price channel procurement: Adheres to compliant procurement and does not use resources of unknown origin, abnormally cheap resources, or risky resources.\nFull-featured experience: Retains complete capabilities and stable performance, with no artificial feature cuts or downgraded configurations.\nClean relay: Does not mix in low-quality nodes, swap resources, or affect normal customer usage.\nStable and reliable: Continuously maintains service quality and strives to ensure connection stability and response efficiency.\nLong-term service: Values customer experience and does not pursue short-term, consumptive operations.",
-      "paymentMethods": []
-    },
-    "apixpluseplus": {
-      "sourceHash": "6c48d64f2581a627286f0729dab58f45c8ffdc05fdba82c3472bcccb5aa4edcc",
-      "translated": true,
-      "name": "数智AI",
-      "description": "数智 AI is a one-stop AI model API service platform for developers, AI tool users, and automation scenarios. It provides access to multiple types of models, including OpenAI, Claude, Gemini, and GPT image generation, and is compatible with mainstream OpenAI API call formats. It is suitable for chatbots, coding assistants, content generation, image generation, workflow automation, and other scenarios. The site uses multi-channel grouping and stable route configurations, supports different multipliers and high-stability group options, and offers clear pricing and flexible top-ups. It is suitable for individual developers, small teams, and rapid implementation of AI product prototypes. The platform provides online documentation, model lists, balance and call-record inquiries, and continuously improves availability, response speed, and after-sales support to help users obtain stable, easy-to-integrate AI API services at lower costs.",
-      "paymentMethods": [
-        "USDT",
-        "WeChat",
-        "Alipay"
-      ]
-    },
-    "fkclaudexyz": {
-      "sourceHash": "a80d762356371b44f9707b5b3ae15dbde9d9a6bd505151f379d1ff064ca2422d",
-      "translated": true,
-      "name": "FK Claude",
-      "description": "",
-      "paymentMethods": []
-    },
-    "apilsnowscom": {
-      "sourceHash": "c9c93a7bae8aa432470f34dbf3c1465307c2d54461ad5799b340512139a8f6dd",
-      "translated": true,
-      "name": "落雪",
-      "description": "落雪API is a one-stop AI large-model API aggregation platform that provides lightning-fast integration in 3 steps and supports ChatGPT and Claude.\nIt aims to help developers and creators build AIGC applications efficiently and at low cost, enabling automated workflows and intelligent service upgrades.\nThe platform states that it uses a 100% self-built account pool, with no tricks, no ads, and no retained chat data, providing a stable and clean API source with high cost performance.\n\nIts advantages include no need for circumvention tools, global direct access, no account-ban risk, fast request speeds, no model permission requirements, compatibility with the OpenAI interface protocol, API keys with configurable usage time and balance, 100% privacy protection, and prices far below official pricing.",
-      "paymentMethods": []
-    },
-    "growupapiltd": {
-      "sourceHash": "7eeee33b875fa24465bbd62b84627b6f291b54dff23c902ab7766042b5a2eab9",
-      "translated": true,
-      "name": "GrowUpAPI",
-      "description": "GrowUpAPI is an API relay service for AI coding users, focused on development scenarios such as Codex, Claude Code, and Gemini CLI. Its features include public and transparent pricing, clear model selection, a low barrier to getting started, and after-sales Q&A and usage support. It is suitable for individual developers and small teams that need stable interfaces and cost-effective solutions.",
-      "paymentMethods": []
-    },
-    "ephoneai": {
-      "sourceHash": "505b6a456bfc0c98f22763c9e8bba251f0668c7a014ffbdc987a91d6e1f2a86b",
-      "translated": true,
-      "name": "ePhone AI",
-      "description": "ePhone AI Introduction\nePhone AI is a professional platform focused on AI large-model API relay services. It supports stable access to leading mainstream AI models such as ChatGPT, Claude, and Gemini, supports nearly all image and video models, and is committed to providing developers, enterprises, and creators with low-cost, high-efficiency AIGC application-building solutions.\n\nSince officially launching operations in March 2024, ePhone AI has continuously provided global users with stable, clean, high-cost-performance API services through its complete technical team structure and solid infrastructure. It is one of the API relay service providers with earlier operating history and a relatively comprehensive system.\n\nCore Advantages\n🏗️ Self-built infrastructure: The platform has its own data center and integrates Cloudflare Enterprise network acceleration, ensuring connection stability and request speed from the foundation and addressing unstable relays and high latency.\n\n⚡ Enterprise-grade high-speed channels: Uses 100% enterprise high-speed dedicated channels rather than shared low-cost routes, seeking to maintain excellent response speed and availability even in high-concurrency scenarios.\n\n🔒 Privacy and security commitment: The platform states that it does not retain any chat data, has no ads or tricks, and provides 100% protection for user privacy and data security, making it suitable for enterprise customers with compliance needs.\n\n🌐 Barrier-free global direct access: No need for circumvention tools, with global direct access, no account-ban risk, compatibility with the OpenAI interface protocol, out-of-the-box use, and very low integration costs.\n\n💰 Extreme cost performance: Prices are far below official pricing. API Keys support custom usage periods and balance limits, enabling flexible cost management and adapting to diverse needs from individual developers to large enterprises.\n\nePhone AI consistently follows a technology-driven service approach and seeks to earn trust through stability, serving as a reliable AI infrastructure partner for building intelligent applications and achieving automation upgrades.",
-      "paymentMethods": []
-    },
-    "apiluoyunaicom": {
-      "sourceHash": "a2603a5c8de935710d0684bb900ad5a0d05f01b2c984775588725205ffc212c5",
-      "translated": true,
-      "name": "LUOTUNAI",
-      "description": "Luoyun AI is a platform focused on high-cost-performance AI interface services, dedicated to providing individual developers, students, self-media creators, and enterprise users with stable, high-speed, low-cost AI model calling experiences. The site focuses on low-cost access to GPT-series models, with the GPT-5.5 model priced as low as 0.15 yuan / 1M Tokens. It also supports model purity checks to ensure that interfaces are genuine and stable, rejecting capability downgrades and wrappers. The platform supports OpenAI-compatible calls, with simple integration and fast response speeds, maintains stable routes long term, and provides timely after-sales and technical assistance so users can conduct AI creation, development, and commercial use with greater confidence.",
-      "paymentMethods": []
-    },
-    "wangxiangaiorg": {
-      "sourceHash": "6073a9f2b410cc6d9dee19d949f34829cb18aa173415e41d5d4bdbe44355a65c",
-      "translated": true,
-      "name": "万象",
-      "description": "萬象 deeply aggregates 200+ flagship models including ChatGPT, Claude (fully compatible with Claude Code and Cursor), DeepSeek, and GLM5.1. Built-in globally distributed acceleration nodes eliminate network latency and disconnections under high concurrency. Fully compatible with the OpenAI protocol, enabling you to integrate powerful computing capabilities into your workflow with zero code changes.\n\n万象 provides stable Token relay, AI API relay, OpenAI relay, Claude relay, Gemini relay, model aggregation, model distribution, and unified billing services, suitable for individual developers and enterprise integration.",
-      "paymentMethods": []
-    },
-    "nbilitydev": {
-      "sourceHash": "d261c800a787137a3981b51a64145830ea72ffb1f08b148aacb2803ac63c4422",
-      "translated": true,
-      "name": "Nbility",
-      "description": "Nbility provides teams with unified access to mainstream models such as OpenAI, Claude, and Gemini, centrally handling authentication, quotas, billing, logs, and multi-device synchronization.",
-      "paymentMethods": []
-    },
-    "apilingsuopro": {
-      "sourceHash": "c48abe956d4744ca25c3b253e96ea3c8639f4a4f96936b20679724d603063395",
-      "translated": true,
-      "name": "lingsuoAPI",
-      "description": "This platform focuses on providing large-model Token services and API access for ChatGPT, Claude, and more. It offers affordable pricing, stable data, and efficient after-sales responses, providing developers with reliable AI support.",
-      "paymentMethods": []
-    },
-    "superapibuzz": {
-      "sourceHash": "a45a28070cd214da1cbec507b0a450b5faa5148bef5c01f4ff086096bac498e6",
-      "translated": true,
-      "name": "Super API",
-      "description": "",
-      "paymentMethods": []
-    },
-    "apionlinetop": {
-      "sourceHash": "223956fa9711633beca1f827387de96eba9bc68e22cf341514f5900ea6832a65",
-      "translated": true,
-      "name": "apionline",
-      "description": "This site mainly focuses on the GPT and Claude series, with a complete selection of the latest models. Its main advantages are high cost performance, high stability, factual claims, no misrepresentation, clear pricing and billing, and clearly selectable models. It also supports refundable top-up balances and after-sales support.",
-      "paymentMethods": []
-    },
-    "apilingshuaicc": {
-      "sourceHash": "36459a68c3c9931c59943dc6e4d8a3fc1521c55736347b622062a8ebc3b9d001",
-      "translated": true,
-      "name": "灵枢AI",
-      "description": "Provides customers with low-cost, high-quality full-featured models, with backend support from outstanding graduates of the School of Software Engineering at Fudan University in Shanghai. Compare prices for the same quality and compare quality at the same price; it aims to offer only the best, not the most expensive.",
-      "paymentMethods": []
-    },
-    "apituancom": {
-      "sourceHash": "9808d4a542882edeb7461d4b65db62ad94c2d773b1ba136b6da8cbc5ba014410",
-      "translated": true,
-      "name": "APITuan",
-      "description": "GPT5.5 full-featured at 0.5 yuan/million Token! High quality at an affordable price! Welcome to try it. Contact customer service and provide the code word: hvoy, to receive trial credits. Welcome!",
-      "paymentMethods": []
-    },
-    "10veaicc": {
-      "sourceHash": "9f3a2abaf84c48849ba5d4db2d147afd3e1391165634568e2fb8ff96a22c5842",
-      "translated": true,
-      "name": "10veAI",
-      "description": "This OpenAI API relay service provides stable domestic direct access to GPT-series interface relay services, without requiring overseas network access. It offers low latency and high availability, with rapid integration for models such as GPT5.5/GPT5.4. 10-point service, fully satisfying!",
-      "paymentMethods": []
-    },
-    "tokenqyuanaicom": {
-      "sourceHash": "d48b3686063a2179491ea6f66eb88adf16ea21ea6b3e49463cf70007384d7baa",
-      "translated": true,
-      "name": "Qyuan AI",
-      "description": "Openai API proxy, Claude proxy, and enterprise large-model solution provider. During the new-site promotion period, 1 RMB: 2 USD, approximately a 1:14 top-up discount; pricing is 7% of official pricing. Everyone is welcome to try it.",
       "paymentMethods": []
     },
     "bingcom": {
@@ -3827,183 +3843,169 @@
     },
     "zzswitchcom": {
       "sourceHash": "4264f699fab34554d14d74a71d6072ec99b2dacc2e3a63a2e1615093c3574e2f",
-      "translated": false,
+      "translated": true,
       "name": "zzswitch",
-      "description": "自用的御三家,价格不是最低,但是保证自己在用,随时人肉替你检测,自己也号池,也有友商的做备用,随时可退款",
+      "description": "Personal-use top three providers. Prices are not the lowest, but I guarantee that I use them myself. I can manually test them for you at any time. I also maintain my own account pool and use competitors as backups. Refunds are available at any time.",
       "paymentMethods": []
     },
     "apitokenftynet": {
       "sourceHash": "e773b02a690a0f33c7e9a6ce434c0a28f4962b9c2578d172f9afdfb5a7bde4b6",
-      "translated": false,
-      "name": "词元API",
-      "description": "词元 API 是一站式 AI 大模型接口服务平台，聚合 GPT、Claude 等主流顶尖大模型，提供高效、稳定、安全的 API 调用服务。我们致力于降低 AI 技术使用门槛，让各类用户便捷接入前沿大模型能力，赋能业务创新与问题解决，共建开放创新的 AI 生态。",
+      "translated": true,
+      "name": "Token API",
+      "description": "Token API is a one-stop AI large-model API service platform that aggregates leading mainstream models such as GPT and Claude, providing efficient, stable, and secure API calling services. We are committed to lowering the barrier to using AI technology, enabling all types of users to conveniently access cutting-edge large-model capabilities, empowering business innovation and problem-solving, and jointly building an open, innovative AI ecosystem.",
       "paymentMethods": []
     },
     "ldgbtop": {
       "sourceHash": "4c901722360bffacd0386c631c15aac9319f31916d7e4b48d03ad8eab78dbc31",
-      "translated": false,
+      "translated": true,
       "name": "量大管饱",
-      "description": "量大管饱 致力于为开发者提供稳定、高质量的 AI 模型 API 中转服务。\n\n我们覆盖 Claude、GPT、Gemini 等主流模型，价格透明、在线率持续监控。所有节点均经过严格筛选，确保低延迟与高可用性。\n\n我们的运维团队 7×24 小时响应，社群活跃，客服支持快速接入。无论是个人开发者、初创团队还是企业用户，都能在这里找到合适的方案。\n\n我们承诺：不掺水、不限速、不限并发，所有计费均按官方原价折算",
+      "description": "量大管饱 is committed to providing developers with stable, high-quality AI model API relay services.\n\nWe cover mainstream models including Claude, GPT, and Gemini, with transparent pricing and continuously monitored uptime. All nodes are rigorously selected to ensure low latency and high availability.\n\nOur operations team responds 24×7, with an active community and fast-access customer support. Whether you are an individual developer, startup team, or enterprise user, you can find a suitable solution here.\n\nWe promise: no dilution, no rate limits, no concurrency limits; all billing is converted based on official list prices.",
       "paymentMethods": []
     },
     "enjoyapicc": {
       "sourceHash": "cb3688ca800ba2249e7584caeb3a348f8a8f689b7e2295947714a134bbcdedfd",
-      "translated": false,
+      "translated": true,
       "name": "安九API",
-      "description": "安九API 是一家可靠高效的 API 中转服务商，提供 Claude Code、Codex、Gemini 等多种服务的中转。\n\n这个站点价格低,质量好 , 客服响应比较快. 随着发展, 这个站已经是很多中转站的上游供应商.",
+      "description": "安九API is a reliable and efficient API relay service provider, offering relays for services such as Claude Code, Codex, and Gemini.\n\nThis site has low prices, good quality, and relatively fast customer support responses. As it has grown, it has become an upstream supplier for many relay sites.",
       "paymentMethods": []
     },
     "hkhhntotop": {
       "sourceHash": "ebf24e36b6a99e5aaea93a35369ac92cb4d4485eb44bd6b89405aa1202049f3c",
-      "translated": false,
+      "translated": true,
       "name": "hhnto的API中转",
-      "description": "有两个分流https://aiapi.hhnto.top和https://hk.hhnto.top\n主要做GPT模型\n目前有GPT-5.5 GPT-5.4 GPT-5.4Mini GPT-5.2 GPT-5.3-Codex GPT-Image-2 和DeepSeekV4的Pro和Flash模型\n号池为Plus为主，Free为备用号池\n记得加群呀！",
+      "description": "There are two routing endpoints: https://aiapi.hhnto.top and https://hk.hhnto.top\nPrimarily focused on GPT models.\nCurrently offers GPT-5.5, GPT-5.4, GPT-5.4Mini, GPT-5.2, GPT-5.3-Codex, GPT-Image-2, and DeepSeekV4 Pro and Flash models.\nThe account pool mainly consists of Plus accounts, with Free accounts as backups.\nRemember to join the group!",
       "paymentMethods": []
     },
     "qwqzytop": {
       "sourceHash": "6163529341dea662a268450d462203119eaa8ad983d3a09c4dbc496b7d990d1b",
-      "translated": false,
+      "translated": true,
       "name": "QwQのapi",
-      "description": "QwQのapi — 让好模型用得起的\n专注于给开发者提供最新 GPT 模型的中转站 · 支持 GPT-5.5、Codex、Image-2 · 价格实惠、开箱即用、多通道稳定",
+      "description": "QwQのapi — making good models affordable.\nFocused on providing developers with a relay for the latest GPT models · Supports GPT-5.5, Codex, and Image-2 · Affordable, ready to use, and stable across multiple channels.",
       "paymentMethods": []
     },
     "dapicloudcom": {
       "sourceHash": "2ece3b73c9f2b5fbb9e5871b1b0995723ae08f635b954af106562ce02e20ef0f",
-      "translated": false,
+      "translated": true,
       "name": "DAPI",
-      "description": "1.过硬的技术渠道，保证API稳定性和性能\n2.价格良心，同等价格吊打99%同行中转站性能\n3.售后有保障，有任何技术和售后问题都可以在官方群组找客服",
+      "description": "1. Strong technical channels to ensure API stability and performance.\n2. Fair pricing; at the same price, performance surpasses that of 99% of competing relay sites.\n3. Reliable after-sales support; for any technical or after-sales issues, contact customer service in the official group.",
       "paymentMethods": []
     },
     "tokenporterai": {
       "sourceHash": "12f0071e56778c3aae894b4b9df19f2f2fb75d4b01a13b7a25b1420df92dde6b",
-      "translated": false,
+      "translated": true,
       "name": "tokenporter",
-      "description": "不造 Token，专注搬运 Token。\n\n🧠 全 GPT Pro 官方号池\n🚫 拒绝 Free 账号掺水\n💥 假一赔十\n\n💸 支持 1 元起充\n🪙 一元一元充，满意再继续\n\n✨ 官方直连\n⚡️ 稳定低延迟\n🌐 优质边缘节点，国内直连延迟 <50ms\n🔒 不存代码 · 不存 Key · 保证 0 日志\n💳 按量充值，用多少充多少\n💰 超低倍率：0.13\n🪙 1 RMB = 7.69 USD API Credits\n\n🚀 更快、更稳、更省。\n\n🌍 官网：https://TokenPorter.AI\n👥 群组：@TokenPorter_Group\n📢 频道：@TokenPorter",
+      "description": "We do not generate Tokens; we specialize in transporting Tokens.\n\n🧠 Full GPT Pro official account pool\n🚫 No dilution with Free accounts\n💥 Tenfold compensation for fakes\n\n💸 Supports top-ups starting from 1 RMB\n🪙 Top up RMB one by one; continue once satisfied\n\n✨ Official direct connection\n⚡️ Stable, low latency\n🌐 High-quality edge nodes, domestic direct-connection latency <50ms\n🔒 No code storage · No Key storage · Guaranteed 0 logs\n💳 Usage-based top-ups; top up as much as you use\n💰 Ultra-low multiplier: 0.13\n🪙 1 RMB = 7.69 USD API Credits\n\n🚀 Faster, more stable, and more economical.\n\n🌍 Website: https://TokenPorter.AI\n👥 Group: @TokenPorter_Group\n📢 Channel: @TokenPorter",
       "paymentMethods": []
     },
     "apimmcapicn": {
       "sourceHash": "e3880daffcdf3d41ca43fb7a9f04aa34ec9e907838e7c4f71abfc9bc4cbf2cac",
-      "translated": false,
+      "translated": true,
       "name": "mmcapi.cn",
-      "description": "个人自建 GPT 中转站，支持 GPT 全系模型与生图能力。\n自有美国服务器，主打稳定、低延迟、体验优先。\n不恶意扩容，不低质超卖，人满即止，只为保证每位用户的使用体验。\n支持 1 元起充，适合轻量体验与长期稳定使用。",
+      "description": "A personally built GPT relay site supporting the full GPT model lineup and image generation capabilities.\nOwn US servers, focused on stability, low latency, and user experience.\nNo aggressive scaling and no low-quality overselling; admissions stop when capacity is full, solely to ensure every user's experience.\nSupports top-ups starting from 1 RMB, suitable for lightweight trials and long-term stable use.",
       "paymentMethods": []
     },
     "wanlaiai": {
       "sourceHash": "1c4e6aede3b728bd35726a902659507a9f3d38be437a9e43e1dcc3d02bfb1af7",
-      "translated": false,
+      "translated": true,
       "name": "万来Code",
-      "description": "网站目前主营的是包月订阅，价格分别为98/398/888，这三个档位\n我们主要的优势是稳定，售后快，之后会推出我们自营的codex，支持一键切换市面上所有大模型",
+      "description": "The website currently primarily offers monthly subscriptions, with three price tiers: 98/398/888.\nOur main advantages are stability and fast after-sales support. We will later launch our self-operated Codex, supporting one-click switching among all major models on the market.",
       "paymentMethods": []
     },
     "yujianwuditop": {
       "sourceHash": "c52141529f5dbdbf72da3d97f0a9670a8b44ba30d7e752ccbefdcc03e6c4f554",
-      "translated": false,
+      "translated": true,
       "name": "天机阁",
-      "description": "plus号池0.065倍率，1比1充值，干就完了，没有任何套路、心机，不玩虚的，要的就是真实！！！！！",
+      "description": "Plus account pool with a 0.065 multiplier, 1:1 top-ups. Just go for it—no tricks, no hidden agenda, no empty promises; what we want is authenticity!!!!!",
       "paymentMethods": []
     },
     "zhuojianaitop": {
       "sourceHash": "a2e1668d9f23f277ea2a2cc165a92141b3ba53e95de67766daad981ee82ecdbb",
-      "translated": false,
+      "translated": true,
       "name": "卓建AI",
-      "description": "卓建AI 是面向个人开发者、团队和企业用户的 AI API 服务平台，提供 OpenAI的统一接入与订阅管理服务。平台支持按需调用、套餐订阅和余额计费，价格透明，适合代码开发、内容创作、办公自动化、智能客服等多种场景。我们重点保障接口稳定性、响应速度和账号资源可用性，并提供清晰的用量统计、密钥管理和异常日志查询功能，方便用户实时掌握消耗情况。平台持续维护模型资源与线路稳定，遇到使用问题可联系售后协助排查，帮助用户以更低门槛、更高性价比使用主流 AI 能力。",
+      "description": "卓建AI is an AI API service platform for individual developers, teams, and enterprise users, providing unified OpenAI access and subscription management services. The platform supports on-demand calls, plan subscriptions, and balance-based billing, with transparent pricing, making it suitable for code development, content creation, office automation, intelligent customer service, and many other scenarios. We prioritize API stability, response speed, and account resource availability, and provide clear usage statistics, key management, and error log lookup features so users can track consumption in real time. The platform continuously maintains model resources and route stability. If issues arise, users can contact after-sales support for troubleshooting assistance, helping them use mainstream AI capabilities with a lower barrier and better value.",
       "paymentMethods": []
     },
     "sub2congmingaicom": {
       "sourceHash": "a9f386cdf774cd812dcb4c1b0d21057c0bd0ea2e2fa521b5713d4684e946ab1b",
-      "translated": false,
+      "translated": true,
       "name": "聪明AI",
-      "description": "主要对接散户，价格公道合理，稳定是第一要素。codex倍率0.1，延迟单独做过优化，负载做的很好，号池有冗余，专业做codex。可生图1k，2k，4\nk。可使用fast模式。",
+      "description": "Primarily serves individual users, with fair and reasonable pricing; stability is the top priority. Codex multiplier is 0.1, with separately optimized latency, well-managed load, and redundancy in the account pool; professionally focused on Codex. Supports image generation at 1K, 2K, and 4K. Fast mode is available.",
       "paymentMethods": []
     },
     "apiycccme": {
       "sourceHash": "c717a4d03007ffd848d856cc76d66e3fe7e8485ec27e0780180a1d546ea57500",
-      "translated": false,
+      "translated": true,
       "name": "HM-API",
-      "description": "10元100刀，主打稳定的OPENAI-GPT5.5与Image-2 支持1K-4K,搭配在线对话式生图网站。用心经营！",
+      "description": "10 RMB for 100 USD. Focused on stable OPENAI-GPT5.5 and Image-2, supporting 1K-4K, paired with an online conversational image-generation website. Operated with care!",
       "paymentMethods": []
     },
     "routerlinkai": {
       "sourceHash": "609da075f7222f83c267a2401738c61d6119390a038c1dfad3c30e1bc7cc2738",
-      "translated": false,
+      "translated": true,
       "name": "Routerlink",
-      "description": "关于我们\n统一 LLM 网关：一个 API Key，所有模型，透明计费。\nRouterlink是由WORLD3提供支持的一站式大模型接入网络，只需一个API Key，即可通过统一的 WORLD3 端点调用所有主流 AI 模型，包括：\n* OpenAI Channel（GPT 系列）\n* Anthropic Channel（Claude 系列）\n* GCP Vertex（Gemini 系列）\n* World3 Router Asia Pacific\n* World3 Router North America\n* 以及更多模型\n\nRouterLink 自动实现：\n* 统一接口格式\n* 自动路由至目标提供商\n* 多模型调用与透明计费\n* Token 级别的 Credits 追踪\n* 安全的 API Key 管理\n\nRouterLink 支持两种协议接口格式：\n* 通过 OpenAI 兼容 API 访问的模型\n* 通过 Anthropic API 访问的模型\n在客户端，您的应用只需与 RouterLink 通信，无需管理与多个供应商 API 的集成。",
+      "description": "About Us\nUnified LLM gateway: one API Key, all models, transparent billing.\nRouterlink is a one-stop large-model access network powered by WORLD3. With just one API Key, you can call all mainstream AI models through a unified WORLD3 endpoint, including:\n* OpenAI Channel (GPT series)\n* Anthropic Channel (Claude series)\n* GCP Vertex (Gemini series)\n* World3 Router Asia Pacific\n* World3 Router North America\n* And more models\n\nRouterLink automatically provides:\n* Unified API format\n* Automatic routing to the target provider\n* Multi-model calls and transparent billing\n* Token-level Credits tracking\n* Secure API Key management\n\nRouterLink supports two API protocol formats:\n* Models accessed through an OpenAI-compatible API\n* Models accessed through the Anthropic API\nOn the client side, your application only needs to communicate with RouterLink, without managing integrations with multiple vendor APIs.",
       "paymentMethods": []
     },
     "weilaichat": {
       "sourceHash": "aa1c979798714fc59d3020841671f42a03c053fe4865fdd4dfdb4a31abf88c0e",
-      "translated": false,
+      "translated": true,
       "name": "未来中转",
-      "description": "未来聊天（Weilai Chat）是一个 AI 接口中转与聚合平台，提供稳定便捷的大模型 API 转发服务，支持 OpenAI、Claude、Gemini、 等多种主流模型接入。平台面向开发者与企业用户，提供统一接口调用、Key 管理、额度计费、模型聚合及高速稳定的 API 服务，帮助用户低成本快速接入 AI 能力，提升开发效率与业务落地速度。",
+      "description": "Weilai Chat is an AI API relay and aggregation platform that provides stable and convenient large-model API forwarding services, supporting access to multiple mainstream models including OpenAI, Claude, and Gemini. Oriented toward developers and enterprise users, the platform provides unified API calls, Key management, credit-based billing, model aggregation, and high-speed, stable API services, helping users quickly access AI capabilities at low cost and improve development efficiency and business deployment speed.",
       "paymentMethods": []
     },
     "tokenesscn": {
       "sourceHash": "5ebbbcb153baa099c087879cb6b59ea2f80e9d4a4bb4d579f6f5498a31ef3d77",
-      "translated": false,
+      "translated": true,
       "name": "Tokeness",
-      "description": "Tokeness专注于AI API接口中转与 AI 能力聚合，只需一个Key即可使用主流模型。我们以极速响应、高兼容性和稳定线路为核心，集成多模型统一调用与便捷管理功能，坚持价格透明、售后及时，持续为用户提供可靠的 AI 服务体验。兼容主流AI工具如 Claude Code、OpenClaw 等工具。",
+      "description": "Tokeness focuses on AI API relays and AI capability aggregation. With just one Key, you can use mainstream models. Centered on ultra-fast response, high compatibility, and stable routes, we integrate unified multi-model calls and convenient management features, maintain transparent pricing and timely after-sales support, and continuously provide users with a reliable AI service experience. Compatible with mainstream AI tools such as Claude Code and OpenClaw.",
       "paymentMethods": [
-        "微信",
-        "支付宝",
-        "对公转账",
-        "信用卡"
+        "WeChat Pay",
+        "Alipay",
+        "Corporate Bank Transfer",
+        "Credit Card"
       ]
     },
     "daodunapicom": {
       "sourceHash": "d751849f99e32525d6338026b2e950b14ac500c33618f9fc9bede35ac8380456",
-      "translated": false,
+      "translated": true,
       "name": "我的刀盾",
-      "description": "我的刀盾 — 你的 AI 全能搭档\n一把刀，斩断 API 访问的重重障碍；一面盾，守护你每一次稳定调用。\nClaude、GPT、Gemini —— 当下最强的 AI 大模型，我们全都有！不用东奔西跑、到处找 Key，一个接口通通搞定。\n按官方原价折算，不掺水、不套路。不限速、不限并发，用多少付多少。账单透明，花的每一分钱都清清楚楚。\n我们承诺：\n不掺水、不限速、不限并发\n所有计费均按官方原价折算，价格公开透明\n服务稳定可靠，做你 AI 开发路上的刀与盾",
+      "description": "我的刀盾 — Your all-purpose AI companion\nA blade that cuts through the many barriers to API access; a shield that protects every stable call you make.\nClaude, GPT, Gemini — we have all of today's strongest AI large models! No need to run around looking for Keys; one API handles everything.\nConverted based on official list prices, with no dilution or tricks. No rate limits or concurrency limits; pay only for what you use. Transparent billing makes every cent clear.\nWe promise:\nNo dilution, no rate limits, no concurrency limits\nAll billing is converted based on official list prices, with public and transparent pricing\nStable and reliable service, serving as your blade and shield on the AI development journey",
       "paymentMethods": []
     },
     "juxingaixyz": {
       "sourceHash": "27eda327e1da1eb0113bbeee1a06d27e1af9ec9ca3b6b9d5bf33790b651161f9",
-      "translated": false,
+      "translated": true,
       "name": "聚星AI",
-      "description": "聚星AI--聚合了 OpenAI、Anthropic、Google、字节跳动等厂商的 50 + 主流大模型，解决了国内开发者面临的支付困难、网络不稳定、接口不统一三大痛点。无需境外信用卡，无需科学上网，一个 API Key 即可调用所有模型，价格低至1折，大幅降低您的 AI 开发成本与门槛。",
+      "description": "聚星AI aggregates 50+ mainstream large models from providers including OpenAI, Anthropic, Google, and ByteDance, addressing three major pain points faced by domestic developers: payment difficulties, unstable networks, and inconsistent APIs. No overseas credit card or VPN required—one API Key can call all models, with prices as low as 10% of the original price, substantially reducing your AI development costs and barrier to entry.",
       "paymentMethods": [
-        "微信",
-        "支付宝",
-        "对公转账"
+        "WeChat Pay",
+        "Alipay",
+        "Corporate Bank Transfer"
       ]
     },
     "proxy2itcom": {
       "sourceHash": "59017ed86adbb521133d4abf41d35720bf847ab482138738920e691e431c90d5",
-      "translated": false,
+      "translated": true,
       "name": "ProxyAI",
-      "description": "ProxyAI 专注于提供 Openai Codex 一站式聚合中转服务，计费透明、价格优势明显，性价比高，模型倍率低至 0.12 。",
+      "description": "ProxyAI focuses on providing one-stop aggregated relay services for Openai Codex, with transparent billing, clear price advantages, high cost performance, and model multipliers as low as 0.12.",
       "paymentMethods": []
     },
     "zhangyuapicom": {
       "sourceHash": "7c26e491cee222ee9529c270490203222c3b8b7521d02bb6b0ebdf4c46674533",
-      "translated": false,
-      "name": "章鱼中枢AI服务平台",
-      "description": "章鱼公益平台是新一代 AI 基座平台，为您的 AI 应用提供统一的基础设施。承载所有 AI 应用，管理您的数字资产，连接未来的统一接口平台。",
+      "translated": true,
+      "name": "Octopus Central AI Service Platform",
+      "description": "The Octopus Public Welfare Platform is a next-generation AI foundation platform that provides unified infrastructure for your AI applications. It hosts all AI applications, manages your digital assets, and connects to a unified interface platform for the future.",
       "paymentMethods": []
     },
     "apiclauqeai": {
       "sourceHash": "8aa0cbeebf0195a0f7342af3870436e7f197aa10ef09c6f6eed6030f88452c19",
-      "translated": false,
+      "translated": true,
       "name": "ClauqeAI",
-      "description": "专注 Claude 与 OpenAI 双模型 API 服务，多线路高速接入，价格透明按量计费，链路稳定低延迟，提供 7×24 小时技术与售后响应。",
+      "description": "Focused on Claude and OpenAI dual-model API services, with high-speed access through multiple routes, transparent usage-based billing, stable low-latency connections, and 24/7 technical and after-sales support.",
       "paymentMethods": [
-        "微信",
-        "支付宝"
+        "WeChat Pay",
+        "Alipay"
       ]
-    },
-    "happycodevip": {
-      "sourceHash": "284ab049d3dbede1797f8e999330c53857e39e6f882634d24f58d0f9586b7cb7",
-      "translated": true,
-      "name": "Happy Code",
-      "description": "Happy Code makes AI programming more enjoyable.\nUsage-based billing, ultra-low multiplier rates, servers with optimized routing across three major networks, providing high-quality API services specifically for Codex users.",
-      "paymentMethods": []
-    },
-    "hiapistore": {
-      "sourceHash": "d339a901a7e7304803b0fd52eaa37826dbb742c091ab60f12cc700ae1bba00b5",
-      "translated": true,
-      "name": "hiapi",
-      "description": "System Announcement\n\n🔥 Low-price mixed pool is now online · Transparent pricing · Ready to use upon crediting\n\n💎 On-site conversion: 1Yuan = 100 dollars\n\nSupports mainstream models such as gpt-5.4 / gpt-5.5 / Claude, with usage-based billing. Suitable for daily chat, code generation, long-context tasks, multi-turn tasks, and development testing.\n\n📌 Recommended Usage\n\n• Frequent daily use: gpt-5.4, low price and suitable for long-term use\n\n• High-quality tasks: gpt-5.5, suitable for complex questions, code, and long responses\n\n• Writing/reasoning: Claude, suitable for high-quality writing, analysis, and code scenarios\n\n💰 Pricing Details\n\n• Input, output, and cache are billed separately\n\n• Default mixed pool at 1x, with no additional markup\n\n• Prices are subject to the model pricing page and actual bill\n\n🔑 Token Purchase\n\nToken purchase/top-up: https://pay.ldxp.cn/shop/3KU925G2\n\n👥 Official Group\n\nQQ Group: 1104242619\n\nCustomer Service QQ: 3501667201\n\n⚠️ Usage Tips\n\n• It is recommended to prioritize gpt-5.4 for daily requests\n\n• For high-quality tasks, switch to gpt-5.5 or Claude\n\n• Mixed-pool resources may fluctuate slightly; for critical tasks, small-scale testing is recommended first\n\n• Balance consumption is based on actual token billing\n\nPlease note: Due to restrictions, users in some regions can only use it with a VPN.",
-      "paymentMethods": []
     }
   }
 }
