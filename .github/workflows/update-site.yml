@@ -35,16 +35,6 @@ jobs:
           done
           exit 1
 
-      - name: Update English and Spanish translation cache
-        env:
-          AI_API_KEY: ${{ secrets.AI_API_KEY }}
-          AI_BASE_URL: ${{ secrets.AI_BASE_URL }}
-          AI_MODEL: ${{ secrets.AI_MODEL }}
-        run: npm run translate
-
-      - name: Rebuild localized pages with the latest cache
-        run: npm run build:localized
-
       - name: Verify generated site
         run: npm test
 
@@ -52,7 +42,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- data.json translations index.html page en es cn sites methodology *-zhongzhuanzhan sitemap.xml assets/styles.min.css
+          git add -- data.json index.html page en es ru cn sites guides methodology search-vocabulary *-zhongzhuanzhan sitemap.xml robots.txt 404.html assets/styles.min.css
           if git diff --cached --quiet; then
             echo "No changes"
             exit 0

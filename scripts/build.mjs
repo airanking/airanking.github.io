@@ -918,7 +918,7 @@ function minifyHtml(html) {
     .concat("\n");
 }
 
-function minifyCss(css) {
+export function minifyCss(css) {
   const strings = [];
   const protectedCss = css.replace(/(["'])(?:\\.|(?!\1)[^\\])*\1/g, (match) => {
     const token = `___CSS_STRING_${strings.length}___`;
@@ -969,6 +969,10 @@ async function build() {
   if (SHOULD_SYNC) await syncData();
   const payload = JSON.parse(await readFile(DATA_PATH, "utf8"));
   validatePayload(payload);
+  if (process.argv.includes("--prepare")) {
+    await atomicWrite(MINIFIED_STYLES_PATH, minifyCss(await readFile(STYLES_PATH, "utf8")));
+    return;
+  }
   const updatedDate = normalizeDate(payload.updatedDate) || new Date().toISOString().slice(0, 10);
   const normalized = payload.sites.map(normalizeSite).sort((a, b) => a.rank - b.rank)
     .filter((site, index, items) => items.findIndex((candidate) =>

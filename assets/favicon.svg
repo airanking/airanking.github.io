@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#111d3a"/><path d="M17 44 29 17h7l11 27h-8l-2-6H27l-2 6zm13-13h5l-2.5-7z" fill="#8be8ee"/><circle cx="48" cy="17" r="6" fill="#ffb84d"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">AI Ranking</title>
+  <rect width="64" height="64" rx="10" fill="#17253d"/>
+  <path d="M10 46 22 17h7l12 29h-8l-2-6H20l-2 6Zm12-12h7l-3.5-10Z" fill="#ffffff"/>
+  <path d="M45 17h7v29h-7Z" fill="#ffffff"/>
+  <path d="M45 9h7v4h-7Z" fill="#87a9f4"/>
+</svg>

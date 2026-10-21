@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build.mjs && node scripts/build-localized.mjs",
-    "sync": "node scripts/build.mjs --sync && node scripts/build-localized.mjs",
+    "build": "node scripts/build.mjs --prepare && node scripts/build-localized.mjs",
+    "sync": "node scripts/build.mjs --sync --prepare && node scripts/build-localized.mjs",
     "translate": "node scripts/translate.mjs",
     "build:localized": "node scripts/build-localized.mjs",
     "test": "node --test"

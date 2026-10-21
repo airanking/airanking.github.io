@@ -1,252 +1,206 @@
-import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { normalizeSite, rankSites } from "./build.mjs";
+import { minifyCss, normalizeSite, rankSites } from "./build.mjs";
+import { BRAND, ORIGIN, LOCALES, LOCALE_IDS, alternates, outboundUrl, pagePath, siteSlug } from "./locales.mjs";
+import { TEXT, TOPICS } from "./content.mjs";
+import { EDITORIAL } from "./editorial.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const ORIGIN = "https://airanking.github.io";
 const PAGE_SIZE = 40;
 const MAX_SITES = 500;
-const number = {
-  en: new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 }),
-  es: new Intl.NumberFormat("es-ES", { maximumFractionDigits: 1 }),
-  zh: new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 1 }),
-};
-
-const TOPICS = [
-  { slug: "gpt-zhongzhuanzhan", terms: ["gpt", "openai", "chatgpt"], en: "GPT API Gateways", es: "Gateways de API de GPT", zh: "GPT 中转站" },
-  { slug: "claude-zhongzhuanzhan", terms: ["claude", "anthropic"], en: "Claude API Gateways", es: "Gateways de API de Claude", zh: "Claude 中转站" },
-  { slug: "codex-zhongzhuanzhan", terms: ["codex"], en: "Codex API Gateways", es: "Gateways de API de Codex", zh: "Codex 中转站" },
-  { slug: "gemini-zhongzhuanzhan", terms: ["gemini"], en: "Gemini API Gateways", es: "Gateways de API de Gemini", zh: "Gemini 中转站" },
-  { slug: "deepseek-zhongzhuanzhan", terms: ["deepseek", "深度求索"], en: "DeepSeek API Gateways", es: "Gateways de API de DeepSeek", zh: "DeepSeek 中转站" },
-  { slug: "glm-zhongzhuanzhan", terms: ["glm", "智谱"], en: "GLM API Gateways", es: "Gateways de API de GLM", zh: "GLM 中转站" },
-  { slug: "qwen-zhongzhuanzhan", terms: ["qwen", "通义", "千问"], en: "Qwen API Gateways", es: "Gateways de API de Qwen", zh: "Qwen 中转站" },
-  { slug: "kimi-zhongzhuanzhan", terms: ["kimi", "moonshot", "月之暗面"], en: "Kimi API Gateways", es: "Gateways de API de Kimi", zh: "Kimi 中转站" },
-];
-
-// Search vocabulary is maintained separately from model matching. It reflects
-// the terms observed in Google Trends and Google/Bing result pages, not claims
-// about a provider or a guarantee of search volume.
-const SEARCH_TERMS = {
-  en: [
-    "AI API gateway", "AI gateway", "LLM gateway", "AI API proxy", "AI API aggregator",
-    "multi-model API", "OpenAI-compatible API", "AI model router", "open source AI gateway",
-    "Kimi API", "Bifrost AI gateway", "Helicone",
-  ],
-  es: [
-    "pasarela API de IA", "gateway de IA", "proxy de API de IA", "agregador de API de IA",
-    "API unificada de IA", "API multimodelo", "acceso a modelos de IA",
-  ],
-  zh: [
-    "AI 中转站", "API 中转站", "AI API 中转站", "AI 中转站排行榜", "AI 中转站评测",
-    "AI 中转站推荐", "中转站价格对比", "AI 中转站靠谱吗", "AI 中转站搭建",
-    "国外 API 中转站", "大模型 API 集成平台", "大模型 API 聚合平台", "AI API 网关", "AI 接口代理",
-  ],
-};
-
-const SEARCH_COPY = {
-  en: { title: "Search vocabulary", lead: "Common terms people use to find multi-model API access. Terminology varies by region and search engine; verify providers with the public evidence above.", note: "These terms describe how people may look for multi-model API access. They are discovery vocabulary, not evidence that a provider supports a model, protocol, price, or availability claim." },
-  es: { title: "Vocabulario de búsqueda", lead: "Términos habituales para encontrar acceso a API con varios modelos. La terminología cambia según la región y el buscador; verifica cada proveedor con la evidencia pública.", note: "Estos términos describen cómo se puede buscar acceso a API con varios modelos. Son vocabulario de descubrimiento, no pruebas de que un proveedor admita un modelo, protocolo, precio o disponibilidad concretos." },
-  zh: { title: "搜索词汇", lead: "下面整理 Google 和 Bing 结果中常见的多模型 API 访问词汇。词汇会随地区和搜索引擎变化，仍需根据公开证据核验站点。", note: "这些词汇用于描述人们可能如何寻找多模型 API 访问服务，仅供检索参考，不代表供应商一定支持某个模型、协议、价格或可用性。" },
-};
-
-const TEXT = {
-  en: {
-    lang: "en", locale: "en_US", siteName: "AI API Gateway Rankings", brand: "Gateway", brandStrong: "Rankings",
-    navRanking: "Rankings", navTopics: "Model index", navMethod: "Methodology", skip: "Skip to main content",
-    homeTitle: "AI API Gateway Rankings", homeH1: "AI API gateways", homeH1Em: "open data rankings",
-    homeLead: "Compare multi-model AI API gateways using the same public-data scoring method. Missing fields are treated as unknown, not as zero performance.",
-    viewTable: "View data table", viewMethod: "Read the methodology", collected: "Public listings", stations: "AI API gateways",
-    page: "Page", range: "Range", perPage: "Per page", rankingTitle: "Public metrics ranking", tableCaption: "AI API gateway ranking {first}-{last}, {total} listings",
-    rank: "Rank", siteData: "Gateway and evidence", score: "Data score", coverage: "Coverage", uptime: "Uptime", latency: "Latency", models: "Models", rating: "Reviews", policy: "Policies", visit: "Visit", pending: "Not recorded", supported: "Supported", unsupported: "Not supported", confirm: "Confirm",
-    topicsTitle: "Find gateways by model", topicsLead: "Keyword matching creates a review shortlist. Confirm the model, protocol, pricing and data policy on the provider site before use.", topicMatches: "public matches", viewTopic: "View topic", currentTopic: "Current topic",
-    methodologyTitle: "Scoring methodology", methodologyLead: "This directory applies a deterministic formula to public data. Scores organize evidence; they are not certification or a guarantee of availability.",
-    detailTitle: "Gateway profile", details: "Current public record", sourceDescription: "Source description", translatedDescription: "Translated description", sourcePage: "Open provider page", back: "Back to rankings", updated: "Updated", modelsList: "Listed models", payments: "Payment methods", noDescription: "No description recorded.",
-    footer: "Compare first, test with a small balance, and keep a backup provider.", previous: "Previous", next: "Next", language: "Language", faqTitle: "Frequently asked questions", searchTerms: "Search vocabulary",
-    scoreSentence: (s) => `Current public-data score: ${s.score}, with ${s.coverage}% field coverage.`, performance: (s) => `Uptime ${s.uptime}; latency ${s.latency}.`,
-  },
-  es: {
-    lang: "es", locale: "es_ES", siteName: "Ranking de gateways de API de IA", brand: "Gateway", brandStrong: "Ranking",
-    navRanking: "Ranking", navTopics: "Índice de modelos", navMethod: "Metodología", skip: "Saltar al contenido principal",
-    homeTitle: "Ranking de gateways de API de IA", homeH1: "Gateways de API de IA", homeH1Em: "ranking de datos públicos",
-    homeLead: "Compara gateways de API de IA con múltiples modelos usando el mismo método de puntuación basado en datos públicos. Los campos ausentes se consideran desconocidos, no rendimiento cero.",
-    viewTable: "Ver tabla de datos", viewMethod: "Leer la metodología", collected: "Registros públicos", stations: "gateways de API de IA",
-    page: "Página", range: "Rango", perPage: "Por página", rankingTitle: "Ranking de métricas públicas", tableCaption: "Ranking de gateways de API de IA {first}-{last}, {total} registros",
-    rank: "Puesto", siteData: "Gateway y evidencia", score: "Puntuación", coverage: "Cobertura", uptime: "Disponibilidad", latency: "Latencia", models: "Modelos", rating: "Opiniones", policy: "Políticas", visit: "Visitar", pending: "Sin registrar", supported: "Compatible", unsupported: "No compatible", confirm: "Confirmar",
-    topicsTitle: "Buscar gateways por modelo", topicsLead: "Las coincidencias de palabras clave crean una lista para revisar. Confirma el modelo, el protocolo, el precio y la política de datos en el sitio antes de usarlo.", topicMatches: "coincidencias públicas", viewTopic: "Ver tema", currentTopic: "Tema actual",
-    methodologyTitle: "Metodología de puntuación", methodologyLead: "Este directorio aplica una fórmula determinista a datos públicos. Las puntuaciones organizan evidencias; no son una certificación ni garantizan disponibilidad.",
-    detailTitle: "Perfil del gateway", details: "Registro público actual", sourceDescription: "Descripción de origen", translatedDescription: "Descripción traducida", sourcePage: "Abrir página del proveedor", back: "Volver al ranking", updated: "Actualizado", modelsList: "Modelos registrados", payments: "Métodos de pago", noDescription: "No hay descripción registrada.",
-    footer: "Compara primero, prueba con un saldo pequeño y conserva un proveedor de respaldo.", previous: "Anterior", next: "Siguiente", language: "Idioma", faqTitle: "Preguntas frecuentes", searchTerms: "Vocabulario de búsqueda",
-    scoreSentence: (s) => `Puntuación basada en datos públicos: ${s.score}, con una cobertura del ${s.coverage} % de los campos.`, performance: (s) => `Disponibilidad ${s.uptime}; latencia ${s.latency}.`,
-  },
-  zh: {
-    lang: "zh-CN", locale: "zh-CN", siteName: "AI 中转站推荐榜", brand: "中转站", brandStrong: "推荐榜",
-    navRanking: "数据榜", navTopics: "模型索引", navMethod: "评分方法", skip: "跳到主要内容",
-    homeTitle: "AI 中转站数据榜", homeH1: "AI 中转站", homeH1Em: "公开数据排名", homeLead: "使用同一套公开数据评分方法比较多模型 AI API 中转站。缺失字段按未知处理，不等于零分。",
-    viewTable: "查看数据表", viewMethod: "阅读评分方法", collected: "公开收录", stations: "家 AI API 中转站", page: "第", range: "范围", perPage: "每页", rankingTitle: "公开指标排名", tableCaption: "AI 中转站公开数据排名 {first}–{last}，共 {total} 家",
-    rank: "排名", siteData: "站点与数据说明", score: "数据评分", coverage: "覆盖度", uptime: "在线率", latency: "延迟", models: "模型", rating: "评价", policy: "服务信息", visit: "访问", pending: "暂无", supported: "支持", unsupported: "不支持", confirm: "待确认",
-    topicsTitle: "按模型查找中转站", topicsLead: "关键词匹配只用于建立核验清单。使用前仍需进入站点确认模型、协议、价格和数据政策。", topicMatches: "家公开资料匹配", viewTopic: "查看专题", currentTopic: "当前专题",
-    methodologyTitle: "数据评分方法", methodologyLead: "本站把公开数据放入同一套确定性公式。分数用于整理证据，不是认证或实时可用性保证。", detailTitle: "站点详情", details: "当前公开记录", sourceDescription: "来源描述", translatedDescription: "翻译描述", sourcePage: "打开站点", back: "返回榜单", updated: "更新时间", modelsList: "收录模型", payments: "支付方式", noDescription: "暂无描述记录。", footer: "先比较，后测试；少量充值，为关键调用保留备用方案。", previous: "上一页", next: "下一页", language: "语言", faqTitle: "常见问题", searchTerms: "搜索词汇",
-    scoreSentence: (s) => `当前公开数据综合分 ${s.score}，评分字段覆盖 ${s.coverage}%。`, performance: (s) => `在线率 ${s.uptime}；延迟 ${s.latency}。`,
-  },
-};
+const SOURCE = "https://github.com/hvoyai/awesome-ai-api";
+const numbers = Object.fromEntries(LOCALE_IDS.map((locale) => [locale, new Intl.NumberFormat(LOCALES[locale].intl, { maximumFractionDigits: 1 })]));
+const generated = new Set();
+const canonicalUrls = new Set();
 
 function esc(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
-function slug(site) { try { return new URL(site.url).pathname.replace(/^\/|\/$/g, "").split("/").pop() || "site"; } catch { return "site"; } }
-function sitePath(locale, id) { return locale === "zh" ? `/sites/${id}/` : `/${locale}/sites/${id}/`; }
-function basePath(locale) { return locale === "en" ? "/en" : locale === "zh" ? "/cn" : "/es"; }
-function pagePath(locale, page) { const base = basePath(locale); return page === 1 ? `${base}/` : `${base}/page/${page}/`; }
-function topicPath(locale, topic, page = 1) { const base = basePath(locale); return page === 1 ? `${base}/${topic.slug}/` : `${base}/${topic.slug}/page/${page}/`; }
-function vocabularyPath(locale) { return `${basePath(locale)}/search-vocabulary/`; }
-function formatDate(date, locale) { if (!date) return TEXT[locale].pending; const [y, m, d] = date.split("-"); return locale === "en" ? `${y}-${m}-${d}` : locale === "es" ? `${d}/${m}/${y}` : `${y} 年 ${Number(m)} 月 ${Number(d)} 日`; }
-function formatUptime(value, locale) { return value === null ? TEXT[locale].pending : `${number[locale].format(value)}%`; }
-function formatLatency(value, locale) { if (value === null) return TEXT[locale].pending; if (locale === "en") return value >= 1000 ? `${number.en.format(value / 1000)} s` : `${Math.round(value)} ms`; if (locale === "es") return value >= 1000 ? `${number.es.format(value / 1000)} s` : `${Math.round(value)} ms`; return value >= 1000 ? `${number.zh.format(value / 1000)} 秒` : `${Math.round(value)} 毫秒`; }
-function status(value, locale) { const t = TEXT[locale]; return value === true ? t.supported : value === false ? t.unsupported : t.confirm; }
-function translation(locale, cache, site) { return cache?.sites?.[slug(site)] || { name: site.name, description: site.description, paymentMethods: site.paymentMethods }; }
-function scoreCopy(locale, site) { const t = TEXT[locale]; const coverage = Math.round(site.scoreCoverage * 100); const uptime = formatUptime(site.uptime, locale); const latency = formatLatency(site.latencyMs, locale); const description = t.scoreSentence({ score: number[locale].format(site.score), coverage }); return `${site.displayName}: ${description} ${t.performance({ uptime, latency })}`; }
-function searchable(site) { return [site.name, site.description, ...site.models].join(" ").toLowerCase(); }
-
-function htmlHead({ locale, title, description, canonical, alternates, root = "", previous = "", next = "" }) {
-  const t = TEXT[locale];
-  const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@type": "WebPage", name: title, description, url: canonical, inLanguage: t.lang, isPartOf: { "@type": "WebSite", name: t.siteName, url: `${ORIGIN}${basePath(locale)}/` } }).replaceAll("<", "\\u003c");
-  return `<!doctype html><html lang="${t.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="robots" content="index, follow, max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:site_name" content="${esc(t.siteName)}"><meta property="og:locale" content="${t.locale}"><link rel="canonical" href="${canonical}">${alternates.map((item) => `<link rel="alternate" hreflang="${item.lang}" href="${item.url}">`).join("")}<link rel="alternate" hreflang="x-default" href="${ORIGIN}/">${previous ? `<link rel="prev" href="${previous}">` : ""}${next ? `<link rel="next" href="${next}">` : ""}<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/styles.min.css"><script type="application/ld+json">${jsonLd}</script></head>`;
+function num(value, locale) { return numbers[locale].format(value); }
+function status(value, locale) { return value === true ? TEXT[locale].yes : value === false ? TEXT[locale].no : TEXT[locale].pending; }
+function formatDate(value, locale) {
+  if (!value) return TEXT[locale].pending;
+  return new Intl.DateTimeFormat(LOCALES[locale].intl, { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${value}T00:00:00Z`));
 }
-function shell({ locale, body, title, description, canonical, alternates, root, previous = "", next = "" }) {
-  const t = TEXT[locale];
-  const labels = { en: "EN", es: "ES", "zh-CN": "中文" };
-  const languageLinks = alternates.map((item) => `<a class="language-link${item.lang === t.lang ? " is-current" : ""}" href="${item.url}" hreflang="${item.lang}"${item.lang === t.lang ? " aria-current=\"page\"" : ""}>${labels[item.lang] || item.lang}</a>`).join("");
-  return `${htmlHead({ locale, title, description, canonical, alternates, root, previous, next })}<body><a class="skip-link" href="#main">${t.skip}</a><header class="topbar"><a class="wordmark" href="${basePath(locale)}/" aria-label="${esc(t.siteName)}"><span>${esc(t.brand)}</span><strong>${esc(t.brandStrong)}</strong></a><nav aria-label="${esc(t.navRanking)}"><a href="${basePath(locale)}/#ranking">${t.navRanking}</a><a href="${basePath(locale)}/#topics">${t.navTopics}</a><a href="${basePath(locale)}/methodology/">${t.navMethod}</a></nav><nav class="language-switcher" aria-label="${esc(t.language)}">${languageLinks}</nav></header>${body}<footer class="footer"><a class="wordmark" href="${basePath(locale)}/"><span>${esc(t.brand)}</span><strong>${esc(t.brandStrong)}</strong></a><p>${t.footer}</p><a href="${vocabularyPath(locale)}">${t.searchTerms}</a><a href="#main">↑</a></footer></body></html>\n`;
+function uptime(site, locale) { return site.uptime === null ? TEXT[locale].pending : `${num(site.uptime, locale)}%`; }
+function latency(site, locale) {
+  if (site.latencyMs === null) return TEXT[locale].pending;
+  return site.latencyMs >= 1000 ? `${num(site.latencyMs / 1000, locale)} ${TEXT[locale].units.s}` : `${num(site.latencyMs, locale)} ${TEXT[locale].units.ms}`;
 }
-
-function renderTable(locale, sites, caption, root) {
+function scoreCopy(site, locale) {
   const t = TEXT[locale];
-  return `<div class="ranking-table-wrap" role="region" aria-label="${esc(t.rankingTitle)}" tabindex="0"><table class="ranking-table"><caption>${esc(caption)}</caption><colgroup><col class="col-rank"><col class="col-site"><col class="col-score"><col class="col-uptime"><col class="col-latency"><col class="col-models"><col class="col-rating"><col class="col-policy"><col class="col-action"></colgroup><thead><tr><th scope="col">${t.rank}</th><th scope="col">${t.siteData}</th><th scope="col">${t.score}</th><th scope="col">${t.uptime}</th><th scope="col">${t.latency}</th><th scope="col">${t.models}</th><th scope="col">${t.rating}</th><th scope="col">${t.policy}</th><th scope="col">${t.visit}</th></tr></thead><tbody>${sites.map((site) => { const url = esc(site.url); const detail = sitePath(locale, slug(site)); const rating = site.userRating === null || site.ratingCount === 0 ? t.pending : `${number[locale].format(site.userRating)} / 5 (${site.ratingCount})`; return `<tr class="ranking-row" id="rank-${site.rank}" data-rank="${site.rank}" data-score="${site.score.toFixed(6)}"><td class="rank-cell numeric"><strong>${site.rank}</strong></td><th class="site-cell" scope="row" id="station-${site.rank}"><a href="${url}" target="_blank" rel="nofollow noopener">${esc(site.displayName)}</a><p>${esc(scoreCopy(locale, site))}</p><a class="table-link" href="${detail}">${t.detailTitle} →</a></th><td class="score-cell numeric"><strong>${number[locale].format(site.score)}</strong><small>${t.coverage} ${Math.round(site.scoreCoverage * 100)}%</small></td><td class="numeric">${formatUptime(site.uptime, locale)}</td><td class="numeric">${formatLatency(site.latencyMs, locale)}</td><td class="numeric">${site.modelCount > 0 ? site.modelCount : t.pending}</td><td class="numeric">${esc(rating)}</td><td class="policy-cell"><span class="data-${site.supportsRefund === null ? "unknown" : site.supportsRefund ? "known" : "negative"}">${locale === "en" ? "Refund" : locale === "es" ? "Reembolso" : "退"}: ${status(site.supportsRefund, locale)}</span><span class="data-${site.supportsInvoice === null ? "unknown" : site.supportsInvoice ? "known" : "negative"}">${locale === "en" ? "Invoice" : locale === "es" ? "Factura" : "票"}: ${status(site.supportsInvoice, locale)}</span></td><td><a class="table-link" href="${url}" target="_blank" rel="nofollow noopener" referrerpolicy="origin" aria-label="${esc(t.visit)} ${esc(site.displayName)}">↗</a></td></tr>`; }).join("")}</tbody></table></div>`;
+  return `${site.displayName}: ${t.scoreSentence({ score: num(site.score, locale), coverage: Math.round(site.scoreCoverage * 100) })} ${t.performance({ uptime: uptime(site, locale), latency: latency(site, locale) })}`;
 }
-
-function pagination(locale, page, total, pathForPage) {
+function paymentLabel(value, locale) {
+  const labels = {
+    "支付宝": { en: "Alipay", es: "Alipay", ru: "Alipay" },
+    "微信": { en: "WeChat Pay", es: "WeChat Pay", ru: "WeChat Pay" },
+    "微信支付": { en: "WeChat Pay", es: "WeChat Pay", ru: "WeChat Pay" },
+    "银行卡": { en: "Bank card", es: "Tarjeta bancaria", ru: "Банковская карта" },
+    "信用卡": { en: "Credit card", es: "Tarjeta de crédito", ru: "Кредитная карта" },
+    "银行转账": { en: "Bank transfer", es: "Transferencia bancaria", ru: "Банковский перевод" },
+    "对公转账": { en: "Business bank transfer", es: "Transferencia bancaria empresarial", ru: "Перевод на счёт организации" },
+  };
+  if (locale === "zh") return value;
+  return labels[value]?.[locale] || (/\p{Script=Han}/u.test(value) ? TEXT[locale].unknownPayment : value);
+}
+function modelLabel(value, locale) {
+  if (locale === "zh" || !/\p{Script=Han}/u.test(value)) return value;
+  const aliases = { "智谱": "GLM / Zhipu", "通义千问": "Qwen", "通义": "Qwen", "千问": "Qwen", "月之暗面": "Kimi / Moonshot", "深度求索": "DeepSeek", "阿里云": "Alibaba Cloud", "百度": "Baidu", "文心一言": "ERNIE", "讯飞": "iFLYTEK", "豆包": "Doubao" };
+  return aliases[value] || value.replace(/[\p{Script=Han}（）]+/gu, " ").trim();
+}
+function sourceLink(site, locale, label, attributes = "") {
+  return `<a href="${esc(outboundUrl(site.url, locale))}" target="_blank" rel="nofollow noopener" referrerpolicy="origin"${attributes}>${esc(label)}</a>`;
+}
+function sectionContent(sections) {
+  return sections.map(({ title, paragraphs = [], bullets = [] }) => `<section><h2>${esc(title)}</h2>${paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}${bullets.length ? `<ul>${bullets.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}</section>`).join("");
+}
+function list(items) { return `<ul>${items.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>`; }
+function wordmark(locale) { return `<a class="wordmark" href="${pagePath(locale)}" aria-label="AI Ranking"><span>AI</span><strong>Ranking</strong></a>`; }
+function shell({ locale, page, title, description, body, updatedDate, previous = "", next = "", noindex = false }) {
+  const t = TEXT[locale];
+  const config = LOCALES[locale];
+  const canonical = noindex ? `${ORIGIN}/404.html` : `${ORIGIN}${pagePath(locale, page, true)}`;
+  const links = alternates(page);
+  const alternateTags = noindex ? "" : `${links.map((item) => `<link rel="alternate" hreflang="${item.lang}" href="${item.url}">`).join("")}<link rel="alternate" hreflang="x-default" href="${ORIGIN}${pagePath("en", page, true)}">`;
+  const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@type": ["home", "topic"].includes(page.kind) ? "CollectionPage" : "WebPage", name: title, description, url: canonical, inLanguage: config.lang, isPartOf: { "@type": "WebSite", name: BRAND, url: `${ORIGIN}/` } }).replaceAll("<", "\\u003c");
+  const languageLinks = links.map((item) => `<a class="language-link${item.locale === locale ? " is-current" : ""}" href="${item.url}" lang="${item.lang}" hreflang="${item.lang}"${item.locale === locale ? ' aria-current="page"' : ""}>${LOCALES[item.locale].label}</a>`).join("");
+  return `<!doctype html><html lang="${config.lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="robots" content="${noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}"><meta name="theme-color" content="#2854bd"><link rel="canonical" href="${canonical}">${alternateTags}<meta property="og:type" content="website"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${canonical}"><meta property="og:site_name" content="${BRAND}"><meta property="og:locale" content="${config.og}"><meta property="og:image" content="${ORIGIN}/assets/og-image.svg"><meta name="twitter:card" content="summary_large_image">${previous ? `<link rel="prev" href="${ORIGIN}${previous}">` : ""}${next ? `<link rel="next" href="${ORIGIN}${next}">` : ""}<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/styles.min.css"><script type="application/ld+json">${jsonLd}</script></head><body><!-- Generated by AI Ranking --><a class="skip-link" href="#main">${t.skip}</a><header class="topbar">${wordmark(locale)}<nav class="primary-nav" aria-label="${t.ranking}"><a href="${pagePath(locale)}#ranking">${t.ranking}</a><a href="${pagePath(locale)}#topics">${t.topics}</a><a href="${pagePath(locale, { kind: "guides" })}">${t.guides}</a><a href="${pagePath(locale, { kind: "methodology" })}">${t.method}</a></nav><nav class="language-switcher" aria-label="${t.language}">${languageLinks}</nav></header>${body}<footer class="footer">${wordmark(locale)}<p>${t.footer}</p><div class="footer-links"><a href="${pagePath(locale, { kind: "guides" })}">${t.guides}</a><a href="${pagePath(locale, { kind: "methodology" })}">${t.method}</a><a href="${pagePath(locale, { kind: "vocabulary" })}">${t.vocabulary}</a><a href="${SOURCE}" rel="noopener" target="_blank">${t.source}</a><a href="#main">${t.top} ↑</a></div><small>${t.updated}: ${esc(formatDate(updatedDate, locale))}</small></footer></body></html>\n`;
+}
+function breadcrumbs(locale, label) { return `<nav class="breadcrumbs" aria-label="${TEXT[locale].back}"><a href="${pagePath(locale)}">${BRAND}</a><span aria-hidden="true">/</span><span aria-current="page">${esc(label)}</span></nav>`; }
+function evidence(locale) { return `<aside class="evidence-note"><p>${TEXT[locale].evidence}</p></aside>`; }
+function renderTable(locale, sites, caption) {
+  const t = TEXT[locale];
+  if (!sites.length) return `<p class="empty-state">${t.empty}</p>`;
+  const columns = [t.rank, t.provider, t.score, t.uptime, t.latency, t.models, t.reviews, t.policy, t.visit];
+  return `<div class="ranking-table-wrap" role="region" aria-label="${esc(t.rankingTitle)}" tabindex="0"><table class="ranking-table"><caption>${esc(caption)}</caption><colgroup>${["rank", "site", "score", "uptime", "latency", "models", "rating", "policy", "action"].map((col) => `<col class="col-${col}">`).join("")}</colgroup><thead><tr>${columns.map((label) => `<th scope="col">${label}</th>`).join("")}</tr></thead><tbody>${sites.map((site) => {
+    const rating = site.userRating === null || site.ratingCount === 0 ? t.pending : `${num(site.userRating, locale)} / 5 (${num(site.ratingCount, locale)})`;
+    return `<tr class="ranking-row" id="rank-${site.rank}" data-rank="${site.rank}" data-score="${site.score.toFixed(6)}"><td class="rank-cell numeric"><strong>${site.rank}</strong></td><th class="site-cell" scope="row" id="station-${site.rank}">${sourceLink(site, locale, site.displayName)}<p>${esc(scoreCopy(site, locale))}</p><a class="table-link" href="${pagePath(locale, { kind: "site", slug: siteSlug(site) })}">${t.profile} →</a></th><td class="score-cell numeric"><strong>${num(site.score, locale)}</strong><small>${t.coverage} ${Math.round(site.scoreCoverage * 100)}%</small></td><td class="numeric">${uptime(site, locale)}</td><td class="numeric">${latency(site, locale)}</td><td class="numeric">${site.modelCount > 0 ? num(site.modelCount, locale) : t.pending}</td><td class="numeric">${esc(rating)}</td><td class="policy-cell"><span>${t.refund}: ${status(site.supportsRefund, locale)}</span><span>${t.invoice}: ${status(site.supportsInvoice, locale)}</span></td><td>${sourceLink(site, locale, "↗", ` class="table-link" aria-label="${esc(`${t.visit}: ${site.displayName}`)}"`)}</td></tr>`;
+  }).join("")}</tbody></table></div>`;
+}
+function pagination(locale, page, total, identity) {
   if (total <= 1) return "";
   const t = TEXT[locale];
-  const links = Array.from({ length: total }, (_, i) => i + 1).filter((value) => value === 1 || value === total || Math.abs(value - page) <= 1).map((value, index, values) => `${index && value - values[index - 1] > 1 ? "<span class=\"page-gap\">…</span>" : ""}${value === page ? `<span class="page-number is-current" aria-current="page">${value}</span>` : `<a class="page-number" href="${pathForPage(value)}">${value}</a>`}`).join("");
-  return `<nav class="pagination" aria-label="${esc(t.rankingTitle)}">${page > 1 ? `<a class="page-step" href="${pathForPage(page - 1)}">← ${t.previous}</a>` : `<span class="page-step is-disabled">← ${t.previous}</span>`}<div class="page-numbers">${links}</div>${page < total ? `<a class="page-step" href="${pathForPage(page + 1)}">${t.next} →</a>` : `<span class="page-step is-disabled">${t.next} →</span>`}</nav>`;
+  const href = (number) => pagePath(locale, { ...identity, page: number });
+  const values = Array.from({ length: total }, (_, i) => i + 1).filter((value) => value === 1 || value === total || Math.abs(value - page) <= 1);
+  return `<nav class="pagination" aria-label="${t.page}">${page > 1 ? `<a class="page-step" href="${href(page - 1)}">← ${t.previous}</a>` : `<span class="page-step is-disabled">${t.previous}</span>`}<div class="page-numbers">${values.map((value, i) => `${i && value - values[i - 1] > 1 ? '<span class="page-gap">…</span>' : ""}${value === page ? `<span class="page-number is-current" aria-current="page">${value}</span>` : `<a class="page-number" href="${href(value)}">${value}</a>`}`).join("")}</div>${page < total ? `<a class="page-step" href="${href(page + 1)}">${t.next} →</a>` : `<span class="page-step is-disabled">${t.next}</span>`}</nav>`;
 }
-
-function topicCards(locale, topics) { const t = TEXT[locale]; return `<section class="topic-directory" id="topics"><div class="topic-directory__head"><div><p class="section-kicker">${t.navTopics}</p><h2 id="topics-title">${t.topicsTitle}</h2></div><p>${t.topicsLead}</p></div><div class="topic-directory__grid">${topics.map(({ topic, matches }) => `<article><span>${esc(topic.en)}</span><h3>${esc(topic[locale])}</h3><p>${esc(topic.intro?.[locale] || t.topicsLead)}</p><div><strong>${matches.length}</strong><small>${t.topicMatches}</small><a href="${topicPath(locale, topic)}">${t.viewTopic} →</a></div></article>`).join("")}</div></section>`; }
-
-function searchVocabulary(locale) {
-  const copy = SEARCH_COPY[locale];
-  return `<section class="search-vocabulary" aria-labelledby="search-vocabulary-title"><div class="topic-directory__head"><div><p class="section-kicker">SEARCH TERMS</p><h2 id="search-vocabulary-title">${copy.title}</h2></div><p>${copy.lead}</p></div><p class="search-vocabulary__terms">${SEARCH_TERMS[locale].map((term) => `<span>${esc(term)}</span>`).join("")}</p></section>`;
-}
-
-function renderHome({ locale, page, totalPages, sites, allSites, topics, updatedDate }) {
+function topicCards(locale, topics) {
   const t = TEXT[locale];
-  const first = (page - 1) * PAGE_SIZE + 1; const last = first + sites.length - 1;
-  const canonical = `${ORIGIN}${pagePath(locale, page)}`;
-  const title = page === 1 ? t.homeTitle : `${t.homeTitle} - ${t.page} ${page}`;
-  const description = page === 1 ? `${t.homeLead} ${allSites.length} ${t.stations}.` : `${t.homeTitle}, ${t.page} ${page}, ${t.range} ${first}-${last}.`;
-  const alternates = [{ lang: "en", url: `${ORIGIN}${pagePath("en", page)}` }, { lang: "es", url: `${ORIGIN}${pagePath("es", page)}` }, { lang: "zh-CN", url: `${ORIGIN}${pagePath("zh", page)}` }];
-  const root = page === 1 ? "." : "../..";
-  const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a>${page > 1 ? `<span>/</span><span>${t.page} ${page}</span>` : ""}</nav><section class="hero"><div class="hero__copy"><p class="eyebrow">OPEN DATA RANKING · ${updatedDate.replaceAll("-", ".")}</p><h1>${esc(t.homeH1)}<br><em>${esc(t.homeH1Em)}</em></h1><p class="hero-copy">${esc(t.homeLead)}</p><div class="hero-actions"><a href="#ranking">${t.viewTable}</a><a href="${basePath(locale)}/methodology/">${t.viewMethod}</a></div></div><aside class="hero__panel"><p>${t.collected}</p><strong>${allSites.length}</strong><span>${t.stations}</span><dl><div><dt>${t.page}</dt><dd>${page} / ${totalPages}</dd></div><div><dt>${t.range}</dt><dd>${first}-${last}</dd></div><div><dt>${t.updated}</dt><dd>${updatedDate}</dd></div></dl></aside></section><section class="ranking" id="ranking"><div class="ranking-head"><div><p>DATA TABLE / ${String(page).padStart(2, "0")}</p><h2>${t.rankingTitle}</h2></div></div>${renderTable(locale, sites, t.tableCaption.replace("{first}", first).replace("{last}", last).replace("{total}", allSites.length), root)}${pagination(locale, page, totalPages, (value) => pagePath(locale, value))}</section>${page === 1 ? topicCards(locale, topics) : ""}</main>`;
-  return shell({ locale, body, title, description, canonical, alternates, root, previous: page > 1 ? `${ORIGIN}${pagePath(locale, page - 1)}` : "", next: page < totalPages ? `${ORIGIN}${pagePath(locale, page + 1)}` : "" });
+  const e = EDITORIAL[locale];
+  return `<section class="topic-directory" id="topics"><div class="topic-directory__head"><div><p class="section-kicker">${t.topics}</p><h2>${t.topicsTitle}</h2></div><p>${t.topicsLead}</p></div><div class="topic-directory__grid">${topics.map(({ topic, matches }) => `<article><h3>${topic.name}</h3><p>${esc(e.topicChecks[topic.id].intro)}</p><div><span>${num(matches.length, locale)} ${t.matches}</span><a href="${pagePath(locale, { kind: "topic", slug: topic.slug })}">${t.viewTopic} →</a></div></article>`).join("")}</div></section>`;
 }
-
-function renderTopic({ locale, topic, page, totalPages, sites, allMatches, topics, updatedDate }) {
-  const t = TEXT[locale]; const label = topic[locale]; const first = (page - 1) * PAGE_SIZE + 1; const last = first + sites.length - 1; const canonical = `${ORIGIN}${topicPath(locale, topic, page)}`; const root = page === 1 ? ".." : "../../.."; const alternates = [{ lang: "en", url: `${ORIGIN}${topicPath("en", topic, page)}` }, { lang: "es", url: `${ORIGIN}${topicPath("es", topic, page)}` }, { lang: "zh-CN", url: `${ORIGIN}${topicPath("zh", topic, page)}` }];
-  const title = `${label} | ${t.siteName}`; const description = `${label}: ${allMatches.length} ${t.topicMatches}. ${t.topicsLead}`;
-  const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a><span>/</span><span>${esc(label)}</span></nav><section class="hero topic-hero"><div class="hero__copy"><p class="eyebrow">MODEL DIRECTORY · ${updatedDate.replaceAll("-", ".")}</p><h1>${esc(label)}<br><em>${esc(t.rankingTitle)}</em></h1><p class="hero-copy">${esc(description)}</p><div class="hero-actions"><a href="#topic-ranking">${t.viewTable}</a><a href="${basePath(locale)}/#topics">${t.back}</a></div></div><aside class="hero__panel"><p>${t.topicMatches}</p><strong>${allMatches.length}</strong><span>${esc(label)}</span><dl><div><dt>${t.page}</dt><dd>${page} / ${totalPages}</dd></div><div><dt>${t.range}</dt><dd>${first}-${last}</dd></div></dl></aside></section>${page === 1 ? topicCards(locale, topics) : ""}<section class="ranking topic-ranking" id="topic-ranking"><div class="ranking-head"><div><p>MODEL DATA / ${esc(topic.en)}</p><h2>${esc(label)}</h2></div></div>${renderTable(locale, sites, `${label} ${t.tableCaption.replace("{first}", first).replace("{last}", last).replace("{total}", allMatches.length)}`, root)}${pagination(locale, page, totalPages, (value) => topicPath(locale, topic, value))}</section></main>`;
-  return shell({ locale, body, title, description, canonical, alternates, root, previous: page > 1 ? `${ORIGIN}${topicPath(locale, topic, page - 1)}` : "", next: page < totalPages ? `${ORIGIN}${topicPath(locale, topic, page + 1)}` : "" });
+function guideCards(locale) {
+  const e = EDITORIAL[locale];
+  return `<section class="editorial-section guide-index"><p class="section-kicker">${TEXT[locale].guides}</p><h2>${esc(e.guidesTitle)}</h2><p>${esc(e.guidesLead)}</p><div class="card-grid">${e.guides.map((guide) => `<article class="guide-card"><h3><a href="${pagePath(locale, { kind: "guide", slug: guide.slug })}">${esc(guide.title)}</a></h3><p>${esc(guide.summary)}</p><a class="table-link" href="${pagePath(locale, { kind: "guide", slug: guide.slug })}">${esc(e.readGuide)} →</a></article>`).join("")}</div></section>`;
 }
-
-function renderSite({ locale, site, translated, updatedDate }) {
-  const t = TEXT[locale]; const id = slug(site); const canonical = `${ORIGIN}${sitePath(locale, id)}`; const root = locale === "zh" ? "../.." : "../../.."; const description = `${site.displayName}: ${scoreCopy(locale, site)}`; const alternates = [{ lang: "en", url: `${ORIGIN}${sitePath("en", id)}` }, { lang: "es", url: `${ORIGIN}${sitePath("es", id)}` }, { lang: "zh-CN", url: `${ORIGIN}${sitePath("zh", id)}` }]; const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a><span>/</span><span>${esc(site.displayName)}</span></nav><section class="hero"><div class="hero__copy"><p class="eyebrow">${t.detailTitle.toUpperCase()} · ${updatedDate.replaceAll("-", ".")}</p><h1>${esc(site.displayName)}<br><em>${esc(t.detailTitle)}</em></h1><p class="hero-copy">${esc(scoreCopy(locale, site))} ${esc(translated.description || t.noDescription)}</p><div class="hero-actions"><a href="${esc(site.url)}" target="_blank" rel="nofollow noopener" referrerpolicy="origin">${t.sourcePage} ↗</a><a href="${basePath(locale)}/">${t.back}</a></div></div><aside class="hero__panel"><p>${t.score}</p><strong>${number[locale].format(site.score)}</strong><span>${t.coverage} ${Math.round(site.scoreCoverage * 100)}%</span><dl><div><dt>${t.updated}</dt><dd>${updatedDate}</dd></div><div><dt>${t.rank}</dt><dd>${site.rank}</dd></div></dl></aside></section><section class="methodology"><h2>${t.details}</h2><p>${esc(scoreCopy(locale, site))}</p><div class="method-grid"><article><h3>${t.modelsList}</h3><p>${site.models.length ? esc(site.models.join(", ")) : t.pending}</p></article><article><h3>${t.payments}</h3><p>${translated.paymentMethods?.length ? esc(translated.paymentMethods.join(", ")) : t.pending}</p></article><article><h3>${t.sourceDescription}</h3><p>${esc(site.description || t.noDescription)}</p></article><article><h3>${t.translatedDescription}</h3><p>${esc(translated.description || t.noDescription)}</p></article></div></section></main>`; return shell({ locale, body, title: `${site.displayName} | ${t.siteName}`, description, canonical, alternates, root });
+function homeEditorial(locale) {
+  const e = EDITORIAL[locale];
+  return `<section class="editorial-section"><p class="section-kicker">${BRAND}</p><h2>${esc(e.introTitle)}</h2><p>${esc(e.introText)}</p><h3>${esc(e.scenariosTitle)}</h3><div class="card-grid">${e.scenarios.map((s) => `<article><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></article>`).join("")}</div></section>${guideCards(locale)}<section class="faq-section"><h2>${esc(e.faqTitle)}</h2>${e.faq.map(({ question, answer }) => `<details><summary>${esc(question)}</summary><p>${esc(answer)}</p></details>`).join("")}</section>`;
 }
-
-function renderMethodology({ locale, sites, updatedDate }) { const t = TEXT[locale]; const canonical = `${ORIGIN}${basePath(locale)}/methodology/`; const root = locale === "zh" ? ".." : "../.."; const alternates = [{ lang: "en", url: `${ORIGIN}/methodology/` }, { lang: "es", url: `${ORIGIN}/es/methodology/` }, { lang: "zh-CN", url: `${ORIGIN}/zh/methodology/` }]; const paragraphs = locale === "en" ? ["We deduplicate the source list, keep up to 500 records, and rank them with the same deterministic formula on every build.", "Uptime is weighted at 25%, latency at 20%, reviews at 15%, model breadth at 10%, tenure at 5%, payment methods at 5%, refund at 5%, invoice at 5%, and source continuity at 10%.", "Missing values are excluded from the available-weight denominator and the result is pulled toward 50 according to field coverage. Unknown is not the same as an explicit negative.", "The ranking is a research index. Verify the provider, model mapping, privacy policy, limits and billing with your own requests before production use."] : locale === "es" ? ["Eliminamos duplicados, conservamos hasta 500 registros y los ordenamos con la misma fórmula determinista en cada compilación.", "La disponibilidad pesa un 25 %, la latencia un 20 %, las opiniones un 15 %, la amplitud de modelos un 10 %, la antigüedad un 5 %, los métodos de pago un 5 %, el reembolso un 5 %, la factura un 5 % y la continuidad de la fuente un 10 %.", "Los campos ausentes se excluyen del denominador y el resultado se acerca a 50 según la cobertura. Desconocido no significa negativo explícito.", "Este ranking es un índice de investigación. Verifica el proveedor, el modelo, la privacidad, los límites y la facturación con tus propias solicitudes antes de usarlo en producción."] : ["先去重并保留最多 500 条公开资料，再用同一套确定性公式排序。", "在线率 25%、延迟 20%、评价 15%、模型广度 10%、运营时间 5%、支付方式 5%、退款 5%、发票 5%、来源连续性 10%。", "缺失字段从可用权重分母中剔除，并按覆盖度把结果向 50 分收缩。未知不等于明确不支持。", "榜单用于整理研究线索。生产使用前，请用自己的请求核对供应商、模型映射、隐私、限制和账单。"]; const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a><span>/</span><span>${t.navMethod}</span></nav><article class="methodology"><p class="eyebrow">METHODOLOGY · ${updatedDate.replaceAll("-", ".")}</p><h1>${t.methodologyTitle}</h1><p class="methodology__lead">${t.methodologyLead} ${sites.length}.</p>${paragraphs.map((p) => `<section><p>${esc(p)}</p></section>`).join("")}</article></main>`; return shell({ locale, body, title: `${t.methodologyTitle} | ${t.siteName}`, description: t.methodologyLead, canonical, alternates, root }); }
-
-function renderSearchVocabulary({ locale, updatedDate }) {
+function renderRanking({ locale, identity, sites, topics, updatedDate, topic = null }) {
   const t = TEXT[locale];
-  const copy = SEARCH_COPY[locale];
-  const canonical = `${ORIGIN}${vocabularyPath(locale)}`;
-  const alternates = [{ lang: "en", url: `${ORIGIN}${vocabularyPath("en")}` }, { lang: "es", url: `${ORIGIN}${vocabularyPath("es")}` }, { lang: "zh-CN", url: `${ORIGIN}${vocabularyPath("zh")}` }];
-  const root = "../..";
-  const body = `<main id="main"><nav class="breadcrumbs"><a href="${basePath(locale)}/">${esc(t.siteName)}</a><span>/</span><span>${esc(copy.title)}</span></nav><article class="methodology"><p class="eyebrow">SEARCH RESEARCH · ${updatedDate.replaceAll("-", ".")}</p><h1>${esc(copy.title)}</h1><p class="methodology__lead">${esc(copy.lead)}</p><p>${esc(copy.note)}</p></article>${searchVocabulary(locale)}</main>`;
-  return shell({ locale, body, title: `${copy.title} | ${t.siteName}`, description: copy.lead, canonical, alternates, root });
+  const e = EDITORIAL[locale];
+  const page = identity.page || 1;
+  const totalPages = Math.max(1, Math.ceil(sites.length / PAGE_SIZE));
+  const rows = sites.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const first = rows.length ? (page - 1) * PAGE_SIZE + 1 : 0;
+  const last = rows.length ? first + rows.length - 1 : 0;
+  const label = topic ? `${topic.name} · ${t.topics}` : t.homeTitle;
+  const title = `${label}${page > 1 ? ` — ${t.page} ${page}` : ""} | ${BRAND}`;
+  const lead = topic ? e.topicChecks[topic.id].intro : t.lead;
+  const description = `${lead} ${t.page} ${page}. ${t.range}: ${first}–${last} / ${sites.length}.`;
+  const caption = t.tableCaption.replace("{first}", first).replace("{last}", last).replace("{total}", sites.length);
+  const body = `<main id="main" tabindex="-1">${breadcrumbs(locale, page > 1 ? `${label} / ${t.page} ${page}` : label)}<section class="hero${topic ? " topic-hero" : ""}"><div class="hero__copy"><p class="eyebrow">${BRAND} / ${topic ? topic.name : t.snapshot}</p><h1>${esc(topic ? topic.name : t.homeH1)}<br><em>${esc(topic ? t.topics : t.homeEm)}</em></h1><p class="hero-copy">${esc(lead)}</p><div class="hero-actions"><a href="#ranking">${t.viewTable}</a><a href="${pagePath(locale, { kind: "methodology" })}">${t.viewMethod}</a></div></div><aside class="hero__panel"><p>${topic ? t.matches : t.collected}</p><strong>${sites.length}</strong><span>${t.snapshot}</span><dl><div><dt>${t.updated}</dt><dd>${esc(formatDate(updatedDate, locale))}</dd></div><div><dt>${t.page}</dt><dd>${page} / ${totalPages}</dd></div><div><dt>${t.range}</dt><dd>${first}–${last}</dd></div></dl></aside></section><section class="ranking" id="ranking">${evidence(locale)}<div class="ranking-head"><div><p>${t.page} ${String(page).padStart(2, "0")}</p><h2>${t.rankingTitle}</h2></div></div>${renderTable(locale, rows, caption)}${pagination(locale, page, totalPages, identity)}</section>${topic && page === 1 ? `<section class="editorial-section topic-checks"><h2>${esc(e.topicChecksTitle)}</h2><p>${t.topicsLead}</p>${list(e.topicChecks[topic.id].checks)}</section>${guideCards(locale)}` : ""}${!topic && page === 1 ? `${topicCards(locale, topics)}${homeEditorial(locale)}` : ""}</main>`;
+  return shell({ locale, page: identity, title, description, body, updatedDate, previous: page > 1 ? pagePath(locale, { ...identity, page: page - 1 }, true) : "", next: page < totalPages ? pagePath(locale, { ...identity, page: page + 1 }, true) : "" });
 }
-
-async function write(target, content) { await mkdir(path.dirname(target), { recursive: true }); await writeFile(target, content, "utf8"); }
-async function pruneGeneratedSites(locale, ids) {
-  const directory = path.join(ROOT, sitePath(locale, "").replace(/\/$/, "").replace(/^\//, ""));
+function renderSite({ locale, site, updatedDate }) {
+  const t = TEXT[locale];
+  const e = EDITORIAL[locale];
+  const identity = { kind: "site", slug: siteSlug(site) };
+  const description = scoreCopy(site, locale);
+  const modelLabels = site.models.map((value) => modelLabel(value, locale)).filter(Boolean);
+  const facts = [
+    [t.rank, String(site.rank)], [t.score, `${num(site.score, locale)} / 100`], [t.coverage, `${Math.round(site.scoreCoverage * 100)}%`],
+    [t.uptime, uptime(site, locale)], [t.latency, latency(site, locale)], [t.models, site.modelCount || t.pending],
+    [t.reviews, site.userRating !== null && site.ratingCount > 0 ? `${num(site.userRating, locale)} / 5 (${num(site.ratingCount, locale)})` : t.pending],
+    [t.established, formatDate(site.establishedDate, locale)], [t.refund, status(site.supportsRefund, locale)], [t.invoice, status(site.supportsInvoice, locale)],
+    [t.payments, site.paymentMethods.length ? [...new Set(site.paymentMethods.map((value) => paymentLabel(value, locale)))].join(" · ") : t.pending],
+  ];
+  const body = `<main id="main" tabindex="-1">${breadcrumbs(locale, site.displayName)}<article class="methodology"><header class="article-header"><p class="eyebrow">${t.profile}</p><h1>${esc(site.displayName)}</h1><p class="methodology__lead">${esc(description)}</p><p>${t.detailLead}</p><div class="hero-actions">${sourceLink(site, locale, `${t.sourcePage} ↗`)}<a href="${pagePath(locale)}">${t.back}</a></div></header>${evidence(locale)}<section><h2>${t.detailTitle}</h2><dl class="detail-facts">${facts.map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl></section><section><h2>${t.modelsList}</h2><p>${esc(modelLabels.length ? modelLabels.join(", ") : t.missingModels)}</p><p>${t.topicsLead}</p></section><section><h2>${esc(e.detailChecksTitle)}</h2>${list(e.detailChecks)}</section></article>${guideCards(locale)}</main>`;
+  return shell({ locale, page: identity, title: `${site.displayName} — ${t.profile} | ${BRAND}`, description, body, updatedDate });
+}
+function renderArticle({ locale, identity, updatedDate }) {
+  const t = TEXT[locale];
+  const e = EDITORIAL[locale];
+  let title, lead, content;
+  if (identity.kind === "methodology") {
+    title = t.methodTitle; lead = t.methodLead; content = `${evidence(locale)}${sectionContent(e.methodologySections)}`;
+  } else if (identity.kind === "vocabulary") {
+    title = e.vocabularyTitle; lead = e.vocabularyLead;
+    content = `<section class="search-vocabulary"><div class="search-vocabulary__terms">${e.vocabularyTerms.map((term) => `<span>${esc(term)}</span>`).join("")}</div><p>${t.topicsLead}</p></section>`;
+  } else if (identity.kind === "guides") {
+    title = e.guidesTitle; lead = e.guidesLead; content = "";
+  } else {
+    const guide = e.guides.find((item) => item.slug === identity.slug);
+    title = guide.title; lead = guide.summary; content = sectionContent(guide.sections);
+  }
+  const body = `<main id="main" tabindex="-1">${breadcrumbs(locale, title)}<article class="methodology prose"><header class="article-header"><p class="eyebrow">${BRAND} / ${identity.kind === "methodology" ? t.method : identity.kind === "vocabulary" ? t.vocabulary : t.guideLabel}</p><h1>${esc(title)}</h1><p class="methodology__lead">${esc(lead)}</p></header><div class="article-body">${content}</div></article>${["guide", "guides"].includes(identity.kind) ? guideCards(locale) : ""}</main>`;
+  return shell({ locale, page: identity, title: `${title} | ${BRAND}`, description: lead, body, updatedDate });
+}
+async function write(target, content) {
+  const file = path.join(ROOT, target);
+  await mkdir(path.dirname(file), { recursive: true });
+  await writeFile(file, content, "utf8");
+  generated.add(file);
+}
+async function emit(locale, identity, html) {
+  const route = pagePath(locale, identity);
+  const canonical = pagePath(locale, identity, true);
+  await write(`${route.slice(1)}index.html`, html);
+  if (route !== canonical) await write(`${canonical.slice(1)}index.html`, html);
+  canonicalUrls.add(`${ORIGIN}${canonical}`);
+}
+// Remove only obsolete generated HTML, never whole user-owned directories.
+async function prune(directory) {
   let entries;
-  try { entries = await readdir(directory, { withFileTypes: true }); } catch { return; }
+  try { entries = await readdir(directory, { withFileTypes: true }); } catch (error) { if (error.code === "ENOENT") return; throw error; }
   for (const entry of entries) {
-    if (!entry.isDirectory() || ids.has(entry.name)) continue;
-    await rm(path.join(directory, entry.name), { recursive: true, force: true });
+    const target = path.join(directory, entry.name);
+    if (entry.isDirectory()) { await prune(target); continue; }
+    if (!entry.isFile() || entry.name !== "index.html" || generated.has(target)) continue;
+    const html = await readFile(target, "utf8");
+    if (html.includes(`rel="canonical" href="${ORIGIN}/`) && html.includes("<!-- Generated by AI Ranking -->")) await unlink(target);
   }
 }
-function localizedSite(site, locale, caches) { const translated = translation(locale, caches[locale], site); return { ...site, displayName: translated.name || site.name, translated }; }
 
 const payload = JSON.parse(await readFile(path.join(ROOT, "data.json"), "utf8"));
-const caches = {};
-for (const locale of ["en", "es"]) { try { caches[locale] = JSON.parse(await readFile(path.join(ROOT, "translations", `${locale}.json`), "utf8")); } catch { caches[locale] = { sites: {} }; } }
-caches.zh = { sites: {} };
-const updatedDate = /^\d{4}-\d{2}-\d{2}$/.test(payload.updatedDate || "") ? payload.updatedDate : new Date().toISOString().slice(0, 10);
+if (!Array.isArray(payload.sites)) throw new Error("Expected a sites array");
+if (!/^\d{4}-\d{2}-\d{2}$/.test(payload.updatedDate || "")) throw new Error("Expected a stable snapshot date");
+const updatedDate = payload.updatedDate;
 const normalized = payload.sites.map(normalizeSite).sort((a, b) => a.rank - b.rank).filter((site, index, items) => items.findIndex((candidate) => candidate.name.toLowerCase() === site.name.toLowerCase() || candidate.url === site.url) === index).slice(0, MAX_SITES);
 const ranked = rankSites(normalized, updatedDate);
-const localeSites = Object.fromEntries(["en", "es", "zh"].map((locale) => [locale, ranked.map((site) => localizedSite(site, locale, caches))]));
-const allTopicData = Object.fromEntries(["en", "es", "zh"].map((locale) => [locale, TOPICS.map((topic) => ({ topic, matches: localeSites[locale].filter((site) => topic.terms.some((term) => searchable(site).includes(term))) }))]));
-const generatedUrls = [];
-
-for (const locale of ["en", "es", "zh"]) {
-  const sites = localeSites[locale]; const topics = allTopicData[locale]; const totalPages = Math.ceil(sites.length / PAGE_SIZE);
-  await pruneGeneratedSites(locale, new Set(sites.map((site) => slug(site))));
-  for (let page = 1; page <= totalPages; page += 1) {
-    const content = renderHome({ locale, page, totalPages, sites: sites.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), allSites: sites, topics, updatedDate });
-    const target = page === 1
-      ? path.join(ROOT, basePath(locale).replace(/^\//, ""), "index.html")
-      : path.join(ROOT, basePath(locale).replace(/^\//, ""), "page", String(page), "index.html");
-    await write(target, content); generatedUrls.push(`${ORIGIN}${pagePath(locale, page)}`);
-    if (locale === "en") {
-      const aliasTarget = page === 1 ? path.join(ROOT, "index.html") : path.join(ROOT, "page", String(page), "index.html");
-      const aliasPath = page === 1 ? "/" : `/page/${page}/`;
-      const aliasContent = content.replace(`<link rel="canonical" href="${ORIGIN}${pagePath("en", page)}"`, `<link rel="canonical" href="${ORIGIN}${aliasPath}"`);
-      await write(aliasTarget, aliasContent);
-      generatedUrls.push(`${ORIGIN}${page === 1 ? "/" : `/page/${page}/`}`);
-    }
-  }
-  const methodology = renderMethodology({ locale, sites, updatedDate })
-    .replaceAll(`${ORIGIN}/zh/`, `${ORIGIN}/cn/`)
-    .replaceAll(`${ORIGIN}/methodology/`, `${ORIGIN}/en/methodology/`);
-  await write(path.join(ROOT, basePath(locale).replace(/^\//, ""), "methodology", "index.html"), methodology);
-  generatedUrls.push(`${ORIGIN}${basePath(locale)}/methodology/`);
-  if (locale === "en") {
-    await write(path.join(ROOT, "methodology", "index.html"), methodology);
-    generatedUrls.push(`${ORIGIN}/methodology/`);
-  }
-  const vocabulary = renderSearchVocabulary({ locale, updatedDate });
-  await write(path.join(ROOT, basePath(locale).replace(/^\//, ""), "search-vocabulary", "index.html"), vocabulary);
-  generatedUrls.push(`${ORIGIN}${vocabularyPath(locale)}`);
-  if (locale === "en") {
-    await write(path.join(ROOT, "search-vocabulary", "index.html"), vocabulary.replace(`<link rel="canonical" href="${ORIGIN}${vocabularyPath("en")}"`, `<link rel="canonical" href="${ORIGIN}/search-vocabulary/"`));
-    generatedUrls.push(`${ORIGIN}/search-vocabulary/`);
+for (const locale of LOCALE_IDS) {
+  // Proper names are source identifiers; promotional source descriptions are never rendered.
+  const sites = ranked.map((site) => ({ ...site, displayName: site.name }));
+  const topics = TOPICS.map((topic) => ({ topic, matches: sites.filter((site) => topic.terms.some((term) => [site.name, site.description, ...site.models].join(" ").toLowerCase().includes(term))) }));
+  for (let page = 1; page <= Math.max(1, Math.ceil(sites.length / PAGE_SIZE)); page++) {
+    const identity = { kind: "home", page };
+    await emit(locale, identity, renderRanking({ locale, identity, sites, topics, updatedDate }));
   }
   for (const { topic, matches } of topics) {
-    const pages = Math.ceil(matches.length / PAGE_SIZE);
-    for (let page = 1; page <= pages; page += 1) {
-      const content = renderTopic({ locale, topic, page, totalPages: pages, sites: matches.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), allMatches: matches, topics, updatedDate });
-      const target = page === 1
-        ? path.join(ROOT, basePath(locale).replace(/^\//, ""), topic.slug, "index.html")
-        : path.join(ROOT, basePath(locale).replace(/^\//, ""), topic.slug, "page", String(page), "index.html");
-      await write(target, content); generatedUrls.push(`${ORIGIN}${topicPath(locale, topic, page)}`);
-      if (locale === "en") {
-        const aliasTarget = page === 1 ? path.join(ROOT, topic.slug, "index.html") : path.join(ROOT, topic.slug, "page", String(page), "index.html");
-        const aliasPath = page === 1 ? `/${topic.slug}/` : `/${topic.slug}/page/${page}/`;
-        const aliasContent = content.replace(`<link rel="canonical" href="${ORIGIN}${topicPath("en", topic, page)}"`, `<link rel="canonical" href="${ORIGIN}${aliasPath}"`);
-        await write(aliasTarget, aliasContent);
-        generatedUrls.push(`${ORIGIN}/${topic.slug}/${page === 1 ? "" : `page/${page}/`}`);
-      }
+    for (let page = 1; page <= Math.max(1, Math.ceil(matches.length / PAGE_SIZE)); page++) {
+      const identity = { kind: "topic", slug: topic.slug, page };
+      await emit(locale, identity, renderRanking({ locale, identity, sites: matches, topics, updatedDate, topic }));
     }
   }
-  for (const site of sites) { await write(path.join(ROOT, sitePath(locale, slug(site)).replace(/^\//, ""), "index.html"), renderSite({ locale, site, translated: site.translated, updatedDate })); generatedUrls.push(`${ORIGIN}${sitePath(locale, slug(site))}`); }
+  for (const site of sites) await emit(locale, { kind: "site", slug: siteSlug(site) }, renderSite({ locale, site, updatedDate }));
+  for (const identity of [{ kind: "methodology" }, { kind: "vocabulary" }, { kind: "guides" }, ...EDITORIAL[locale].guides.map((guide) => ({ kind: "guide", slug: guide.slug }))]) {
+    await emit(locale, identity, renderArticle({ locale, identity, updatedDate }));
+  }
 }
-
-await write(path.join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...new Set(generatedUrls)].map((url) => `<url><loc>${url}</loc><lastmod>${updatedDate}</lastmod><changefreq>daily</changefreq></url>`).join("")}</urlset>\n`);
-process.stdout.write(`已生成多语言页面：${generatedUrls.length} 个 URL；数据日期 ${updatedDate}\n`);
+await write("assets/styles.min.css", minifyCss(await readFile(path.join(ROOT, "assets/styles.css"), "utf8")));
+await write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...canonicalUrls].sort().map((url) => `<url><loc>${esc(url)}</loc></url>`).join("")}</urlset>\n`);
+await write("robots.txt", `User-agent: *\nAllow: /\nSitemap: ${ORIGIN}/sitemap.xml\n`);
+await write("404.html", shell({ locale: "en", page: { kind: "home" }, title: `Page not found | ${BRAND}`, description: "This address is not in the AI Ranking directory.", updatedDate, noindex: true, body: `<main id="main" tabindex="-1"><section class="methodology not-found"><p class="eyebrow">404 / AI Ranking</p><h1>This page is off the list.</h1><p>The address may have changed. Choose a language to return to the rankings.</p><div class="hero-actions">${LOCALE_IDS.map((locale) => `<a href="${pagePath(locale)}" lang="${LOCALES[locale].lang}">${LOCALES[locale].label}</a>`).join("")}</div></section></main>` }));
+for (const directory of ["en", "es", "ru", "cn", "sites", "page", "guides", "methodology", "search-vocabulary", ...TOPICS.map((topic) => topic.slug)]) await prune(path.join(ROOT, directory));
+process.stdout.write(`Generated ${canonicalUrls.size} canonical pages in ${LOCALE_IDS.length} languages; snapshot ${updatedDate}\n`);

@@ -1,1 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc"><title id="title">AI 中转站推荐</title><desc id="desc">最多 500 家 AI API 中转站排名、对比与选择指南</desc><rect width="1200" height="630" fill="#f3f5f9"/><rect x="58" y="58" width="1084" height="514" rx="34" fill="#111d3a"/><circle cx="1030" cy="105" r="155" fill="#8be8ee"/><circle cx="1065" cy="510" r="72" fill="#ffb84d"/><text x="120" y="175" fill="#8be8ee" font-family="Arial,sans-serif" font-size="25" font-weight="700" letter-spacing="6">AI SERVICE RANKING</text><text x="115" y="330" fill="#ffffff" font-family="Arial,'Microsoft YaHei',sans-serif" font-size="104" font-weight="800">AI 中转站推荐</text><text x="120" y="420" fill="#c4cde0" font-family="Arial,'Microsoft YaHei',sans-serif" font-size="34">静态排名 · 模型专题 · 选择方法 · 每日更新</text><rect x="120" y="475" width="280" height="11" rx="5.5" fill="#315bea"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">AI Ranking</title>
+  <desc id="desc">AI API service directory. Rankings, provider details, and methodology.</desc>
+  <rect width="1200" height="630" fill="#f7f8fa"/>
+  <rect x="48" y="48" width="1104" height="534" rx="6" fill="#ffffff" stroke="#dce2eb"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif">
+    <text x="92" y="124" font-size="34" font-weight="700" letter-spacing="-1.5"><tspan fill="#2854bd">AI</tspan><tspan fill="#17253d"> Ranking</tspan></text>
+    <text x="1108" y="119" text-anchor="end" fill="#5c687a" font-size="16">THE SERVICE DIRECTORY</text>
+    <path d="M92 153H1108" stroke="#bcc7d7"/>
+    <text x="92" y="232" fill="#2854bd" font-size="15" font-weight="600" letter-spacing="2.4">FIND. COMPARE. UNDERSTAND.</text>
+    <g fill="#17253d" font-size="76" font-weight="650" letter-spacing="-3">
+      <text x="88" y="330">AI API services,</text>
+      <text x="88" y="416">in perspective.</text>
+    </g>
+    <path d="M92 475H1108" stroke="#dce2eb"/>
+    <text x="92" y="526" fill="#5c687a" font-size="20">Rankings · Provider details · Methodology</text>
+    <text x="1108" y="526" text-anchor="end" fill="#17253d" font-size="16">AI Ranking</text>
+  </g>
+</svg>
