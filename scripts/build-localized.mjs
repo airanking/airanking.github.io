@@ -95,7 +95,7 @@ function guideCards(locale) {
 }
 function homeEditorial(locale) {
   const e = EDITORIAL[locale];
-  return `<section class="editorial-section"><p class="section-kicker">${BRAND}</p><h2>${esc(e.introTitle)}</h2><p>${esc(e.introText)}</p><h3>${esc(e.scenariosTitle)}</h3><div class="card-grid">${e.scenarios.map((s) => `<article><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></article>`).join("")}</div></section>${guideCards(locale)}<section class="faq-section"><h2>${esc(e.faqTitle)}</h2>${e.faq.map(({ question, answer }) => `<details><summary>${esc(question)}</summary><p>${esc(answer)}</p></details>`).join("")}</section>`;
+  return `<section class="editorial-section"><p class="section-kicker">${BRAND}</p><h2>${esc(e.introTitle)}</h2><p>${esc(e.introText)}</p><h3>${esc(e.scenariosTitle)}</h3><div class="card-grid">${e.scenarios.map((s) => `<article class="guide-card"><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></article>`).join("")}</div></section>${guideCards(locale)}<section class="faq-section"><h2>${esc(e.faqTitle)}</h2>${e.faq.map(({ question, answer }) => `<details><summary>${esc(question)}</summary><p>${esc(answer)}</p></details>`).join("")}</section>`;
 }
 function renderRanking({ locale, identity, sites, topics, updatedDate, topic = null }) {
   const t = TEXT[locale];

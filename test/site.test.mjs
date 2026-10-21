@@ -351,6 +351,9 @@ test("summaries and detail bodies contain evidence, not raw provider promotional
       assert.ok(body.includes(TEXT[locale].detailLead), file);
       assert.ok(body.includes(TEXT[locale].evidence), file);
       for (const check of EDITORIAL[locale].detailChecks) assert.ok(body.includes(check), file);
+      const facts = html.match(/<dl class="detail-facts">([\s\S]*?)<\/dl>/)?.[1];
+      assert.ok(facts, `${file}: semantic record list exists`);
+      assert.equal((facts.match(/<div><dt>[^<]+<\/dt><dd>[^<]+<\/dd><\/div>/g) || []).length, 11, `${file}: each record row pairs a label with its value`);
     }
   }
 });
@@ -362,6 +365,9 @@ test("localized editorial content renders on home, topics, methodology, vocabula
     for (const copy of [e.introTitle, e.introText, ...e.scenarios.flatMap(({ title, text }) => [title, text]), ...e.faq.flatMap(({ question, answer }) => [question, answer])]) {
       assert.ok(text(home).includes(copy), `${locale}: home editorial is rendered`);
     }
+    const scenarios = home.match(/<h3>[^<]+<\/h3><div class="card-grid">([\s\S]*?)<\/div><\/section>/)?.[1];
+    assert.ok(scenarios, `${locale}: scenario grid exists`);
+    assert.equal((scenarios.match(/<article class="guide-card">/g) || []).length, e.scenarios.length, `${locale}: every scenario uses the styled card component`);
     assert.doesNotMatch(home, /search-vocabulary__terms/);
     const method = text(await read(routeFile(pagePath(locale, { kind: "methodology" }, true))));
     for (const section of e.methodologySections) {
@@ -392,4 +398,7 @@ test("CSS keeps accessible horizontally scrollable semantic tables", async () =>
   assert.match(css, /font-variant-numeric:\s*tabular-nums/);
   assert.match(css, /@media\s*\(max-width:\s*680px\)/);
   assert.doesNotMatch(css, /\.station-card|\.station-list|\.ranking-detail-row|\.ranking-note|\.page-analysis/);
+  assert.match(css, /\.editorial-section\s*>\s*h3\s*\{[^}]*margin-block:\s*32px\s+0/);
+  assert.match(css, /dl\.detail-facts\s*>\s*div\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+minmax\(0,\s*2fr\)/);
+  assert.match(css, /dl\.detail-facts\s*>\s*div\s*\+\s*div\s*\{[^}]*border-top:/);
 });
